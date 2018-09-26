@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["get_fqdn",""],["get_kernel_internal_version",""],["to_str",""],["uname",""]]});

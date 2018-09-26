@@ -1,0 +1,143 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="API documentation for the Rust `redbpf` crate."><meta name="keywords" content="rust, rustlang, rust-lang, redbpf"><title>redbpf - Rust</title><link rel="stylesheet" type="text/css" href="../normalize.css"><link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../dark.css"><link rel="stylesheet" type="text/css" href="../light.css" id="themeStyle"><script src="../storage.js"></script></head><body class="rustdoc mod"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><p class='location'>Crate redbpf</p><div class="sidebar-elems"><div class="block items"><ul><li><a href="#modules">Modules</a></li><li><a href="#structs">Structs</a></li><li><a href="#enums">Enums</a></li><li><a href="#types">Type Definitions</a></li></ul></div><p class='location'></p><script>window.sidebarCurrent = {name: 'redbpf', ty: 'mod', relpath: '../'};</script></div></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../theme.js"></script><nav class="sub"><form class="search-form js-only"><div class="search-container"><input class="search-input" name="search" autocomplete="off" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><a id="settings-menu" href="../settings.html"><img src="../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><h1 class='fqn'><span class='out-of-band'><span id='render-detail'><a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class='inner'>&#x2212;</span>]</a></span><a class='srclink' href='../src/redbpf/lib.rs.html#1-483' title='goto source code'>[src]</a></span><span class='in-band'>Crate <a class="mod" href=''>redbpf</a></span></h1><div class='docblock'><h1 id="redbpf" class="section-header"><a href="#redbpf">RedBPF</a></h1>
+<p>This crate provides a build-load-run workflow for eBPF modules. If the
+<code>build</code> cargo feature is enabled, build-specific functionality is available.
+You may want to use the <code>redbpf</code> crate like so:</p>
+<pre><code class="language-toml">[build-dependencies]
+redbpf = { version = &quot;0.1&quot;, features = [&quot;build&quot;] }
+
+[dependencies]
+redbpf = &quot;0.1&quot;
+</code></pre>
+<p>For more information about build-specific examples, look at the
+documentation for the <code>build</code> module.</p>
+<h2 id="elf-object-expectations" class="section-header"><a href="#elf-object-expectations">ELF object expectations</a></h2>
+<p>The ELF sections loaded by RedBPF should follow the following naming convention:</p>
+<ul>
+<li><code>maps/name</code> for maps</li>
+<li><code>kprobe/function_name</code> for entry probes for <code>function_name</code></li>
+<li><code>kretprobe/function_name</code> for return probes for <code>function_name</code></li>
+<li><code>xdp/name</code> for XDP probes. Names can be anything.</li>
+<li><code>socketfilter/name</code> for socket filters. Names can be anything.</li>
+</ul>
+<p>Additionally, as per convention, the following sections should be present in
+the ELF object:</p>
+<pre><code class="language-c">__u32 _version SEC(&quot;version&quot;) = 0xFFFFFFFE;
+char _license[] SEC(&quot;license&quot;) = &quot;GPL&quot;;
+</code></pre>
+<p>If the license is not GPL, some in-kernel functionality is not available for eBPF modules.</p>
+<p>The magic version number is compatible with GoBPF's convention: during
+loading it is replaced with the currently running kernel's internal version,
+as returned by <code>uname()</code>.</p>
+</div><h2 id='modules' class='section-header'><a href="#modules">Modules</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class="mod" href="cpus/index.html"
+                                  title='mod redbpf::cpus'>cpus</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="mod" href="sys/index.html"
+                                  title='mod redbpf::sys'>sys</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="mod" href="uname/index.html"
+                                  title='mod redbpf::uname'>uname</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr></table><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.LostSamples.html"
+                                  title='struct redbpf::LostSamples'>LostSamples</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.Map.html"
+                                  title='struct redbpf::Map'>Map</a></td>
+                           <td class='docblock-short'>
+                                <p>Maps are loaded automatically, so you normally do not have to do anything to
+initialise them after loading an ELF file.</p>
+
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.Module.html"
+                                  title='struct redbpf::Module'>Module</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.PerfMap.html"
+                                  title='struct redbpf::PerfMap'>PerfMap</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.Program.html"
+                                  title='struct redbpf::Program'>Program</a></td>
+                           <td class='docblock-short'>
+                                <p>You can load an eBPF module, and all the programs in it like so:</p>
+
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.Rel.html"
+                                  title='struct redbpf::Rel'>Rel</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.Sample.html"
+                                  title='struct redbpf::Sample'>Sample</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr></table><h2 id='enums' class='section-header'><a href="#enums">Enums</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class="enum" href="enum.Event.html"
+                                  title='enum redbpf::Event'>Event</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="enum" href="enum.LoadError.html"
+                                  title='enum redbpf::LoadError'>LoadError</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="enum" href="enum.ProgramKind.html"
+                                  title='enum redbpf::ProgramKind'>ProgramKind</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr></table><h2 id='types' class='section-header'><a href="#types">Type Definitions</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class="type" href="type.Result.html"
+                                  title='type redbpf::Result'>Result</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="type" href="type.VoidPtr.html"
+                                  title='type redbpf::VoidPtr'>VoidPtr</a></td>
+                           <td class='docblock-short'>
+                                
+                           </td>
+                       </tr></table></section><section id="search" class="content hidden"></section><section class="footer"></section><aside id="help" class="hidden"><div><h1 class="hidden">Help</h1><div class="shortcuts"><h2>Keyboard Shortcuts</h2><dl><dt><kbd>?</kbd></dt><dd>Show this help dialog</dd><dt><kbd>S</kbd></dt><dd>Focus the search field</dd><dt><kbd>↑</kbd></dt><dd>Move up in search results</dd><dt><kbd>↓</kbd></dt><dd>Move down in search results</dd><dt><kbd>↹</kbd></dt><dd>Switch tab</dd><dt><kbd>&#9166;</kbd></dt><dd>Go to active search result</dd><dt><kbd>+</kbd></dt><dd>Expand all sections</dd><dt><kbd>-</kbd></dt><dd>Collapse all sections</dd></dl></div><div class="infos"><h2>Search Tricks</h2><p>Prefix searches with a type followed by a colon (e.g. <code>fn:</code>) to restrict the search to a given type.</p><p>Accepted types are: <code>fn</code>, <code>mod</code>, <code>struct</code>, <code>enum</code>, <code>trait</code>, <code>type</code>, <code>macro</code>, and <code>const</code>.</p><p>Search functions by type signature (e.g. <code>vec -> usize</code> or <code>* -> vec</code>)</p><p>Search multiple things at once by splitting your query with comma (e.g. <code>str,u8</code> or <code>String,struct:Vec,test</code>)</p></div></div></aside><script>window.rootPath = "../";window.currentCrate = "redbpf";</script><script src="../aliases.js"></script><script src="../main.js"></script><script defer src="../search-index.js"></script></body></html>
