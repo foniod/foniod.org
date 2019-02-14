@@ -1,3 +1,3 @@
 var ALIASES = {};
-ALIASES['bpf_sys'] = {};
-ALIASES['redbpf'] = {};
+ALIASES["bpf_sys"] = {};
+ALIASES["redbpf"] = {};
