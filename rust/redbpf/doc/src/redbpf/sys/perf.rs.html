@@ -2365,21 +2365,21 @@
     <span class="ident">Storage</span>: <span class="ident">AsRef</span><span class="op">&lt;</span>[<span class="ident">u8</span>]<span class="op">&gt;</span> <span class="op">+</span> <span class="ident">AsMut</span><span class="op">&lt;</span>[<span class="ident">u8</span>]<span class="op">&gt;</span>,
 {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">storage</span>: <span class="ident">Storage</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">storage</span>: <span class="ident">Storage</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> { <span class="ident">storage</span>, <span class="ident">align</span>: [] }
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_bit</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">index</span>: <span class="ident">usize</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_bit</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">index</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
         <span class="macro">debug_assert</span><span class="macro">!</span>(<span class="ident">index</span> <span class="op">/</span> <span class="number">8</span> <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">storage</span>.<span class="ident">as_ref</span>().<span class="ident">len</span>());
 
         <span class="kw">let</span> <span class="ident">byte_index</span> <span class="op">=</span> <span class="ident">index</span> <span class="op">/</span> <span class="number">8</span>;
         <span class="kw">let</span> <span class="ident">byte</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">storage</span>.<span class="ident">as_ref</span>()[<span class="ident">byte_index</span>];
 
         <span class="kw">let</span> <span class="ident">bit_index</span> <span class="op">=</span> <span class="ident">index</span> <span class="op">%</span> <span class="number">8</span>;
-        <span class="kw">let</span> <span class="ident">mask</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;&lt;</span> <span class="ident">bit_index</span>;
+        <span class="kw">let</span> <span class="ident">mask</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="ident">bit_index</span>;
 
-        <span class="ident">byte</span> <span class="op">&amp;</span> <span class="ident">mask</span> <span class="op">==</span> <span class="ident">mask</span>
+        <span class="ident">byte</span> <span class="op">&amp;</span> <span class="ident">mask</span> <span class="op">=</span><span class="op">=</span> <span class="ident">mask</span>
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -2390,26 +2390,26 @@
         <span class="kw">let</span> <span class="ident">byte</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">storage</span>.<span class="ident">as_mut</span>()[<span class="ident">byte_index</span>];
 
         <span class="kw">let</span> <span class="ident">bit_index</span> <span class="op">=</span> <span class="ident">index</span> <span class="op">%</span> <span class="number">8</span>;
-        <span class="kw">let</span> <span class="ident">mask</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;&lt;</span> <span class="ident">bit_index</span>;
+        <span class="kw">let</span> <span class="ident">mask</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="ident">bit_index</span>;
 
         <span class="kw">if</span> <span class="ident">val</span> {
-            <span class="kw-2">*</span><span class="ident">byte</span> <span class="op">|=</span> <span class="ident">mask</span>;
+            <span class="kw-2">*</span><span class="ident">byte</span> <span class="op">|</span><span class="op">=</span> <span class="ident">mask</span>;
         } <span class="kw">else</span> {
-            <span class="kw-2">*</span><span class="ident">byte</span> <span class="op">&amp;=</span> <span class="op">!</span><span class="ident">mask</span>;
+            <span class="kw-2">*</span><span class="ident">byte</span> <span class="kw-2">&amp;</span><span class="op">=</span> <span class="op">!</span><span class="ident">mask</span>;
         }
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">bit_offset</span>: <span class="ident">usize</span>, <span class="ident">bit_width</span>: <span class="ident">u8</span>) <span class="op">-&gt;</span> <span class="ident">u64</span> {
-        <span class="macro">debug_assert</span><span class="macro">!</span>(<span class="ident">bit_width</span> <span class="op">&lt;=</span> <span class="number">64</span>);
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">bit_offset</span>: <span class="ident">usize</span>, <span class="ident">bit_width</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u64</span> {
+        <span class="macro">debug_assert</span><span class="macro">!</span>(<span class="ident">bit_width</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">64</span>);
         <span class="macro">debug_assert</span><span class="macro">!</span>(<span class="ident">bit_offset</span> <span class="op">/</span> <span class="number">8</span> <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">storage</span>.<span class="ident">as_ref</span>().<span class="ident">len</span>());
-        <span class="macro">debug_assert</span><span class="macro">!</span>((<span class="ident">bit_offset</span> <span class="op">+</span> (<span class="ident">bit_width</span> <span class="kw">as</span> <span class="ident">usize</span>)) <span class="op">/</span> <span class="number">8</span> <span class="op">&lt;=</span> <span class="self">self</span>.<span class="ident">storage</span>.<span class="ident">as_ref</span>().<span class="ident">len</span>());
+        <span class="macro">debug_assert</span><span class="macro">!</span>((<span class="ident">bit_offset</span> <span class="op">+</span> (<span class="ident">bit_width</span> <span class="kw">as</span> <span class="ident">usize</span>)) <span class="op">/</span> <span class="number">8</span> <span class="op">&lt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">storage</span>.<span class="ident">as_ref</span>().<span class="ident">len</span>());
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">val</span> <span class="op">=</span> <span class="number">0</span>;
 
         <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..(<span class="ident">bit_width</span> <span class="kw">as</span> <span class="ident">usize</span>) {
             <span class="kw">if</span> <span class="self">self</span>.<span class="ident">get_bit</span>(<span class="ident">i</span> <span class="op">+</span> <span class="ident">bit_offset</span>) {
-                <span class="ident">val</span> <span class="op">|=</span> <span class="number">1</span> <span class="op">&lt;&lt;</span> <span class="ident">i</span>;
+                <span class="ident">val</span> <span class="op">|</span><span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="ident">i</span>;
             }
         }
 
@@ -2418,13 +2418,13 @@
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">bit_offset</span>: <span class="ident">usize</span>, <span class="ident">bit_width</span>: <span class="ident">u8</span>, <span class="ident">val</span>: <span class="ident">u64</span>) {
-        <span class="macro">debug_assert</span><span class="macro">!</span>(<span class="ident">bit_width</span> <span class="op">&lt;=</span> <span class="number">64</span>);
+        <span class="macro">debug_assert</span><span class="macro">!</span>(<span class="ident">bit_width</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">64</span>);
         <span class="macro">debug_assert</span><span class="macro">!</span>(<span class="ident">bit_offset</span> <span class="op">/</span> <span class="number">8</span> <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">storage</span>.<span class="ident">as_ref</span>().<span class="ident">len</span>());
-        <span class="macro">debug_assert</span><span class="macro">!</span>((<span class="ident">bit_offset</span> <span class="op">+</span> (<span class="ident">bit_width</span> <span class="kw">as</span> <span class="ident">usize</span>)) <span class="op">/</span> <span class="number">8</span> <span class="op">&lt;=</span> <span class="self">self</span>.<span class="ident">storage</span>.<span class="ident">as_ref</span>().<span class="ident">len</span>());
+        <span class="macro">debug_assert</span><span class="macro">!</span>((<span class="ident">bit_offset</span> <span class="op">+</span> (<span class="ident">bit_width</span> <span class="kw">as</span> <span class="ident">usize</span>)) <span class="op">/</span> <span class="number">8</span> <span class="op">&lt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">storage</span>.<span class="ident">as_ref</span>().<span class="ident">len</span>());
 
         <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..(<span class="ident">bit_width</span> <span class="kw">as</span> <span class="ident">usize</span>) {
-            <span class="kw">let</span> <span class="ident">mask</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;&lt;</span> <span class="ident">i</span>;
-            <span class="kw">let</span> <span class="ident">val_bit_is_set</span> <span class="op">=</span> <span class="ident">val</span> <span class="op">&amp;</span> <span class="ident">mask</span> <span class="op">==</span> <span class="ident">mask</span>;
+            <span class="kw">let</span> <span class="ident">mask</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="ident">i</span>;
+            <span class="kw">let</span> <span class="ident">val_bit_is_set</span> <span class="op">=</span> <span class="ident">val</span> <span class="op">&amp;</span> <span class="ident">mask</span> <span class="op">=</span><span class="op">=</span> <span class="ident">mask</span>;
             <span class="self">self</span>.<span class="ident">set_bit</span>(<span class="ident">i</span> <span class="op">+</span> <span class="ident">bit_offset</span>, <span class="ident">val_bit_is_set</span>);
         }
     }
@@ -2434,34 +2434,34 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">__IncompleteArrayField</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(::<span class="ident">std</span>::<span class="ident">marker</span>::<span class="ident">PhantomData</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>);
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">__IncompleteArrayField</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="ident">__IncompleteArrayField</span>(::<span class="ident">std</span>::<span class="ident">marker</span>::<span class="ident">PhantomData</span>)
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">as_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span> {
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">as_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span> {
         ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">transmute</span>(<span class="self">self</span>)
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">as_mut_ptr</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span> {
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">as_mut_ptr</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span> {
         ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">transmute</span>(<span class="self">self</span>)
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">as_slice</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">len</span>: <span class="ident">usize</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span>[<span class="ident">T</span>] {
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">as_slice</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">len</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span>[<span class="ident">T</span>] {
         ::<span class="ident">std</span>::<span class="ident">slice</span>::<span class="ident">from_raw_parts</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>(), <span class="ident">len</span>)
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">as_mut_slice</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">len</span>: <span class="ident">usize</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>] {
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">as_mut_slice</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">len</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>] {
         ::<span class="ident">std</span>::<span class="ident">slice</span>::<span class="ident">from_raw_parts_mut</span>(<span class="self">self</span>.<span class="ident">as_mut_ptr</span>(), <span class="ident">len</span>)
     }
 }
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> ::<span class="ident">std</span>::<span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">__IncompleteArrayField</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> ::<span class="ident">std</span>::<span class="ident">fmt</span>::<span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> ::<span class="ident">std</span>::<span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> ::<span class="ident">std</span>::<span class="ident">fmt</span>::<span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> ::<span class="ident">std</span>::<span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
         <span class="ident">fmt</span>.<span class="ident">write_str</span>(<span class="string">&quot;__IncompleteArrayField&quot;</span>)
     }
 }
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> ::<span class="ident">std</span>::<span class="ident">clone</span>::<span class="ident">Clone</span> <span class="kw">for</span> <span class="ident">__IncompleteArrayField</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span>::<span class="ident">new</span>()
     }
 }
@@ -3208,7 +3208,7 @@
 }
 <span class="kw">impl</span> <span class="ident">perf_event_attr</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">disabled</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">__u64</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">disabled</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__u64</span> {
         <span class="kw">unsafe</span> { ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">_bitfield_1</span>.<span class="ident">get</span>(<span class="number">0usize</span>, <span class="number">1u8</span>) <span class="kw">as</span> <span class="ident">u64</span>) }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -3219,7 +3219,7 @@
         }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inherit</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">__u64</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inherit</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__u64</span> {
         <span class="kw">unsafe</span> { ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">_bitfield_1</span>.<span class="ident">get</span>(<span class="number">1usize</span>, <span class="number">1u8</span>) <span class="kw">as</span> <span class="ident">u64</span>) }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -3230,7 +3230,7 @@
         }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pinned</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">__u64</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pinned</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__u64</span> {
         <span class="kw">unsafe</span> { ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">_bitfield_1</span>.<span class="ident">get</span>(<span class="number">2usize</span>, <span class="number">1u8</span>) <span class="kw">as</span> <span class="ident">u64</span>) }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -3241,7 +3241,7 @@
         }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">exclusive</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">__u64</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">exclusive</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__u64</span> {
         <span class="kw">unsafe</span> { ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">_bitfield_1</span>.<span class="ident">get</span>(<span class="number">3usize</span>, <span class="number">1u8</span>) <span class="kw">as</span> <span class="ident">u64</span>) }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -3252,7 +3252,7 @@
         }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">exclude_user</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">__u64</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">exclude_user</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__u64</span> {
         <span class="kw">unsafe</span> { ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">_bitfield_1</span>.<span class="ident">get</span>(<span class="number">4usize</span>, <span class="number">1u8</span>) <span class="kw">as</span> <span class="ident">u64</span>) }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -3263,7 +3263,7 @@
         }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">exclude_kernel</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">__u64</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">exclude_kernel</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__u64</span> {
         <span class="kw">unsafe</span> { ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">_bitfield_1</span>.<span class="ident">get</span>(<span class="number">5usize</span>, <span class="number">1u8</span>) <span class="kw">as</span> <span class="ident">u64</span>) }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -3274,7 +3274,7 @@
         }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">exclude_hv</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">__u64</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">exclude_hv</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__u64</span> {
         <span class="kw">unsafe</span> { ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">_bitfield_1</span>.<span class="ident">get</span>(<span class="number">6usize</span>, <span class="number">1u8</span>) <span class="kw">as</span> <span class="ident">u64</span>) }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -3285,7 +3285,7 @@
         }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">exclude_idle</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">__u64</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">exclude_idle</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__u64</span> {
         <span class="kw">unsafe</span> { ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">_bitfield_1</span>.<span class="ident">get</span>(<span class="number">7usize</span>, <span class="number">1u8</span>) <span class="kw">as</span> <span class="ident">u64</span>) }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -3296,7 +3296,7 @@
         }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mmap</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">__u64</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mmap</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__u64</span> {
         <span class="kw">unsafe</span> { ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">_bitfield_1</span>.<span class="ident">get</span>(<span class="number">8usize</span>, <span class="number">1u8</span>) <span class="kw">as</span> <span class="ident">u64</span>) }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -3307,7 +3307,7 @@
         }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">comm</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">__u64</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">comm</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__u64</span> {
         <span class="kw">unsafe</span> { ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">_bitfield_1</span>.<span class="ident">get</span>(<span class="number">9usize</span>, <span class="number">1u8</span>) <span class="kw">as</span> <span class="ident">u64</span>) }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -3318,7 +3318,7 @@
         }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">freq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">__u64</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">freq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__u64</span> {
         <span class="kw">unsafe</span> { ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">_bitfield_1</span>.<span class="ident">get</span>(<span class="number">10usize</span>, <span class="number">1u8</span>) <span class="kw">as</span> <span class="ident">u64</span>) }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -3329,7 +3329,7 @@
         }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inherit_stat</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">__u64</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inherit_stat</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__u64</span> {
         <span class="kw">unsafe</span> { ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">_bitfield_1</span>.<span class="ident">get</span>(<span class="number">11usize</span>, <span class="number">1u8</span>) <span class="kw">as</span> <span class="ident">u64</span>) }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -3340,7 +3340,7 @@
         }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">enable_on_exec</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">__u64</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">enable_on_exec</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__u64</span> {
         <span class="kw">unsafe</span> { ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">_bitfield_1</span>.<span class="ident">get</span>(<span class="number">12usize</span>, <span class="number">1u8</span>) <span class="kw">as</span> <span class="ident">u64</span>) }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -3351,7 +3351,7 @@
         }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">task</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">__u64</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">task</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__u64</span> {
         <span class="kw">unsafe</span> { ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">_bitfield_1</span>.<span class="ident">get</span>(<span class="number">13usize</span>, <span class="number">1u8</span>) <span class="kw">as</span> <span class="ident">u64</span>) }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -3362,7 +3362,7 @@
         }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">watermark</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">__u64</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">watermark</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__u64</span> {
         <span class="kw">unsafe</span> { ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">_bitfield_1</span>.<span class="ident">get</span>(<span class="number">14usize</span>, <span class="number">1u8</span>) <span class="kw">as</span> <span class="ident">u64</span>) }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -3373,7 +3373,7 @@
         }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">precise_ip</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">__u64</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">precise_ip</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__u64</span> {
         <span class="kw">unsafe</span> { ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">_bitfield_1</span>.<span class="ident">get</span>(<span class="number">15usize</span>, <span class="number">2u8</span>) <span class="kw">as</span> <span class="ident">u64</span>) }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -3384,7 +3384,7 @@
         }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mmap_data</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">__u64</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mmap_data</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__u64</span> {
         <span class="kw">unsafe</span> { ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">_bitfield_1</span>.<span class="ident">get</span>(<span class="number">17usize</span>, <span class="number">1u8</span>) <span class="kw">as</span> <span class="ident">u64</span>) }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -3395,7 +3395,7 @@
         }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sample_id_all</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">__u64</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sample_id_all</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__u64</span> {
         <span class="kw">unsafe</span> { ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">_bitfield_1</span>.<span class="ident">get</span>(<span class="number">18usize</span>, <span class="number">1u8</span>) <span class="kw">as</span> <span class="ident">u64</span>) }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -3406,7 +3406,7 @@
         }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">exclude_host</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">__u64</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">exclude_host</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__u64</span> {
         <span class="kw">unsafe</span> { ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">_bitfield_1</span>.<span class="ident">get</span>(<span class="number">19usize</span>, <span class="number">1u8</span>) <span class="kw">as</span> <span class="ident">u64</span>) }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -3417,7 +3417,7 @@
         }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">exclude_guest</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">__u64</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">exclude_guest</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__u64</span> {
         <span class="kw">unsafe</span> { ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">_bitfield_1</span>.<span class="ident">get</span>(<span class="number">20usize</span>, <span class="number">1u8</span>) <span class="kw">as</span> <span class="ident">u64</span>) }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -3428,7 +3428,7 @@
         }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">exclude_callchain_kernel</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">__u64</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">exclude_callchain_kernel</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__u64</span> {
         <span class="kw">unsafe</span> { ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">_bitfield_1</span>.<span class="ident">get</span>(<span class="number">21usize</span>, <span class="number">1u8</span>) <span class="kw">as</span> <span class="ident">u64</span>) }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -3439,7 +3439,7 @@
         }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">exclude_callchain_user</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">__u64</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">exclude_callchain_user</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__u64</span> {
         <span class="kw">unsafe</span> { ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">_bitfield_1</span>.<span class="ident">get</span>(<span class="number">22usize</span>, <span class="number">1u8</span>) <span class="kw">as</span> <span class="ident">u64</span>) }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -3450,7 +3450,7 @@
         }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mmap2</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">__u64</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mmap2</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__u64</span> {
         <span class="kw">unsafe</span> { ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">_bitfield_1</span>.<span class="ident">get</span>(<span class="number">23usize</span>, <span class="number">1u8</span>) <span class="kw">as</span> <span class="ident">u64</span>) }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -3461,7 +3461,7 @@
         }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">comm_exec</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">__u64</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">comm_exec</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__u64</span> {
         <span class="kw">unsafe</span> { ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">_bitfield_1</span>.<span class="ident">get</span>(<span class="number">24usize</span>, <span class="number">1u8</span>) <span class="kw">as</span> <span class="ident">u64</span>) }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -3472,7 +3472,7 @@
         }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">use_clockid</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">__u64</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">use_clockid</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__u64</span> {
         <span class="kw">unsafe</span> { ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">_bitfield_1</span>.<span class="ident">get</span>(<span class="number">25usize</span>, <span class="number">1u8</span>) <span class="kw">as</span> <span class="ident">u64</span>) }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -3483,7 +3483,7 @@
         }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">context_switch</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">__u64</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">context_switch</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__u64</span> {
         <span class="kw">unsafe</span> { ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">_bitfield_1</span>.<span class="ident">get</span>(<span class="number">26usize</span>, <span class="number">1u8</span>) <span class="kw">as</span> <span class="ident">u64</span>) }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -3494,7 +3494,7 @@
         }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_backward</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">__u64</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_backward</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__u64</span> {
         <span class="kw">unsafe</span> { ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">_bitfield_1</span>.<span class="ident">get</span>(<span class="number">27usize</span>, <span class="number">1u8</span>) <span class="kw">as</span> <span class="ident">u64</span>) }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -3505,7 +3505,7 @@
         }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">namespaces</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">__u64</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">namespaces</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__u64</span> {
         <span class="kw">unsafe</span> { ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">_bitfield_1</span>.<span class="ident">get</span>(<span class="number">28usize</span>, <span class="number">1u8</span>) <span class="kw">as</span> <span class="ident">u64</span>) }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -3516,7 +3516,7 @@
         }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">__reserved_1</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">__u64</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">__reserved_1</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__u64</span> {
         <span class="kw">unsafe</span> { ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">_bitfield_1</span>.<span class="ident">get</span>(<span class="number">29usize</span>, <span class="number">35u8</span>) <span class="kw">as</span> <span class="ident">u64</span>) }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -3557,7 +3557,7 @@
         <span class="ident">write_backward</span>: <span class="ident">__u64</span>,
         <span class="ident">namespaces</span>: <span class="ident">__u64</span>,
         <span class="ident">__reserved_1</span>: <span class="ident">__u64</span>,
-    ) <span class="op">-&gt;</span> <span class="ident">__BindgenBitfieldUnit</span><span class="op">&lt;</span>[<span class="ident">u8</span>; <span class="number">8usize</span>], <span class="ident">u64</span><span class="op">&gt;</span> {
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__BindgenBitfieldUnit</span><span class="op">&lt;</span>[<span class="ident">u8</span>; <span class="number">8usize</span>], <span class="ident">u64</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">__bindgen_bitfield_unit</span>: <span class="ident">__BindgenBitfieldUnit</span><span class="op">&lt;</span>[<span class="ident">u8</span>; <span class="number">8usize</span>], <span class="ident">u64</span><span class="op">&gt;</span> <span class="op">=</span>
             <span class="ident">Default</span>::<span class="ident">default</span>();
         <span class="ident">__bindgen_bitfield_unit</span>.<span class="ident">set</span>(<span class="number">0usize</span>, <span class="number">1u8</span>, {
@@ -3794,7 +3794,7 @@
 }
 <span class="kw">impl</span> <span class="ident">perf_event_mmap_page__bindgen_ty_1__bindgen_ty_1</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">cap_bit0</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">__u64</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">cap_bit0</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__u64</span> {
         <span class="kw">unsafe</span> { ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">_bitfield_1</span>.<span class="ident">get</span>(<span class="number">0usize</span>, <span class="number">1u8</span>) <span class="kw">as</span> <span class="ident">u64</span>) }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -3805,7 +3805,7 @@
         }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">cap_bit0_is_deprecated</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">__u64</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">cap_bit0_is_deprecated</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__u64</span> {
         <span class="kw">unsafe</span> { ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">_bitfield_1</span>.<span class="ident">get</span>(<span class="number">1usize</span>, <span class="number">1u8</span>) <span class="kw">as</span> <span class="ident">u64</span>) }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -3816,7 +3816,7 @@
         }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">cap_user_rdpmc</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">__u64</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">cap_user_rdpmc</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__u64</span> {
         <span class="kw">unsafe</span> { ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">_bitfield_1</span>.<span class="ident">get</span>(<span class="number">2usize</span>, <span class="number">1u8</span>) <span class="kw">as</span> <span class="ident">u64</span>) }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -3827,7 +3827,7 @@
         }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">cap_user_time</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">__u64</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">cap_user_time</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__u64</span> {
         <span class="kw">unsafe</span> { ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">_bitfield_1</span>.<span class="ident">get</span>(<span class="number">3usize</span>, <span class="number">1u8</span>) <span class="kw">as</span> <span class="ident">u64</span>) }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -3838,7 +3838,7 @@
         }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">cap_user_time_zero</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">__u64</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">cap_user_time_zero</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__u64</span> {
         <span class="kw">unsafe</span> { ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">_bitfield_1</span>.<span class="ident">get</span>(<span class="number">4usize</span>, <span class="number">1u8</span>) <span class="kw">as</span> <span class="ident">u64</span>) }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -3849,7 +3849,7 @@
         }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">cap_____res</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">__u64</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">cap_____res</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__u64</span> {
         <span class="kw">unsafe</span> { ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">_bitfield_1</span>.<span class="ident">get</span>(<span class="number">5usize</span>, <span class="number">59u8</span>) <span class="kw">as</span> <span class="ident">u64</span>) }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -3867,7 +3867,7 @@
         <span class="ident">cap_user_time</span>: <span class="ident">__u64</span>,
         <span class="ident">cap_user_time_zero</span>: <span class="ident">__u64</span>,
         <span class="ident">cap_____res</span>: <span class="ident">__u64</span>,
-    ) <span class="op">-&gt;</span> <span class="ident">__BindgenBitfieldUnit</span><span class="op">&lt;</span>[<span class="ident">u8</span>; <span class="number">8usize</span>], <span class="ident">u64</span><span class="op">&gt;</span> {
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__BindgenBitfieldUnit</span><span class="op">&lt;</span>[<span class="ident">u8</span>; <span class="number">8usize</span>], <span class="ident">u64</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">__bindgen_bitfield_unit</span>: <span class="ident">__BindgenBitfieldUnit</span><span class="op">&lt;</span>[<span class="ident">u8</span>; <span class="number">8usize</span>], <span class="ident">u64</span><span class="op">&gt;</span> <span class="op">=</span>
             <span class="ident">Default</span>::<span class="ident">default</span>();
         <span class="ident">__bindgen_bitfield_unit</span>.<span class="ident">set</span>(<span class="number">0usize</span>, <span class="number">1u8</span>, {
@@ -4324,7 +4324,7 @@
 }
 <span class="kw">impl</span> <span class="ident">perf_mem_data_src__bindgen_ty_1</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mem_op</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">__u64</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mem_op</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__u64</span> {
         <span class="kw">unsafe</span> { ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">_bitfield_1</span>.<span class="ident">get</span>(<span class="number">0usize</span>, <span class="number">5u8</span>) <span class="kw">as</span> <span class="ident">u64</span>) }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -4335,7 +4335,7 @@
         }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mem_lvl</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">__u64</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mem_lvl</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__u64</span> {
         <span class="kw">unsafe</span> { ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">_bitfield_1</span>.<span class="ident">get</span>(<span class="number">5usize</span>, <span class="number">14u8</span>) <span class="kw">as</span> <span class="ident">u64</span>) }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -4346,7 +4346,7 @@
         }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mem_snoop</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">__u64</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mem_snoop</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__u64</span> {
         <span class="kw">unsafe</span> { ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">_bitfield_1</span>.<span class="ident">get</span>(<span class="number">19usize</span>, <span class="number">5u8</span>) <span class="kw">as</span> <span class="ident">u64</span>) }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -4357,7 +4357,7 @@
         }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mem_lock</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">__u64</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mem_lock</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__u64</span> {
         <span class="kw">unsafe</span> { ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">_bitfield_1</span>.<span class="ident">get</span>(<span class="number">24usize</span>, <span class="number">2u8</span>) <span class="kw">as</span> <span class="ident">u64</span>) }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -4368,7 +4368,7 @@
         }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mem_dtlb</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">__u64</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mem_dtlb</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__u64</span> {
         <span class="kw">unsafe</span> { ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">_bitfield_1</span>.<span class="ident">get</span>(<span class="number">26usize</span>, <span class="number">7u8</span>) <span class="kw">as</span> <span class="ident">u64</span>) }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -4379,7 +4379,7 @@
         }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mem_lvl_num</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">__u64</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mem_lvl_num</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__u64</span> {
         <span class="kw">unsafe</span> { ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">_bitfield_1</span>.<span class="ident">get</span>(<span class="number">33usize</span>, <span class="number">4u8</span>) <span class="kw">as</span> <span class="ident">u64</span>) }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -4390,7 +4390,7 @@
         }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mem_remote</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">__u64</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mem_remote</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__u64</span> {
         <span class="kw">unsafe</span> { ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">_bitfield_1</span>.<span class="ident">get</span>(<span class="number">37usize</span>, <span class="number">1u8</span>) <span class="kw">as</span> <span class="ident">u64</span>) }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -4401,7 +4401,7 @@
         }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mem_snoopx</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">__u64</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mem_snoopx</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__u64</span> {
         <span class="kw">unsafe</span> { ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">_bitfield_1</span>.<span class="ident">get</span>(<span class="number">38usize</span>, <span class="number">2u8</span>) <span class="kw">as</span> <span class="ident">u64</span>) }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -4412,7 +4412,7 @@
         }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mem_rsvd</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">__u64</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mem_rsvd</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__u64</span> {
         <span class="kw">unsafe</span> { ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">_bitfield_1</span>.<span class="ident">get</span>(<span class="number">40usize</span>, <span class="number">24u8</span>) <span class="kw">as</span> <span class="ident">u64</span>) }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -4433,7 +4433,7 @@
         <span class="ident">mem_remote</span>: <span class="ident">__u64</span>,
         <span class="ident">mem_snoopx</span>: <span class="ident">__u64</span>,
         <span class="ident">mem_rsvd</span>: <span class="ident">__u64</span>,
-    ) <span class="op">-&gt;</span> <span class="ident">__BindgenBitfieldUnit</span><span class="op">&lt;</span>[<span class="ident">u8</span>; <span class="number">8usize</span>], <span class="ident">u32</span><span class="op">&gt;</span> {
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__BindgenBitfieldUnit</span><span class="op">&lt;</span>[<span class="ident">u8</span>; <span class="number">8usize</span>], <span class="ident">u32</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">__bindgen_bitfield_unit</span>: <span class="ident">__BindgenBitfieldUnit</span><span class="op">&lt;</span>[<span class="ident">u8</span>; <span class="number">8usize</span>], <span class="ident">u32</span><span class="op">&gt;</span> <span class="op">=</span>
             <span class="ident">Default</span>::<span class="ident">default</span>();
         <span class="ident">__bindgen_bitfield_unit</span>.<span class="ident">set</span>(<span class="number">0usize</span>, <span class="number">5u8</span>, {
@@ -4540,7 +4540,7 @@
 }
 <span class="kw">impl</span> <span class="ident">perf_branch_entry</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mispred</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">__u64</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mispred</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__u64</span> {
         <span class="kw">unsafe</span> { ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">_bitfield_1</span>.<span class="ident">get</span>(<span class="number">0usize</span>, <span class="number">1u8</span>) <span class="kw">as</span> <span class="ident">u64</span>) }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -4551,7 +4551,7 @@
         }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">predicted</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">__u64</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">predicted</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__u64</span> {
         <span class="kw">unsafe</span> { ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">_bitfield_1</span>.<span class="ident">get</span>(<span class="number">1usize</span>, <span class="number">1u8</span>) <span class="kw">as</span> <span class="ident">u64</span>) }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -4562,7 +4562,7 @@
         }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">in_tx</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">__u64</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">in_tx</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__u64</span> {
         <span class="kw">unsafe</span> { ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">_bitfield_1</span>.<span class="ident">get</span>(<span class="number">2usize</span>, <span class="number">1u8</span>) <span class="kw">as</span> <span class="ident">u64</span>) }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -4573,7 +4573,7 @@
         }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">abort</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">__u64</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">abort</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__u64</span> {
         <span class="kw">unsafe</span> { ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">_bitfield_1</span>.<span class="ident">get</span>(<span class="number">3usize</span>, <span class="number">1u8</span>) <span class="kw">as</span> <span class="ident">u64</span>) }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -4584,7 +4584,7 @@
         }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">cycles</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">__u64</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">cycles</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__u64</span> {
         <span class="kw">unsafe</span> { ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">_bitfield_1</span>.<span class="ident">get</span>(<span class="number">4usize</span>, <span class="number">16u8</span>) <span class="kw">as</span> <span class="ident">u64</span>) }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -4595,7 +4595,7 @@
         }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">type_</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">__u64</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">type_</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__u64</span> {
         <span class="kw">unsafe</span> { ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">_bitfield_1</span>.<span class="ident">get</span>(<span class="number">20usize</span>, <span class="number">4u8</span>) <span class="kw">as</span> <span class="ident">u64</span>) }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -4606,7 +4606,7 @@
         }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reserved</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">__u64</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reserved</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__u64</span> {
         <span class="kw">unsafe</span> { ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">_bitfield_1</span>.<span class="ident">get</span>(<span class="number">24usize</span>, <span class="number">40u8</span>) <span class="kw">as</span> <span class="ident">u64</span>) }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -4625,7 +4625,7 @@
         <span class="ident">cycles</span>: <span class="ident">__u64</span>,
         <span class="ident">type_</span>: <span class="ident">__u64</span>,
         <span class="ident">reserved</span>: <span class="ident">__u64</span>,
-    ) <span class="op">-&gt;</span> <span class="ident">__BindgenBitfieldUnit</span><span class="op">&lt;</span>[<span class="ident">u8</span>; <span class="number">8usize</span>], <span class="ident">u64</span><span class="op">&gt;</span> {
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__BindgenBitfieldUnit</span><span class="op">&lt;</span>[<span class="ident">u8</span>; <span class="number">8usize</span>], <span class="ident">u64</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">__bindgen_bitfield_unit</span>: <span class="ident">__BindgenBitfieldUnit</span><span class="op">&lt;</span>[<span class="ident">u8</span>; <span class="number">8usize</span>], <span class="ident">u64</span><span class="op">&gt;</span> <span class="op">=</span>
             <span class="ident">Default</span>::<span class="ident">default</span>();
         <span class="ident">__bindgen_bitfield_unit</span>.<span class="ident">set</span>(<span class="number">0usize</span>, <span class="number">1u8</span>, {

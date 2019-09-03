@@ -281,7 +281,7 @@
 
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">sys</span>::<span class="ident">perf</span>::<span class="kw-2">*</span>;
 
-<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">open_perf_buffer</span>(<span class="ident">pid</span>: <span class="ident">i32</span>, <span class="ident">cpu</span>: <span class="ident">i32</span>, <span class="ident">group</span>: <span class="ident">RawFd</span>, <span class="ident">flags</span>: <span class="ident">u32</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">RawFd</span><span class="op">&gt;</span> {
+<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">open_perf_buffer</span>(<span class="ident">pid</span>: <span class="ident">i32</span>, <span class="ident">cpu</span>: <span class="ident">i32</span>, <span class="ident">group</span>: <span class="ident">RawFd</span>, <span class="ident">flags</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">RawFd</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">attr</span> <span class="op">=</span> <span class="ident">mem</span>::<span class="ident">zeroed</span>::<span class="op">&lt;</span><span class="ident">perf_event_attr</span><span class="op">&gt;</span>();
 
     <span class="ident">attr</span>.<span class="ident">config</span> <span class="op">=</span> <span class="ident">perf_sw_ids_PERF_COUNT_SW_BPF_OUTPUT</span> <span class="kw">as</span> <span class="ident">u64</span>;
@@ -330,7 +330,7 @@
     <span class="ident">page_cnt</span>: <span class="ident">usize</span>,
     <span class="ident">page_size</span>: <span class="ident">usize</span>,
     <span class="ident">mmap_size</span>: <span class="ident">usize</span>,
-    <span class="ident">buf</span>: <span class="ident">RefCell</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;&gt;</span>,
+    <span class="ident">buf</span>: <span class="ident">RefCell</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="kw">pub</span> <span class="ident">fd</span>: <span class="ident">RawFd</span>,
 }
 
@@ -342,7 +342,7 @@
         <span class="ident">page_cnt</span>: <span class="ident">usize</span>,
         <span class="ident">group</span>: <span class="ident">RawFd</span>,
         <span class="ident">flags</span>: <span class="ident">u32</span>,
-    ) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">PerfMap</span><span class="op">&gt;</span> {
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">PerfMap</span><span class="op">&gt;</span> {
         <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">fd</span> <span class="op">=</span> <span class="ident">open_perf_buffer</span>(<span class="ident">pid</span>, <span class="ident">cpu</span>, <span class="ident">group</span>, <span class="ident">flags</span>)<span class="question-mark">?</span>;
             <span class="kw">let</span> <span class="ident">page_size</span> <span class="op">=</span> <span class="ident">sysconf</span>(<span class="ident">_SC_PAGESIZE</span>) <span class="kw">as</span> <span class="ident">usize</span>;
@@ -356,11 +356,11 @@
                 <span class="number">0</span>,
             );
 
-            <span class="kw">if</span> <span class="ident">base_ptr</span> <span class="op">==</span> <span class="ident">MAP_FAILED</span> {
+            <span class="kw">if</span> <span class="ident">base_ptr</span> <span class="op">=</span><span class="op">=</span> <span class="ident">MAP_FAILED</span> {
                 <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">LoadError</span>::<span class="ident">IO</span>(<span class="ident">io</span>::<span class="ident">Error</span>::<span class="ident">last_os_error</span>()));
             }
 
-            <span class="kw">if</span> <span class="ident">ioctl</span>(<span class="ident">fd</span>, <span class="ident">PERF_EVENT_IOC_ENABLE</span>, <span class="number">0</span>) <span class="op">!=</span> <span class="number">0</span> {
+            <span class="kw">if</span> <span class="ident">ioctl</span>(<span class="ident">fd</span>, <span class="ident">PERF_EVENT_IOC_ENABLE</span>, <span class="number">0</span>) <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
                 <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">LoadError</span>::<span class="ident">IO</span>(<span class="ident">io</span>::<span class="ident">Error</span>::<span class="ident">last_os_error</span>()));
             }
 
@@ -380,7 +380,7 @@
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Event</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Event</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="ident">header</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">base_ptr</span>.<span class="ident">load</span>(<span class="ident">Ordering</span>::<span class="ident">SeqCst</span>);
             <span class="kw">let</span> <span class="ident">data_head</span> <span class="op">=</span> (<span class="kw-2">*</span><span class="ident">header</span>).<span class="ident">data_head</span>;
@@ -388,7 +388,7 @@
             <span class="kw">let</span> <span class="ident">raw_size</span> <span class="op">=</span> (<span class="self">self</span>.<span class="ident">page_cnt</span> <span class="op">*</span> <span class="self">self</span>.<span class="ident">page_size</span>) <span class="kw">as</span> <span class="ident">u64</span>;
             <span class="kw">let</span> <span class="ident">base</span> <span class="op">=</span> (<span class="ident">header</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>).<span class="ident">add</span>(<span class="self">self</span>.<span class="ident">page_size</span>);
 
-            <span class="kw">if</span> <span class="ident">data_tail</span> <span class="op">==</span> <span class="ident">data_head</span> {
+            <span class="kw">if</span> <span class="ident">data_tail</span> <span class="op">=</span><span class="op">=</span> <span class="ident">data_head</span> {
                 <span class="kw">return</span> <span class="prelude-val">None</span>;
             }
 
@@ -414,16 +414,16 @@
             }
 
             <span class="ident">atomic</span>::<span class="ident">fence</span>(<span class="ident">Ordering</span>::<span class="ident">SeqCst</span>);
-            (<span class="kw-2">*</span><span class="ident">header</span>).<span class="ident">data_tail</span> <span class="op">+=</span> (<span class="kw-2">*</span><span class="ident">event</span>).<span class="ident">size</span> <span class="kw">as</span> <span class="ident">u64</span>;
+            (<span class="kw-2">*</span><span class="ident">header</span>).<span class="ident">data_tail</span> <span class="op">+</span><span class="op">=</span> (<span class="kw-2">*</span><span class="ident">event</span>).<span class="ident">size</span> <span class="kw">as</span> <span class="ident">u64</span>;
 
             <span class="kw">match</span> (<span class="kw-2">*</span><span class="ident">event</span>).<span class="ident">type_</span> {
-                <span class="ident">perf_event_type_PERF_RECORD_SAMPLE</span> <span class="op">=&gt;</span> {
+                <span class="ident">perf_event_type_PERF_RECORD_SAMPLE</span> <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="prelude-val">Some</span>(<span class="ident">Event</span>::<span class="ident">Sample</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="ident">buf</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">Sample</span>)))
                 }
-                <span class="ident">perf_event_type_PERF_RECORD_LOST</span> <span class="op">=&gt;</span> {
+                <span class="ident">perf_event_type_PERF_RECORD_LOST</span> <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="prelude-val">Some</span>(<span class="ident">Event</span>::<span class="ident">Lost</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="ident">buf</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">LostSamples</span>)))
                 }
-                <span class="kw">_</span> <span class="op">=&gt;</span> <span class="prelude-val">None</span>,
+                <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
             }
         }
     }
