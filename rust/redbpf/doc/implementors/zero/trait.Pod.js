@@ -6,5 +6,4 @@ implementors["bpf_sys"] = [{text:"impl Pod for <a class=\"struct\" href=\"bpf_sy
             } else {
                 window.pending_implementors = implementors;
             }
-        
-})()
+        })()
