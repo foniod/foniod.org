@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["kernel_headers_path",""]]});
+initSidebarItems({"fn":[["prefix_kernel_headers",""]]});

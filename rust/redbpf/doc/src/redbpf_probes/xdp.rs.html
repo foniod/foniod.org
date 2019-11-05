@@ -133,13 +133,50 @@
 <span id="133">133</span>
 <span id="134">134</span>
 <span id="135">135</span>
+<span id="136">136</span>
+<span id="137">137</span>
+<span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
+<span id="141">141</span>
+<span id="142">142</span>
+<span id="143">143</span>
+<span id="144">144</span>
+<span id="145">145</span>
+<span id="146">146</span>
+<span id="147">147</span>
+<span id="148">148</span>
+<span id="149">149</span>
+<span id="150">150</span>
+<span id="151">151</span>
+<span id="152">152</span>
+<span id="153">153</span>
+<span id="154">154</span>
+<span id="155">155</span>
+<span id="156">156</span>
+<span id="157">157</span>
+<span id="158">158</span>
+<span id="159">159</span>
+<span id="160">160</span>
+<span id="161">161</span>
+<span id="162">162</span>
+<span id="163">163</span>
+<span id="164">164</span>
+<span id="165">165</span>
+<span id="166">166</span>
+<span id="167">167</span>
+<span id="168">168</span>
+<span id="169">169</span>
+<span id="170">170</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">core</span>::<span class="ident">mem</span>;
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">slice</span>;
 <span class="kw">use</span> <span class="ident">core</span>::<span class="ident">ops</span>::{<span class="ident">Index</span>, <span class="ident">Range</span>};
+<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">slice</span>;
 <span class="kw">use</span> <span class="ident">cty</span>::<span class="kw-2">*</span>;
 
 <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">bindings</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">maps</span>::{<span class="ident">PerfMap</span> <span class="kw">as</span> <span class="ident">PerfMapBase</span>, <span class="ident">PerfMapFlags</span>};
+<span class="kw">use</span> <span class="ident">redbpf_macros</span>::<span class="ident">internal_helpers</span> <span class="kw">as</span> <span class="ident">helpers</span>;
 
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">u32</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">XdpAction</span> {
@@ -147,12 +184,12 @@
     <span class="ident">Drop</span> <span class="op">=</span> <span class="ident">xdp_action_XDP_DROP</span>,
     <span class="ident">Pass</span> <span class="op">=</span> <span class="ident">xdp_action_XDP_PASS</span>,
     <span class="ident">Tx</span> <span class="op">=</span> <span class="ident">xdp_action_XDP_TX</span>,
-    <span class="ident">Redirect</span> <span class="op">=</span> <span class="ident">xdp_action_XDP_REDIRECT</span>
+    <span class="ident">Redirect</span> <span class="op">=</span> <span class="ident">xdp_action_XDP_REDIRECT</span>,
 }
 
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Transport</span> {
     <span class="ident">TCP</span>(<span class="kw-2">*</span><span class="kw">const</span> <span class="ident">tcphdr</span>),
-    <span class="ident">UDP</span>(<span class="kw-2">*</span><span class="kw">const</span> <span class="ident">udphdr</span>)
+    <span class="ident">UDP</span>(<span class="kw-2">*</span><span class="kw">const</span> <span class="ident">udphdr</span>),
 }
 
 <span class="kw">impl</span> <span class="ident">Transport</span> {
@@ -160,7 +197,7 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">source</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u16</span> {
         <span class="kw">let</span> <span class="ident">source</span> <span class="op">=</span> <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
             <span class="ident">Transport</span>::<span class="ident">TCP</span>(<span class="ident">hdr</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">unsafe</span> { (<span class="kw-2">*</span><span class="ident">hdr</span>).<span class="ident">source</span> },
-            <span class="ident">Transport</span>::<span class="ident">UDP</span>(<span class="ident">hdr</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">unsafe</span> { (<span class="kw-2">*</span><span class="ident">hdr</span>).<span class="ident">source</span> }
+            <span class="ident">Transport</span>::<span class="ident">UDP</span>(<span class="ident">hdr</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">unsafe</span> { (<span class="kw-2">*</span><span class="ident">hdr</span>).<span class="ident">source</span> },
         };
         <span class="ident">u16</span>::<span class="ident">from_be</span>(<span class="ident">source</span>)
     }
@@ -169,17 +206,30 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dest</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u16</span> {
         <span class="kw">let</span> <span class="ident">dest</span> <span class="op">=</span> <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
             <span class="ident">Transport</span>::<span class="ident">TCP</span>(<span class="ident">hdr</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">unsafe</span> { (<span class="kw-2">*</span><span class="ident">hdr</span>).<span class="ident">dest</span> },
-            <span class="ident">Transport</span>::<span class="ident">UDP</span>(<span class="ident">hdr</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">unsafe</span> { (<span class="kw-2">*</span><span class="ident">hdr</span>).<span class="ident">dest</span> }
+            <span class="ident">Transport</span>::<span class="ident">UDP</span>(<span class="ident">hdr</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">unsafe</span> { (<span class="kw-2">*</span><span class="ident">hdr</span>).<span class="ident">dest</span> },
         };
         <span class="ident">u16</span>::<span class="ident">from_be</span>(<span class="ident">dest</span>)
     }
 }
 
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">XdpContext</span> {
-    <span class="kw">pub</span> <span class="ident">ctx</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">xdp_md</span>
+    <span class="kw">pub</span> <span class="ident">ctx</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">xdp_md</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">XdpContext</span> {
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inner</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">xdp_md</span> {
+        <span class="self">self</span>.<span class="ident">ctx</span>
+    }
+
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">len</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+        <span class="kw">unsafe</span> {
+            <span class="kw">let</span> <span class="ident">ctx</span> <span class="op">=</span> <span class="kw-2">*</span><span class="self">self</span>.<span class="ident">ctx</span>;
+            <span class="ident">ctx</span>.<span class="ident">data_end</span> <span class="op">-</span> <span class="ident">ctx</span>.<span class="ident">data</span>
+        }
+    }
+
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">eth</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">*</span><span class="kw">const</span> <span class="ident">ethhdr</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">ctx</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">*</span><span class="self">self</span>.<span class="ident">ctx</span> };
@@ -216,7 +266,7 @@
         <span class="kw">let</span> (<span class="ident">transport</span>, <span class="ident">size</span>) <span class="op">=</span> <span class="kw">match</span> <span class="kw">unsafe</span> { (<span class="kw-2">*</span><span class="ident">ip</span>).<span class="ident">protocol</span> } <span class="kw">as</span> <span class="ident">u32</span> {
             <span class="ident">IPPROTO_TCP</span> <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">Transport</span>::<span class="ident">TCP</span>(<span class="ident">base</span>.<span class="ident">cast</span>()), <span class="ident">mem</span>::<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">tcphdr</span><span class="op">&gt;</span>()),
             <span class="ident">IPPROTO_UDP</span> <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">Transport</span>::<span class="ident">UDP</span>(<span class="ident">base</span>.<span class="ident">cast</span>()), <span class="ident">mem</span>::<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">udphdr</span><span class="op">&gt;</span>()),
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">None</span>
+            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">None</span>,
         };
         <span class="kw">unsafe</span> {
             <span class="kw">if</span> <span class="ident">base</span>.<span class="ident">add</span>(<span class="ident">size</span>) <span class="op">&gt;</span> (<span class="kw-2">*</span><span class="self">self</span>.<span class="ident">ctx</span>).<span class="ident">data_end</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span> {
@@ -232,31 +282,30 @@
         <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="ident">base</span> <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">transport</span>()<span class="question-mark">?</span> {
                 <span class="ident">TCP</span>(<span class="ident">hdr</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">hdr</span>.<span class="ident">add</span>(<span class="number">1</span>) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>,
-                <span class="ident">UDP</span>(<span class="ident">hdr</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">hdr</span>.<span class="ident">add</span>(<span class="number">1</span>) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>
+                <span class="ident">UDP</span>(<span class="ident">hdr</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">hdr</span>.<span class="ident">add</span>(<span class="number">1</span>) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>,
             };
-            <span class="prelude-val">Some</span>(<span class="ident">Data</span> { <span class="ident">ctx</span>: <span class="self">self</span>.<span class="ident">ctx</span>, <span class="ident">base</span> })
+            <span class="prelude-val">Some</span>(<span class="ident">Data</span> {
+                <span class="ident">ctx</span>: <span class="self">self</span>.<span class="ident">ctx</span>,
+                <span class="ident">base</span>,
+            })
         }
     }
 }
 
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Data</span> {
     <span class="kw">pub</span> <span class="ident">ctx</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">xdp_md</span>,
-    <span class="kw">pub</span> <span class="ident">base</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>
+    <span class="kw">pub</span> <span class="ident">base</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">Data</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">offset</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
-        <span class="kw">unsafe</span> {
-            <span class="self">self</span>.<span class="ident">base</span>.<span class="ident">offset_from</span>((<span class="kw-2">*</span><span class="self">self</span>.<span class="ident">ctx</span>).<span class="ident">data</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>) <span class="kw">as</span> <span class="ident">usize</span>
-        }
+        <span class="kw">unsafe</span> { (<span class="self">self</span>.<span class="ident">base</span> <span class="kw">as</span> <span class="ident">u32</span> <span class="op">-</span> (<span class="kw-2">*</span><span class="self">self</span>.<span class="ident">ctx</span>).<span class="ident">data</span>) <span class="kw">as</span> <span class="ident">usize</span> }
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">len</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
-        <span class="kw">unsafe</span> {
-            ((<span class="kw-2">*</span><span class="self">self</span>.<span class="ident">ctx</span>).<span class="ident">data_end</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>).<span class="ident">offset_from</span>(<span class="self">self</span>.<span class="ident">base</span>) <span class="kw">as</span> <span class="ident">usize</span>
-        }
+        <span class="kw">unsafe</span> { ((<span class="kw-2">*</span><span class="self">self</span>.<span class="ident">ctx</span>).<span class="ident">data_end</span> <span class="op">-</span> <span class="self">self</span>.<span class="ident">base</span> <span class="kw">as</span> <span class="ident">u32</span>) <span class="kw">as</span> <span class="ident">usize</span> }
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -268,5 +317,27 @@
             <span class="prelude-val">Some</span>(<span class="ident">slice</span>::<span class="ident">from_raw_parts</span>(<span class="self">self</span>.<span class="ident">base</span>, <span class="ident">len</span>))
         }
     }
-}</pre></div>
+}
+
+<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">transparent</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PerfMap</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">PerfMapBase</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>);
+
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">PerfMap</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="self">Self</span>(<span class="ident">PerfMapBase</span>::<span class="ident">new</span>())
+    }
+
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">helpers</span>]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">insert</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">ctx</span>: <span class="kw-2">&amp;</span><span class="ident">XdpContext</span>, <span class="ident">data</span>: <span class="ident">T</span>, <span class="ident">packet_size</span>: <span class="ident">u32</span>) {
+        <span class="self">self</span>.<span class="number">0</span>.<span class="ident">insert_with_flags</span>(<span class="ident">ctx</span>.<span class="ident">inner</span>(), <span class="ident">data</span>, <span class="ident">PerfMapFlags</span>::<span class="ident">with_xdp_size</span>(<span class="ident">packet_size</span>))
+    }
+
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">helpers</span>]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">insert_with_flags</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">ctx</span>: <span class="kw-2">&amp;</span><span class="ident">XdpContext</span>, <span class="ident">data</span>: <span class="ident">T</span>, <span class="ident">flags</span>: <span class="ident">PerfMapFlags</span>) {
+        <span class="self">self</span>.<span class="number">0</span>.<span class="ident">insert_with_flags</span>(<span class="ident">ctx</span>.<span class="ident">inner</span>(), <span class="ident">data</span>, <span class="ident">flags</span>)
+    }
+}
+</pre></div>
 </section><section id="search" class="content hidden"></section><section class="footer"></section><aside id="help" class="hidden"><div><h1 class="hidden">Help</h1><div class="shortcuts"><h2>Keyboard Shortcuts</h2><dl><dt><kbd>?</kbd></dt><dd>Show this help dialog</dd><dt><kbd>S</kbd></dt><dd>Focus the search field</dd><dt><kbd>↑</kbd></dt><dd>Move up in search results</dd><dt><kbd>↓</kbd></dt><dd>Move down in search results</dd><dt><kbd>↹</kbd></dt><dd>Switch tab</dd><dt><kbd>&#9166;</kbd></dt><dd>Go to active search result</dd><dt><kbd>+</kbd></dt><dd>Expand all sections</dd><dt><kbd>-</kbd></dt><dd>Collapse all sections</dd></dl></div><div class="infos"><h2>Search Tricks</h2><p>Prefix searches with a type followed by a colon (e.g., <code>fn:</code>) to restrict the search to a given type.</p><p>Accepted types are: <code>fn</code>, <code>mod</code>, <code>struct</code>, <code>enum</code>, <code>trait</code>, <code>type</code>, <code>macro</code>, and <code>const</code>.</p><p>Search functions by type signature (e.g., <code>vec -> usize</code> or <code>* -> vec</code>)</p><p>Search multiple things at once by splitting your query with comma (e.g., <code>str,u8</code> or <code>String,struct:Vec,test</code>)</p><p>You can look for items with an exact name by putting double quotes around your request: <code>"string"</code></p><p>Look for items inside another one by searching for a path: <code>vec::Vec</code></p></div></div></aside><script>window.rootPath = "../../";window.currentCrate = "redbpf_probes";</script><script src="../../aliases.js"></script><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>

@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["HashMap",""],["PerfMap",""]]});
+initSidebarItems({"struct":[["HashMap",""],["PerfMap",""],["PerfMapFlags",""]]});

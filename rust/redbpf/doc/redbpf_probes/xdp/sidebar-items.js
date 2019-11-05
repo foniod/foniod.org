@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["Transport",""],["XdpAction",""]],"struct":[["Data",""],["XdpContext",""]]});
+initSidebarItems({"enum":[["Transport",""],["XdpAction",""]],"struct":[["Data",""],["PerfMap",""],["XdpContext",""]]});
