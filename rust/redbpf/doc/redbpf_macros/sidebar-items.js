@@ -1,1 +1,1 @@
-initSidebarItems({"attr":[["helpers",""],["internal_helpers",""],["kprobe",""],["map",""],["xdp",""]],"macro":[["probe",""]]});
+initSidebarItems({"attr":[["kprobe","Attribute macro that must be used to define `kprobes`."],["map","Attribute macro that must be used when creating eBPF maps."],["xdp","Attribute macro that must be used to define `XDP` probes."]],"macro":[["program","Generates program metadata."]]});

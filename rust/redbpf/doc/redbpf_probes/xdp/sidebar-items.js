@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["Transport",""],["XdpAction",""]],"struct":[["Data",""],["PerfMap",""],["XdpContext",""]]});
+initSidebarItems({"enum":[["Transport","The packet transport header."],["XdpAction","The return type of XDP probes."]],"struct":[["Data","Data type returned by calling `XdpContext::data()`"],["PerfMap","Perf events map."],["XdpContext","Context object provided to XDP programs."]]});

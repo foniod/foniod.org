@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["HashMap",""],["PerfMap",""],["PerfMapFlags",""]]});
+initSidebarItems({"struct":[["HashMap","Hash table map."],["PerfMap","Perf events map."],["PerfMapFlags","Flags that can be passed to `PerfMap::insert_with_flags`."]]});

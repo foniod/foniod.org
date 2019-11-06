@@ -1,1 +1,103 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="API documentation for the Rust `cargo_bpf` crate."><meta name="keywords" content="rust, rustlang, rust-lang, cargo_bpf"><title>cargo_bpf - Rust</title><link rel="stylesheet" type="text/css" href="../normalize.css"><link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../dark.css"><link rel="stylesheet" type="text/css" href="../light.css" id="themeStyle"><script src="../storage.js"></script><noscript><link rel="stylesheet" href="../noscript.css"></noscript><link rel="shortcut icon" href="../favicon.ico"><style type="text/css">#crate-search{background-image:url("../down-arrow.svg");}</style></head><body class="rustdoc mod"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../cargo_bpf/index.html'><div class='logo-container'><img src='../rust-logo.png' alt='logo'></div></a><p class='location'>Crate cargo_bpf</p><div class="sidebar-elems"><a id='all-types' href='all.html'><p>See all cargo_bpf's items</p></a><p class='location'></p><script>window.sidebarCurrent = {name: 'cargo_bpf', ty: 'mod', relpath: '../'};</script></div></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../theme.js"></script><nav class="sub"><form class="search-form js-only"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../settings.html"><img src="../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><h1 class='fqn'><span class='out-of-band'><span id='render-detail'><a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class='inner'>&#x2212;</span>]</a></span><a class='srclink' href='../src/cargo_bpf/main.rs.html#1-110' title='goto source code'>[src]</a></span><span class='in-band'>Crate <a class="mod" href=''>cargo_bpf</a></span></h1></section><section id="search" class="content hidden"></section><section class="footer"></section><aside id="help" class="hidden"><div><h1 class="hidden">Help</h1><div class="shortcuts"><h2>Keyboard Shortcuts</h2><dl><dt><kbd>?</kbd></dt><dd>Show this help dialog</dd><dt><kbd>S</kbd></dt><dd>Focus the search field</dd><dt><kbd>↑</kbd></dt><dd>Move up in search results</dd><dt><kbd>↓</kbd></dt><dd>Move down in search results</dd><dt><kbd>↹</kbd></dt><dd>Switch tab</dd><dt><kbd>&#9166;</kbd></dt><dd>Go to active search result</dd><dt><kbd>+</kbd></dt><dd>Expand all sections</dd><dt><kbd>-</kbd></dt><dd>Collapse all sections</dd></dl></div><div class="infos"><h2>Search Tricks</h2><p>Prefix searches with a type followed by a colon (e.g., <code>fn:</code>) to restrict the search to a given type.</p><p>Accepted types are: <code>fn</code>, <code>mod</code>, <code>struct</code>, <code>enum</code>, <code>trait</code>, <code>type</code>, <code>macro</code>, and <code>const</code>.</p><p>Search functions by type signature (e.g., <code>vec -> usize</code> or <code>* -> vec</code>)</p><p>Search multiple things at once by splitting your query with comma (e.g., <code>str,u8</code> or <code>String,struct:Vec,test</code>)</p><p>You can look for items with an exact name by putting double quotes around your request: <code>"string"</code></p><p>Look for items inside another one by searching for a path: <code>vec::Vec</code></p></div></div></aside><script>window.rootPath = "../";window.currentCrate = "cargo_bpf";</script><script src="../aliases.js"></script><script src="../main.js"></script><script defer src="../search-index.js"></script></body></html>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="API documentation for the Rust `cargo_bpf` crate."><meta name="keywords" content="rust, rustlang, rust-lang, cargo_bpf"><title>cargo_bpf - Rust</title><link rel="stylesheet" type="text/css" href="../normalize.css"><link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../dark.css"><link rel="stylesheet" type="text/css" href="../light.css" id="themeStyle"><script src="../storage.js"></script><noscript><link rel="stylesheet" href="../noscript.css"></noscript><link rel="shortcut icon" href="../favicon.ico"><style type="text/css">#crate-search{background-image:url("../down-arrow.svg");}</style></head><body class="rustdoc mod"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../cargo_bpf/index.html'><div class='logo-container'><img src='../rust-logo.png' alt='logo'></div></a><p class='location'>Crate cargo_bpf</p><div class="sidebar-elems"><a id='all-types' href='all.html'><p>See all cargo_bpf's items</p></a><p class='location'></p><script>window.sidebarCurrent = {name: 'cargo_bpf', ty: 'mod', relpath: '../'};</script></div></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../theme.js"></script><nav class="sub"><form class="search-form js-only"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../settings.html"><img src="../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><h1 class='fqn'><span class='out-of-band'><span id='render-detail'><a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class='inner'>&#x2212;</span>]</a></span><a class='srclink' href='../src/cargo_bpf/main.rs.html#1-235' title='goto source code'>[src]</a></span><span class='in-band'>Crate <a class="mod" href=''>cargo_bpf</a></span></h1><div class='docblock'><p>Cargo subcommand for working with Rust eBPF programs.</p>
+<h1 id="overview" class="section-header"><a href="#overview">Overview</a></h1>
+<p><code>cargo-bpf</code> is part of the <a href="https://github.com/redsift/redbpf"><code>redbpf</code></a>
+project. In addition to <code>cargo-bpf</code>, the <code>redbpf</code> project includes
+<a href="https://docs.rs/redbpf_probes/*/redbpf_probes/"><code>redbpf-probes</code></a> and
+<a href="https://docs.rs/redbpf_macros/*/redbpf_macros/"><code>redbpf-macros</code></a>, which
+provide an idiomatic Rust API to write programs that can be compiled to eBPF
+bytecode and executed by the linux in-kernel eBPF virtual machine.</p>
+<h1 id="installation" class="section-header"><a href="#installation">Installation</a></h1>
+<p>To install <code>cargo bpf</code> simply run:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="ident">cargo</span> <span class="ident">install</span> <span class="ident">cargo</span><span class="op">-</span><span class="ident">bpf</span></pre></div>
+<h1 id="creating-a-new-project" class="section-header"><a href="#creating-a-new-project">Creating a new project</a></h1>
+<p>After installng <code>cargo bpf</code>, you can crate a new project with <code>cargo bpf new</code>:</p>
+<pre><code class="language-ìgnore">$ cargo bpf new hello-bpf
+$ ls -R hello-bpf/
+hello-bpf/:
+Cargo.toml  src
+
+hello-bpf/src:
+lib.rs
+
+$ cat hello-bpf/Cargo.toml
+[package]
+name = &quot;hello-bpf&quot;
+version = &quot;0.1.0&quot;
+edition = '2018'
+
+[dependencies]
+cty = &quot;0.2&quot;
+redbpf-macros = &quot;1.0&quot;
+redbpf-probes = &quot;1.0&quot;
+
+[features]
+default = []
+probes = []
+
+[lib]
+path = &quot;src/lib.rs&quot;
+
+$ cat hello-bpf/src/lib.rs
+#![no_std]
+</code></pre>
+<p>As you can see <code>cargo bpf new</code> created a new crate <code>hello-bpf</code> and
+automatically added <code>redbpf-probes</code> and <code>redbpf-macros</code> as dependencies. It
+also created <code>src/lib.rs</code> and declared the crate as <code>no_std</code>, as eBPF
+programs are run in a restricted virtual machine where <code>std</code> features are not
+available.</p>
+<h1 id="adding-a-new-ebpf-program" class="section-header"><a href="#adding-a-new-ebpf-program">Adding a new eBPF program</a></h1>
+<p>Adding a new program is easy:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+$ <span class="ident">cd</span> <span class="ident">hello</span><span class="op">-</span><span class="ident">bpf</span>
+$ <span class="ident">cargo</span> <span class="ident">bpf</span> <span class="ident">add</span> <span class="ident">block_http</span>
+$ <span class="ident">tail</span> <span class="ident">Cargo</span>.<span class="ident">toml</span>
+...
+[[<span class="ident">bin</span>]]
+<span class="ident">name</span> <span class="op">=</span> <span class="string">&quot;block_http&quot;</span>
+<span class="ident">path</span> <span class="op">=</span> <span class="string">&quot;src/block_http/main.rs&quot;</span>
+<span class="ident">required</span><span class="op">-</span><span class="ident">features</span> <span class="op">=</span> [<span class="string">&quot;probes&quot;</span>]</pre></div>
+<p>As you can see, running <code>cargo bpf add</code> added a new <code>[bin]</code> target to the
+crate. This new target will contain the eBPF program code.</p>
+<h1 id="building" class="section-header"><a href="#building">Building</a></h1>
+<p>Say that you're building an XDP program to block all traffic directed to port 80, and have therefore modified
+<code>src/block_http/main.rs</code> to include the following code:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="attribute">#![<span class="ident">no_std</span>]</span>
+<span class="attribute">#![<span class="ident">no_main</span>]</span>
+<span class="kw">use</span> <span class="ident">redbpf_probes</span>::<span class="ident">bindings</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident">redbpf_probes</span>::<span class="ident">xdp</span>::{<span class="ident">XdpAction</span>, <span class="ident">XdpContext</span>};
+<span class="kw">use</span> <span class="ident">redbpf_macros</span>::{<span class="ident">program</span>, <span class="ident">xdp</span>};
+
+<span class="macro">program</span><span class="macro">!</span>(<span class="number">0xFFFFFFFE</span>, <span class="string">&quot;GPL&quot;</span>);
+
+<span class="attribute">#[<span class="ident">xdp</span>]</span>
+<span class="kw">pub</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">block_port_80</span>(<span class="ident">ctx</span>: <span class="ident">XdpContext</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">XdpAction</span> {
+    <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">transport</span>) <span class="op">=</span> <span class="ident">ctx</span>.<span class="ident">transport</span>() {
+        <span class="kw">if</span> <span class="ident">transport</span>.<span class="ident">dest</span>() <span class="op">=</span><span class="op">=</span> <span class="number">80</span> {
+            <span class="kw">return</span> <span class="ident">XdpAction</span>::<span class="ident">Drop</span>;
+        }
+    }
+
+    <span class="ident">XdpAction</span>::<span class="ident">Pass</span>
+}</pre></div>
+<p>In order to build the program, you can run:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+$ <span class="ident">cargo</span> <span class="ident">bpf</span> <span class="ident">build</span> <span class="ident">block_http</span></pre></div>
+<p><code>cargo bpf build</code> will produce eBPF code compatibile with the format expected
+by <code>redbpf::Module</code> and will place it in
+<code>target/release/bpf-programs/http_block.elf</code>.</p>
+<h1 id="loading-a-program-during-development" class="section-header"><a href="#loading-a-program-during-development">Loading a program during development</a></h1>
+<p><code>cargo bpf</code> includes a simple <code>load</code> subcommand that can be used during
+development to test that your eBPF program is loading and producing the
+expected output.</p>
+<p>Loading eBPF programs requires admin priviledges, so you'll have to run
+<code>load</code> as root or with sudo:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+$ <span class="ident">sudo</span> <span class="ident">cargo</span> <span class="ident">bpf</span> <span class="ident">load</span> <span class="ident">target</span><span class="op">/</span><span class="ident">release</span><span class="op">/</span><span class="ident">bpf</span><span class="op">-</span><span class="ident">programs</span><span class="op">/</span><span class="ident">http_block</span>.<span class="ident">elf</span></pre></div>
+</div></section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../";window.currentCrate = "cargo_bpf";</script><script src="../aliases.js"></script><script src="../main.js"></script><script defer src="../search-index.js"></script></body></html>

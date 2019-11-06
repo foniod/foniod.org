@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["bindings",""],["maps",""],["xdp",""]]});
+initSidebarItems({"mod":[["bindings","Generated, low level bindings to bpf types and constants."],["maps","eBPF maps."],["xdp","XDP (eXpress Data Path)."]]});
