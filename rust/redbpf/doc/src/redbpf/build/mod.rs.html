@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `redbpf/src/build/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css"><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../redbpf/index.html'><div class='logo-container'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form js-only"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `redbpf/src/build/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css"><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../redbpf/index.html'><div class='logo-container'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -215,20 +215,18 @@
 <span id="215">215</span>
 <span id="216">216</span>
 <span id="217">217</span>
-<span id="218">218</span>
-<span id="219">219</span>
-<span id="220">220</span>
-<span id="221">221</span>
-<span id="222">222</span>
-<span id="223">223</span>
 </pre><div class="example-wrap"><pre class="rust ">
+<span class="comment">// Copyright 2019 Authors of Red Sift</span>
+<span class="comment">//</span>
+<span class="comment">// Licensed under the Apache License, Version 2.0, &lt;LICENSE-APACHE or</span>
+<span class="comment">// http://apache.org/licenses/LICENSE-2.0&gt; or the MIT license &lt;LICENSE-MIT or</span>
+<span class="comment">// http://opensource.org/licenses/MIT&gt;, at your option. This file may not be</span>
+<span class="comment">// copied, modified, or distributed except according to those terms.</span>
+
 <span class="doccomment">//! # Building ELF</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! To make buildling ELF files out of eBPF code easier, and as part of the Rust</span>
 <span class="doccomment">//! build process, this module provides a number of helpers.</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! Currently, the `headers` module only know how to find kernel sources on Arch</span>
-<span class="doccomment">//! Linux, or through the `KERNEL_SOURCE` environment variable.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! On top of building ELF files, you can also generate Rust bindings for data</span>
 <span class="doccomment">//! structures defined in C. Only structures that are defined as `struct</span>
@@ -244,32 +242,22 @@
 <span class="doccomment">//! A full working example of the build process might look like this:</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! ```rust</span>
-<span class="doccomment">//! use redbpf::build::{build, generate_bindings, cache::BuildCache, headers::headers};</span>
+<span class="doccomment">//! use redbpf::build::{build, generate_bindings, cache::BuildCache, headers::kernel_headers};</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! fn main() -&gt; Result&lt;(), Error&gt; {</span>
 <span class="doccomment">//!     let out_dir = PathBuf::from(env::var(&quot;OUT_DIR&quot;)?);</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//!     let headers = headers().unwrap();</span>
-<span class="doccomment">//!     let flags = {</span>
-<span class="doccomment">//!         let mut cflags: Vec&lt;OsString&gt; = redbpf::build::BUILD_FLAGS</span>
-<span class="doccomment">//!             .iter()</span>
-<span class="doccomment">//!             .map(OsString::from)</span>
-<span class="doccomment">//!             .collect();</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//!         cflags.append(&amp;mut headers.clone());</span>
-<span class="doccomment">//!         cflags</span>
-<span class="doccomment">//!     };</span>
-<span class="doccomment">//!     let bindgen_flags: Vec&lt;String&gt; = flags</span>
+<span class="doccomment">//!     let kernel_headers = kernel_headers().expect(&quot;couldn&#39;t find kernel headers&quot;);</span>
+<span class="doccomment">//!     let mut bindgen_flags: Vec&lt;String&gt; = kernel_headers</span>
 <span class="doccomment">//!         .iter()</span>
-<span class="doccomment">//!         .cloned()</span>
-<span class="doccomment">//!         .map(|f| f.into_string().unwrap())</span>
+<span class="doccomment">//!         .map(|dir| format!(&quot;-I{}&quot;, dir))</span>
 <span class="doccomment">//!         .collect();</span>
+<span class="doccomment">//!     bindgen_flags.extend(redbpf::build::BUILD_FLAGS.iter().map(|f| f.to_string()));</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//!     let mut cache = BuildCache::new(&amp;out_dir);</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//!     for file in source_files(&quot;./bpf&quot;, &quot;c&quot;)? {</span>
 <span class="doccomment">//!         if cache.file_changed(&amp;file) {</span>
-<span class="doccomment">//!             build(&amp;flags[..], &amp;out_dir, &amp;file).expect(&quot;Failed building BPF plugin!&quot;);</span>
+<span class="doccomment">//!             build(&amp;bindgen_flags[..], &amp;out_dir, &amp;file).expect(&quot;Failed building BPF plugin!&quot;);</span>
 <span class="doccomment">//!         }</span>
 <span class="doccomment">//!     }</span>
 <span class="doccomment">//!     for file in source_files(&quot;./bpf&quot;, &quot;h&quot;)? {</span>

@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["bindings","Generated, low level bindings to bpf types and constants."],["maps","eBPF maps."],["xdp","XDP (eXpress Data Path)."]]});
+initSidebarItems({"macro":[["bpf_probe_read",""]],"mod":[["bindings","Generated, low level bindings to bpf types and constants."],["helpers",""],["kprobe","KProbes"],["maps","eBPF maps."],["xdp","XDP (eXpress Data Path)."]]});
