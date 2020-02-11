@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["bindgen",""],["build",""],["cmd_build",""],["load",""],["new",""],["new_program",""]],"struct":[["CommandError",""]]});
+initSidebarItems({"fn":[["build",""],["cmd_build",""],["load",""],["new",""],["new_program",""]],"mod":[["bindgen",""]],"struct":[["CommandError",""]]});

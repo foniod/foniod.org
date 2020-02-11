@@ -245,6 +245,42 @@
 <span id="245">245</span>
 <span id="246">246</span>
 <span id="247">247</span>
+<span id="248">248</span>
+<span id="249">249</span>
+<span id="250">250</span>
+<span id="251">251</span>
+<span id="252">252</span>
+<span id="253">253</span>
+<span id="254">254</span>
+<span id="255">255</span>
+<span id="256">256</span>
+<span id="257">257</span>
+<span id="258">258</span>
+<span id="259">259</span>
+<span id="260">260</span>
+<span id="261">261</span>
+<span id="262">262</span>
+<span id="263">263</span>
+<span id="264">264</span>
+<span id="265">265</span>
+<span id="266">266</span>
+<span id="267">267</span>
+<span id="268">268</span>
+<span id="269">269</span>
+<span id="270">270</span>
+<span id="271">271</span>
+<span id="272">272</span>
+<span id="273">273</span>
+<span id="274">274</span>
+<span id="275">275</span>
+<span id="276">276</span>
+<span id="277">277</span>
+<span id="278">278</span>
+<span id="279">279</span>
+<span id="280">280</span>
+<span id="281">281</span>
+<span id="282">282</span>
+<span id="283">283</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright 2019 Authors of Red Sift</span>
 <span class="comment">//</span>
@@ -303,7 +339,7 @@ pub extern &quot;C&quot; fn example_kprobe(ctx: *mut pt_regs) {
 <span class="kw">use</span> <span class="ident">syn</span>::<span class="ident">punctuated</span>::<span class="ident">Punctuated</span>;
 <span class="kw">use</span> <span class="ident">syn</span>::<span class="ident">token</span>::<span class="ident">Comma</span>;
 <span class="kw">use</span> <span class="ident">syn</span>::{
-    <span class="ident">parse_macro_input</span>, <span class="ident">parse_quote</span>, <span class="ident">parse_str</span>, <span class="ident">Block</span>, <span class="ident">Expr</span>, <span class="ident">ExprLit</span>, <span class="ident">File</span>, <span class="ident">FnArg</span>, <span class="ident">ItemFn</span>, <span class="ident">Lit</span>, <span class="ident">Pat</span>,
+    <span class="ident">parse_macro_input</span>, <span class="ident">parse_quote</span>, <span class="ident">parse_str</span>, <span class="ident">Expr</span>, <span class="ident">ExprLit</span>, <span class="ident">File</span>, <span class="ident">FnArg</span>, <span class="ident">ItemFn</span>, <span class="ident">Lit</span>, <span class="ident">Pat</span>,
     <span class="ident">PatIdent</span>, <span class="ident">PatType</span>, <span class="prelude-ty">Result</span>, <span class="ident">Stmt</span>,
 };
 
@@ -358,6 +394,18 @@ pub extern &quot;C&quot; fn example_kprobe(ctx: *mut pt_regs) {
         <span class="attribute">#[<span class="ident">no_mangle</span>]</span>
         <span class="attribute">#[<span class="ident">link_section</span> <span class="op">=</span> <span class="string">&quot;version&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">static</span> <span class="ident">_version</span>: <span class="ident">u32</span> <span class="op">=</span> #<span class="ident">version</span>;
+
+        <span class="attribute">#[<span class="ident">panic_handler</span>]</span>
+        <span class="attribute">#[<span class="ident">no_mangle</span>]</span>
+        <span class="kw">pub</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">rust_begin_panic</span>(<span class="ident">info</span>: <span class="kw-2">&amp;</span>::<span class="ident">core</span>::<span class="ident">panic</span>::<span class="ident">PanicInfo</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
+            <span class="kw">use</span> ::<span class="ident">redbpf_probes</span>::<span class="ident">helpers</span>::{<span class="ident">bpf_trace_printk</span>, <span class="ident">TraceMessage</span>, <span class="ident">ufmt</span>};
+
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">msg</span> <span class="op">=</span> <span class="ident">TraceMessage</span>::<span class="ident">new</span>();
+            <span class="ident">ufmt</span>::<span class="macro">uwrite</span><span class="macro">!</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">msg</span>, <span class="string">&quot;panic in {}\n\0&quot;</span>, <span class="macro">file</span><span class="macro">!</span>());
+            <span class="ident">msg</span>.<span class="ident">printk</span>();
+
+            <span class="kw">unsafe</span> { <span class="ident">core</span>::<span class="ident">hint</span>::<span class="ident">unreachable_unchecked</span>() }
+        }
     };
 
     <span class="kw">let</span> <span class="ident">mem</span> <span class="op">=</span> <span class="ident">str</span>::<span class="ident">from_utf8</span>(<span class="macro">include_bytes</span><span class="macro">!</span>(<span class="string">&quot;mem.rs&quot;</span>)).<span class="ident">unwrap</span>();
@@ -366,13 +414,17 @@ pub extern &quot;C&quot; fn example_kprobe(ctx: *mut pt_regs) {
         #<span class="ident">mem</span>
     });
 
-    <span class="ident">tokens</span>.<span class="ident">extend</span>(<span class="macro">quote</span><span class="macro">!</span> {
-        <span class="attribute">#[<span class="ident">panic_handler</span>]</span>
-        <span class="attribute">#[<span class="ident">no_mangle</span>]</span>
-        <span class="kw">pub</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">rust_begin_panic</span>(<span class="kw">_</span>: <span class="kw-2">&amp;</span>::<span class="ident">core</span>::<span class="ident">panic</span>::<span class="ident">PanicInfo</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
-            <span class="kw">loop</span> {}
-        }
-    });
+    <span class="ident">tokens</span>.<span class="ident">into</span>()
+}
+
+<span class="attribute">#[<span class="ident">proc_macro</span>]</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">impl_network_buffer_array</span>(<span class="kw">_</span>: <span class="ident">TokenStream</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenStream</span> {
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">tokens</span> <span class="op">=</span> <span class="ident">TokenStream2</span>::<span class="ident">new</span>();
+    <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">1</span>..<span class="op">=</span><span class="number">512usize</span> {
+        <span class="ident">tokens</span>.<span class="ident">extend</span>(<span class="macro">quote</span><span class="macro">!</span> {
+            <span class="kw">impl</span> <span class="ident">NetworkBufferArray</span> <span class="kw">for</span> [<span class="ident">u8</span>; #<span class="ident">i</span>] {}
+        });
+    }
 
     <span class="ident">tokens</span>.<span class="ident">into</span>()
 }
@@ -492,6 +544,26 @@ pub extern &quot;C&quot; fn example_kprobe(ctx: *mut pt_regs) {
     <span class="kw">let</span> <span class="ident">ctx</span>: <span class="ident">Stmt</span> <span class="op">=</span> <span class="macro">parse_quote</span><span class="macro">!</span> { <span class="kw">let</span> #<span class="ident">ident</span> <span class="op">=</span> <span class="ident">XdpContext</span> { <span class="ident">ctx</span>: #<span class="ident">raw_ctx</span> }; };
     <span class="ident">item</span>.<span class="ident">block</span>.<span class="ident">stmts</span>.<span class="ident">insert</span>(<span class="number">0</span>, <span class="ident">ctx</span>);
     <span class="ident">probe_impl</span>(<span class="string">&quot;xdp&quot;</span>, <span class="ident">attrs</span>, <span class="ident">item</span>).<span class="ident">into</span>()
+}
+
+<span class="attribute">#[<span class="ident">proc_macro_attribute</span>]</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">socket_filter</span>(<span class="ident">attrs</span>: <span class="ident">TokenStream</span>, <span class="ident">item</span>: <span class="ident">TokenStream</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenStream</span> {
+    <span class="kw">let</span> <span class="ident">item</span> <span class="op">=</span> <span class="macro">parse_macro_input</span><span class="macro">!</span>(<span class="ident">item</span> <span class="kw">as</span> <span class="ident">ItemFn</span>);
+    <span class="kw">let</span> <span class="ident">ident</span> <span class="op">=</span> <span class="ident">item</span>.<span class="ident">sig</span>.<span class="ident">ident</span>.<span class="ident">clone</span>();
+    <span class="kw">let</span> <span class="ident">outer_ident</span> <span class="op">=</span> <span class="ident">Ident</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;outer_{}&quot;</span>, <span class="ident">ident</span>), <span class="ident">Span</span>::<span class="ident">call_site</span>());
+    <span class="kw">let</span> <span class="ident">wrapper</span> <span class="op">=</span> <span class="macro">parse_quote</span><span class="macro">!</span> {
+        <span class="kw">fn</span> #<span class="ident">outer_ident</span>(<span class="ident">skb</span>: <span class="kw-2">*</span><span class="kw">const</span> ::<span class="ident">redbpf_probes</span>::<span class="ident">bindings</span>::<span class="ident">__sk_buff</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> {
+            <span class="kw">let</span> <span class="ident">skb</span> <span class="op">=</span> ::<span class="ident">redbpf_probes</span>::<span class="ident">socket_filter</span>::<span class="ident">SkBuff</span> { <span class="ident">skb</span> };
+            <span class="kw">return</span> <span class="kw">match</span> #<span class="ident">ident</span>(<span class="ident">skb</span>) {
+                <span class="prelude-val">Ok</span>(::<span class="ident">redbpf_probes</span>::<span class="ident">socket_filter</span>::<span class="ident">SkBuffAction</span>::<span class="ident">SendToUserspace</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="op">-</span><span class="number">1</span>,
+                <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">0</span>
+            };
+
+            #<span class="ident">item</span>
+        }
+    };
+
+    <span class="ident">probe_impl</span>(<span class="string">&quot;socketfilter&quot;</span>, <span class="ident">attrs</span>, <span class="ident">wrapper</span>).<span class="ident">into</span>()
 }
 </pre></div>
 </section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../";window.currentCrate = "redbpf_macros";</script><script src="../../aliases.js"></script><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>

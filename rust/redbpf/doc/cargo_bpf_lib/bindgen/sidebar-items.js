@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["builder",""],["cmd_bindgen",""],["generate",""],["generate_read_accessors",""]],"struct":[["Builder","Configure and generate Rust bindings for a C/C++ header."]]});

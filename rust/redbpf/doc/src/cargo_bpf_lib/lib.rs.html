@@ -24,6 +24,7 @@
 <span id="24">24</span>
 <span id="25">25</span>
 <span id="26">26</span>
+<span id="27">27</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright 2019 Authors of Red Sift</span>
 <span class="comment">//</span>
@@ -32,8 +33,10 @@
 <span class="comment">// http://opensource.org/licenses/MIT&gt;, at your option. This file may not be</span>
 <span class="comment">// copied, modified, or distributed except according to those terms.</span>
 
-<span class="kw">mod</span> <span class="ident">bindgen</span>;
+<span class="kw">mod</span> <span class="ident">accessors</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">bindgen</span>;
 <span class="kw">mod</span> <span class="ident">build</span>;
+<span class="kw">mod</span> <span class="ident">llvm</span>;
 <span class="kw">mod</span> <span class="ident">load</span>;
 <span class="kw">mod</span> <span class="ident">new</span>;
 <span class="kw">mod</span> <span class="ident">new_program</span>;
@@ -46,7 +49,6 @@
     }
 }
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">bindgen</span>::<span class="ident">cmd_bindgen</span> <span class="kw">as</span> <span class="ident">bindgen</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">build</span>::{<span class="ident">build</span>, <span class="ident">cmd_build</span>};
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">load</span>::<span class="ident">load</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">new</span>::<span class="ident">new</span>;

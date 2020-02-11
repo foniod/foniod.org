@@ -168,7 +168,7 @@
 
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">cpus</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ProgramKind</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">LoadError</span>, <span class="ident">Module</span>, <span class="ident">PerfMap</span>, <span class="ident">XdpFlags</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">LoadError</span>, <span class="ident">Module</span>, <span class="ident">PerfMap</span>, <span class="ident">xdp</span>};
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">load</span>::<span class="ident">map_io</span>::<span class="ident">PerfMessageStream</span>;
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
@@ -194,7 +194,7 @@
     }
 
     <span class="doccomment">/// Sets the network interface and flags for XDP programs.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">xdp</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">interface</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>, <span class="ident">flags</span>: <span class="ident">XdpFlags</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">xdp</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">interface</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>, <span class="ident">flags</span>: <span class="ident">xdp</span>::<span class="ident">Flags</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">xdp</span> <span class="op">=</span> <span class="ident">XdpConfig</span> {
             <span class="ident">interface</span>,
             <span class="ident">flags</span>
@@ -292,14 +292,14 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">XdpConfig</span> {
     <span class="ident">interface</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
-    <span class="ident">flags</span>: <span class="ident">XdpFlags</span>
+    <span class="ident">flags</span>: <span class="ident">xdp</span>::<span class="ident">Flags</span>
 }
 
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">XdpConfig</span> {
     <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">XdpConfig</span> {
         <span class="ident">XdpConfig</span> {
             <span class="ident">interface</span>: <span class="prelude-val">None</span>,
-            <span class="ident">flags</span>: <span class="ident">XdpFlags</span>::<span class="ident">default</span>()
+            <span class="ident">flags</span>: <span class="ident">xdp</span>::<span class="ident">Flags</span>::<span class="ident">default</span>()
         }
     }
 }</pre></div>

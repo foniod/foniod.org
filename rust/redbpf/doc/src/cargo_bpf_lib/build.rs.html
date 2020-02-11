@@ -180,6 +180,52 @@
 <span id="180">180</span>
 <span id="181">181</span>
 <span id="182">182</span>
+<span id="183">183</span>
+<span id="184">184</span>
+<span id="185">185</span>
+<span id="186">186</span>
+<span id="187">187</span>
+<span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
+<span id="199">199</span>
+<span id="200">200</span>
+<span id="201">201</span>
+<span id="202">202</span>
+<span id="203">203</span>
+<span id="204">204</span>
+<span id="205">205</span>
+<span id="206">206</span>
+<span id="207">207</span>
+<span id="208">208</span>
+<span id="209">209</span>
+<span id="210">210</span>
+<span id="211">211</span>
+<span id="212">212</span>
+<span id="213">213</span>
+<span id="214">214</span>
+<span id="215">215</span>
+<span id="216">216</span>
+<span id="217">217</span>
+<span id="218">218</span>
+<span id="219">219</span>
+<span id="220">220</span>
+<span id="221">221</span>
+<span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
+<span id="225">225</span>
+<span id="226">226</span>
+<span id="227">227</span>
+<span id="228">228</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright 2019 Authors of Red Sift</span>
 <span class="comment">//</span>
@@ -188,6 +234,7 @@
 <span class="comment">// http://opensource.org/licenses/MIT&gt;, at your option. This file may not be</span>
 <span class="comment">// copied, modified, or distributed except according to those terms.</span>
 
+<span class="kw">use</span> <span class="ident">libc</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">convert</span>::<span class="ident">From</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">env</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">fmt</span>::{<span class="self">self</span>, <span class="ident">Display</span>};
@@ -195,8 +242,11 @@
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">io</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::{<span class="ident">Path</span>, <span class="ident">PathBuf</span>};
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">process</span>::<span class="ident">Command</span>;
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">slice</span>;
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">str</span>;
 <span class="kw">use</span> <span class="ident">toml_edit</span>;
 
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">llvm</span>::<span class="ident">process_ir</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">CommandError</span>;
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
@@ -204,7 +254,8 @@
     <span class="ident">MissingManifest</span>(<span class="ident">PathBuf</span>),
     <span class="ident">NoPrograms</span>,
     <span class="ident">NoLLC</span>,
-    <span class="ident">Compile</span>(<span class="ident">String</span>),
+    <span class="ident">NoOPT</span>,
+    <span class="ident">Compile</span>(<span class="ident">String</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>),
     <span class="ident">MissingBitcode</span>(<span class="ident">String</span>),
     <span class="ident">Link</span>(<span class="ident">String</span>),
     <span class="ident">IOError</span>(<span class="ident">io</span>::<span class="ident">Error</span>),
@@ -231,9 +282,11 @@
         <span class="kw">match</span> <span class="self">self</span> {
             <span class="ident">MissingManifest</span>(<span class="ident">p</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;Could not find `Cargo.toml&#39; in {:?}&quot;</span>, <span class="ident">p</span>),
             <span class="ident">NoPrograms</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;the package doesn&#39;t contain any eBPF programs&quot;</span>),
-            <span class="ident">Compile</span>(<span class="ident">p</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;failed to compile the `{}&#39; program&quot;</span>, <span class="ident">p</span>),
+            <span class="ident">Compile</span>(<span class="ident">p</span>, <span class="prelude-val">Some</span>(<span class="ident">msg</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;failed to compile the `{}&#39; program: {}&quot;</span>, <span class="ident">p</span>, <span class="ident">msg</span>),
+            <span class="ident">Compile</span>(<span class="ident">p</span>, <span class="prelude-val">None</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;failed to compile the `{}&#39; program&quot;</span>, <span class="ident">p</span>),
             <span class="ident">MissingBitcode</span>(<span class="ident">p</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;failed to generate bitcode for the `{}&#39; program&quot;</span>, <span class="ident">p</span>),
             <span class="ident">Link</span>(<span class="ident">p</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;failed to generate bitcode for the `{}&#39; program&quot;</span>, <span class="ident">p</span>),
+            <span class="ident">NoOPT</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;no usable opt executable found, expecting version 9&quot;</span>),
             <span class="ident">NoLLC</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;no usable llc executable found, expecting version 9&quot;</span>),
             <span class="ident">IOError</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;{}&quot;</span>, <span class="ident">e</span>),
         }
@@ -266,15 +319,18 @@
         .<span class="ident">arg</span>(<span class="string">&quot;--bin&quot;</span>)
         .<span class="ident">arg</span>(<span class="ident">program</span>)
         .<span class="ident">arg</span>(<span class="string">&quot;--&quot;</span>)
-        .<span class="ident">args</span>(<span class="string">&quot;--emit=llvm-bc -C panic=abort -C link-arg=-nostartfiles -C opt-level=3&quot;</span>.<span class="ident">split</span>(<span class="string">&quot; &quot;</span>))
+        .<span class="ident">args</span>(
+            <span class="string">&quot;--emit=llvm-bc -C panic=abort -C lto -C link-arg=-nostartfiles -C opt-level=3&quot;</span>
+                .<span class="ident">split</span>(<span class="string">&quot; &quot;</span>),
+        )
         .<span class="ident">args</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;-o {}/{}&quot;</span>, <span class="ident">out_dir</span>.<span class="ident">to_str</span>().<span class="ident">unwrap</span>(), <span class="ident">program</span>).<span class="ident">split</span>(<span class="string">&quot; &quot;</span>))
         .<span class="ident">status</span>()<span class="question-mark">?</span>
         .<span class="ident">success</span>()
     {
-        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">Compile</span>(<span class="ident">program</span>.<span class="ident">to_string</span>()));
+        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">Compile</span>(<span class="ident">program</span>.<span class="ident">to_string</span>(), <span class="prelude-val">None</span>));
     }
 
-    <span class="kw">let</span> <span class="ident">bc_files</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">fs</span>::<span class="ident">read_dir</span>(<span class="ident">out_dir</span>)<span class="question-mark">?</span>
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">bc_files</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">fs</span>::<span class="ident">read_dir</span>(<span class="ident">out_dir</span>)<span class="question-mark">?</span>
         .<span class="ident">filter</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
             <span class="ident">e</span>.<span class="ident">as_ref</span>()
                 .<span class="ident">unwrap</span>()
@@ -289,12 +345,31 @@
         <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">MissingBitcode</span>(<span class="ident">program</span>.<span class="ident">to_string</span>()));
     }
 
-    <span class="kw">let</span> <span class="ident">bc_file</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">bc_files</span>[<span class="number">0</span>];
+    <span class="kw">let</span> <span class="ident">bc_file</span> <span class="op">=</span> <span class="ident">bc_files</span>.<span class="ident">drain</span>(..).<span class="ident">next</span>().<span class="ident">unwrap</span>();
+    <span class="kw">let</span> <span class="ident">processed_bc_file</span> <span class="op">=</span> <span class="ident">bc_file</span>.<span class="ident">with_extension</span>(<span class="string">&quot;bc.proc&quot;</span>);
+    <span class="kw">let</span> <span class="ident">opt_bc_file</span> <span class="op">=</span> <span class="ident">bc_file</span>.<span class="ident">with_extension</span>(<span class="string">&quot;bc.opt&quot;</span>);
+
+    <span class="ident">process_ir</span>(<span class="kw-2">&amp;</span><span class="ident">bc_file</span>, <span class="kw-2">&amp;</span><span class="ident">processed_bc_file</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">msg</span><span class="op">|</span> {
+        <span class="ident">Error</span>::<span class="ident">Compile</span>(<span class="ident">program</span>.<span class="ident">into</span>(), <span class="prelude-val">Some</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;couldn&#39;t process IR file: {}&quot;</span>, <span class="ident">msg</span>)))
+    })<span class="question-mark">?</span>;
+    <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;IR processed before: {:?}, after: {:?}&quot;</span>, <span class="ident">bc_file</span>, <span class="ident">processed_bc_file</span>);
+
+    <span class="kw">let</span> <span class="ident">opt</span> <span class="op">=</span> <span class="ident">get_opt_executable</span>()<span class="question-mark">?</span>;
+    <span class="kw">if</span> <span class="op">!</span><span class="ident">Command</span>::<span class="ident">new</span>(<span class="ident">opt</span>)
+        .<span class="ident">args</span>(<span class="kw-2">&amp;</span>[<span class="string">&quot;-march=bpf&quot;</span>, <span class="string">&quot;-O3&quot;</span>, <span class="string">&quot;-o&quot;</span>, <span class="ident">opt_bc_file</span>.<span class="ident">to_str</span>().<span class="ident">unwrap</span>()])
+        .<span class="ident">arg</span>(<span class="ident">processed_bc_file</span>.<span class="ident">to_str</span>().<span class="ident">unwrap</span>())
+        .<span class="ident">status</span>()<span class="question-mark">?</span>
+        .<span class="ident">success</span>()
+    {
+        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">Link</span>(<span class="ident">program</span>.<span class="ident">to_string</span>()));
+    }
+    <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;IR optimised: {:?}&quot;</span>, <span class="ident">opt_bc_file</span>);
+
     <span class="kw">let</span> <span class="ident">llc</span> <span class="op">=</span> <span class="ident">get_llc_executable</span>()<span class="question-mark">?</span>;
     <span class="kw">if</span> <span class="op">!</span><span class="ident">Command</span>::<span class="ident">new</span>(<span class="ident">llc</span>)
         .<span class="ident">args</span>(<span class="kw-2">&amp;</span><span class="ident">llc_args</span>)
         .<span class="ident">arg</span>(<span class="kw-2">&amp;</span><span class="ident">elf_target</span>)
-        .<span class="ident">arg</span>(<span class="ident">bc_file</span>.<span class="ident">to_str</span>().<span class="ident">unwrap</span>())
+        .<span class="ident">arg</span>(<span class="ident">opt_bc_file</span>.<span class="ident">to_str</span>().<span class="ident">unwrap</span>())
         .<span class="ident">status</span>()<span class="question-mark">?</span>
         .<span class="ident">success</span>()
     {
@@ -302,6 +377,23 @@
     }
 
     <span class="prelude-val">Ok</span>(())
+}
+
+<span class="kw">fn</span> <span class="ident">get_opt_executable</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+    <span class="kw">for</span> <span class="ident">llc</span> <span class="kw">in</span> <span class="macro">vec</span><span class="macro">!</span>[<span class="string">&quot;opt&quot;</span>.<span class="ident">into</span>(), <span class="ident">env</span>::<span class="ident">var</span>(<span class="string">&quot;OPT&quot;</span>).<span class="ident">unwrap_or</span>(<span class="string">&quot;opt-9&quot;</span>.<span class="ident">into</span>())].<span class="ident">drain</span>(..) {
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">out</span>) <span class="op">=</span> <span class="ident">Command</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">llc</span>).<span class="ident">arg</span>(<span class="string">&quot;--version&quot;</span>).<span class="ident">output</span>() {
+            <span class="kw">match</span> <span class="ident">String</span>::<span class="ident">from_utf8</span>(<span class="ident">out</span>.<span class="ident">stdout</span>) {
+                <span class="prelude-val">Ok</span>(<span class="ident">out</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                    <span class="kw">if</span> <span class="ident">out</span>.<span class="ident">contains</span>(<span class="string">&quot;LLVM version 9.&quot;</span>) {
+                        <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">llc</span>);
+                    }
+                }
+                <span class="prelude-val">Err</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">continue</span>,
+            }
+        }
+    }
+
+    <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">NoOPT</span>);
 }
 
 <span class="kw">fn</span> <span class="ident">get_llc_executable</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
