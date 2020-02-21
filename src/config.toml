@@ -1,0 +1,9 @@
+baseURL = "http://ingrain.redsift.io/"
+languageCode = "en-us"
+title = "InGRAINd"
+enableGitInfo = true
+theme = "book"
+publishDir = "../"
+
+[params]
+BookMenuBundle = "/menu"
