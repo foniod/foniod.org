@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["bpf_get_current_comm",""],["bpf_get_current_pid_tgid",""],["bpf_get_current_uid_gid",""],["bpf_ktime_get_ns",""],["bpf_probe_read",""],["bpf_trace_printk",""]],"mod":[["gen",""]],"struct":[["TraceMessage",""]]});
+initSidebarItems({"fn":[["bpf_get_current_comm",""],["bpf_get_current_pid_tgid",""],["bpf_get_current_uid_gid",""],["bpf_ktime_get_ns",""],["bpf_perf_event_output",""],["bpf_probe_read",""],["bpf_trace_printk",""]],"mod":[["gen",""]],"struct":[["TraceMessage",""]]});

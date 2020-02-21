@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["XdpAction","The return type of XDP probes}"]],"struct":[["MapData","Convenience data type to exchange payload data."],["PerfMap","Perf events map."],["XdpContext","Context object provided to XDP programs."]]});
+initSidebarItems({"enum":[["XdpAction","The return type of XDP probes}"]],"struct":[["MapData","Convenience data type to exchange payload data."],["PerfMap","Perf events map."],["XdpContext","Context object provided to XDP programs."]],"type":[["Result",""]]});

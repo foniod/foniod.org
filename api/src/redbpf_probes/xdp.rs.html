@@ -161,6 +161,8 @@
 <span id="161">161</span>
 <span id="162">162</span>
 <span id="163">163</span>
+<span id="164">164</span>
+<span id="165">165</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright 2019 Authors of Red Sift</span>
 <span class="comment">//</span>
@@ -203,7 +205,9 @@ pub extern &quot;C&quot; fn block_port_80(ctx: XdpContext) -&gt; XdpAction {
  */</span>
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">bindings</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">maps</span>::{<span class="ident">PerfMap</span> <span class="kw">as</span> <span class="ident">PerfMapBase</span>, <span class="ident">PerfMapFlags</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">net</span>::<span class="ident">NetworkBuffer</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">net</span>::{<span class="ident">NetworkBuffer</span>, <span class="ident">NetworkResult</span>};
+
+<span class="kw">pub</span> <span class="kw">type</span> <span class="prelude-ty">Result</span> <span class="op">=</span> <span class="ident">NetworkResult</span><span class="op">&lt;</span><span class="ident">XdpAction</span><span class="op">&gt;</span>;
 
 <span class="doccomment">/// The return type of XDP probes}</span>
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">u32</span>)]</span>

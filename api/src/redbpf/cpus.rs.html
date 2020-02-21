@@ -97,7 +97,7 @@
 
         <span class="kw">let</span> <span class="ident">start</span> <span class="op">=</span> <span class="ident">CpuId</span>::<span class="ident">from_str</span>(<span class="ident">start</span>.<span class="ident">unwrap</span>()).<span class="ident">unwrap</span>();
         <span class="kw">let</span> <span class="ident">end</span> <span class="op">=</span> <span class="ident">CpuId</span>::<span class="ident">from_str</span>(<span class="ident">end</span>.<span class="ident">unwrap</span>()).<span class="ident">unwrap</span>();
-        (<span class="ident">start</span>..<span class="op">=</span><span class="ident">end</span>)
+        <span class="ident">start</span>..<span class="op">=</span><span class="ident">end</span>
     });
     <span class="ident">cpu_list</span>.<span class="ident">collect</span>()
 }

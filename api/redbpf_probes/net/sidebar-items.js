@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["Transport","The packet transport header."]],"struct":[["Data","Data type returned by calling `NetworkBuffer::data()`"]],"trait":[["NetworkBuffer",""],["NetworkBufferArray",""]]});
+initSidebarItems({"enum":[["NetworkError",""],["Transport","The packet transport header."]],"struct":[["Data","Data type returned by calling `NetworkBuffer::data()`"]],"trait":[["NetworkBuffer",""],["NetworkBufferArray",""]],"type":[["NetworkResult",""]]});

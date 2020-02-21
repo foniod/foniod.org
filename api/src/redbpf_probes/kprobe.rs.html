@@ -201,6 +201,7 @@
 <span id="201">201</span>
 <span id="202">202</span>
 <span id="203">203</span>
+<span id="204">204</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright 2019 Authors of Red Sift</span>
 <span class="comment">//</span>
@@ -244,6 +245,7 @@ pub extern &quot;C&quot; fn enter_execve(ctx: *mut c_void) -&gt; i32 {
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">bindings</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">cty</span>::<span class="kw-2">*</span>;
 
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Registers</span> {
     <span class="kw">pub</span> <span class="ident">ctx</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">pt_regs</span>,
 }

@@ -281,6 +281,17 @@
 <span id="281">281</span>
 <span id="282">282</span>
 <span id="283">283</span>
+<span id="284">284</span>
+<span id="285">285</span>
+<span id="286">286</span>
+<span id="287">287</span>
+<span id="288">288</span>
+<span id="289">289</span>
+<span id="290">290</span>
+<span id="291">291</span>
+<span id="292">292</span>
+<span id="293">293</span>
+<span id="294">294</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright 2019 Authors of Red Sift</span>
 <span class="comment">//</span>
@@ -338,10 +349,7 @@ pub extern &quot;C&quot; fn example_kprobe(ctx: *mut pt_regs) {
 <span class="kw">use</span> <span class="ident">syn</span>::<span class="ident">parse</span>::{<span class="ident">Parse</span>, <span class="ident">ParseStream</span>};
 <span class="kw">use</span> <span class="ident">syn</span>::<span class="ident">punctuated</span>::<span class="ident">Punctuated</span>;
 <span class="kw">use</span> <span class="ident">syn</span>::<span class="ident">token</span>::<span class="ident">Comma</span>;
-<span class="kw">use</span> <span class="ident">syn</span>::{
-    <span class="ident">parse_macro_input</span>, <span class="ident">parse_quote</span>, <span class="ident">parse_str</span>, <span class="ident">Expr</span>, <span class="ident">ExprLit</span>, <span class="ident">File</span>, <span class="ident">FnArg</span>, <span class="ident">ItemFn</span>, <span class="ident">Lit</span>, <span class="ident">Pat</span>,
-    <span class="ident">PatIdent</span>, <span class="ident">PatType</span>, <span class="prelude-ty">Result</span>, <span class="ident">Stmt</span>,
-};
+<span class="kw">use</span> <span class="ident">syn</span>::{<span class="ident">parse_macro_input</span>, <span class="ident">parse_quote</span>, <span class="ident">parse_str</span>, <span class="ident">Expr</span>, <span class="ident">ExprLit</span>, <span class="ident">File</span>, <span class="ident">ItemFn</span>, <span class="ident">Lit</span>, <span class="prelude-ty">Result</span>};
 
 <span class="kw">fn</span> <span class="ident">inline_string_literal</span>(<span class="ident">e</span>: <span class="kw-2">&amp;</span><span class="ident">Expr</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">TokenStream2</span>, <span class="ident">TokenStream2</span>) {
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">bytes</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">e</span> {
@@ -401,7 +409,7 @@ pub extern &quot;C&quot; fn example_kprobe(ctx: *mut pt_regs) {
             <span class="kw">use</span> ::<span class="ident">redbpf_probes</span>::<span class="ident">helpers</span>::{<span class="ident">bpf_trace_printk</span>, <span class="ident">TraceMessage</span>, <span class="ident">ufmt</span>};
 
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">msg</span> <span class="op">=</span> <span class="ident">TraceMessage</span>::<span class="ident">new</span>();
-            <span class="ident">ufmt</span>::<span class="macro">uwrite</span><span class="macro">!</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">msg</span>, <span class="string">&quot;panic in {}\n\0&quot;</span>, <span class="macro">file</span><span class="macro">!</span>());
+            <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">ufmt</span>::<span class="macro">uwrite</span><span class="macro">!</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">msg</span>, <span class="string">&quot;panic in {}\n\0&quot;</span>, <span class="macro">file</span><span class="macro">!</span>());
             <span class="ident">msg</span>.<span class="ident">printk</span>();
 
             <span class="kw">unsafe</span> { <span class="ident">core</span>::<span class="ident">hint</span>::<span class="ident">unreachable_unchecked</span>() }
@@ -480,6 +488,20 @@ pub extern &quot;C&quot; fn example_kprobe(ctx: *mut pt_regs) {
     <span class="ident">tokens</span>.<span class="ident">into</span>()
 }
 
+<span class="kw">fn</span> <span class="ident">wrap_kprobe</span>(<span class="ident">item</span>: <span class="ident">ItemFn</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ItemFn</span> {
+    <span class="kw">let</span> <span class="ident">ident</span> <span class="op">=</span> <span class="ident">item</span>.<span class="ident">sig</span>.<span class="ident">ident</span>.<span class="ident">clone</span>();
+    <span class="kw">let</span> <span class="ident">outer_ident</span> <span class="op">=</span> <span class="ident">Ident</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;outer_{}&quot;</span>, <span class="ident">ident</span>), <span class="ident">Span</span>::<span class="ident">call_site</span>());
+    <span class="macro">parse_quote</span><span class="macro">!</span> {
+        <span class="kw">fn</span> #<span class="ident">outer_ident</span>(<span class="ident">ctx</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> {
+            <span class="kw">let</span> <span class="ident">regs</span> <span class="op">=</span> ::<span class="ident">redbpf_probes</span>::<span class="ident">kprobe</span>::<span class="ident">Registers</span>::<span class="ident">from</span>(<span class="ident">ctx</span>);
+            <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> #<span class="ident">ident</span>(<span class="ident">regs</span>);
+            <span class="kw">return</span> <span class="number">0</span>;
+
+            #<span class="ident">item</span>
+        }
+    }
+}
+
 <span class="doccomment">/// Attribute macro that must be used to define [`kprobes`](https://www.kernel.org/doc/Documentation/kprobes.txt).</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// # Example</span>
@@ -493,7 +515,8 @@ pub extern &quot;C&quot; fn example_kprobe(ctx: *mut pt_regs) {
 <span class="attribute">#[<span class="ident">proc_macro_attribute</span>]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">kprobe</span>(<span class="ident">attrs</span>: <span class="ident">TokenStream</span>, <span class="ident">item</span>: <span class="ident">TokenStream</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenStream</span> {
     <span class="kw">let</span> <span class="ident">item</span> <span class="op">=</span> <span class="macro">parse_macro_input</span><span class="macro">!</span>(<span class="ident">item</span> <span class="kw">as</span> <span class="ident">ItemFn</span>);
-    <span class="ident">probe_impl</span>(<span class="string">&quot;kprobe&quot;</span>, <span class="ident">attrs</span>, <span class="ident">item</span>).<span class="ident">into</span>()
+    <span class="kw">let</span> <span class="ident">wrapper</span> <span class="op">=</span> <span class="ident">wrap_kprobe</span>(<span class="ident">item</span>);
+    <span class="ident">probe_impl</span>(<span class="string">&quot;kprobe&quot;</span>, <span class="ident">attrs</span>, <span class="ident">wrapper</span>).<span class="ident">into</span>()
 }
 
 <span class="doccomment">/// Attribute macro that must be used to define [`kretprobes`](https://www.kernel.org/doc/Documentation/kprobes.txt).</span>
@@ -509,7 +532,8 @@ pub extern &quot;C&quot; fn example_kprobe(ctx: *mut pt_regs) {
 <span class="attribute">#[<span class="ident">proc_macro_attribute</span>]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">kretprobe</span>(<span class="ident">attrs</span>: <span class="ident">TokenStream</span>, <span class="ident">item</span>: <span class="ident">TokenStream</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenStream</span> {
     <span class="kw">let</span> <span class="ident">item</span> <span class="op">=</span> <span class="macro">parse_macro_input</span><span class="macro">!</span>(<span class="ident">item</span> <span class="kw">as</span> <span class="ident">ItemFn</span>);
-    <span class="ident">probe_impl</span>(<span class="string">&quot;kretprobe&quot;</span>, <span class="ident">attrs</span>, <span class="ident">item</span>).<span class="ident">into</span>()
+    <span class="kw">let</span> <span class="ident">wrapper</span> <span class="op">=</span> <span class="ident">wrap_kprobe</span>(<span class="ident">item</span>);
+    <span class="ident">probe_impl</span>(<span class="string">&quot;kretprobe&quot;</span>, <span class="ident">attrs</span>, <span class="ident">wrapper</span>).<span class="ident">into</span>()
 }
 
 <span class="doccomment">/// Attribute macro that must be used to define [`XDP` probes](https://www.iovisor.org/technology/xdp).</span>
@@ -527,23 +551,21 @@ pub extern &quot;C&quot; fn example_kprobe(ctx: *mut pt_regs) {
 <span class="doccomment">/// ```</span>
 <span class="attribute">#[<span class="ident">proc_macro_attribute</span>]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">xdp</span>(<span class="ident">attrs</span>: <span class="ident">TokenStream</span>, <span class="ident">item</span>: <span class="ident">TokenStream</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenStream</span> {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">item</span> <span class="op">=</span> <span class="macro">parse_macro_input</span><span class="macro">!</span>(<span class="ident">item</span> <span class="kw">as</span> <span class="ident">ItemFn</span>);
-    <span class="kw">let</span> <span class="ident">arg</span> <span class="op">=</span> <span class="ident">item</span>.<span class="ident">sig</span>.<span class="ident">inputs</span>.<span class="ident">pop</span>().<span class="ident">unwrap</span>();
-    <span class="kw">let</span> <span class="ident">pat</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">arg</span>.<span class="ident">value</span>() {
-        <span class="ident">FnArg</span>::<span class="ident">Typed</span>(<span class="ident">PatType</span> { <span class="ident">pat</span>, .. }) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">pat</span>,
-        <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;unexpected xdp probe signature&quot;</span>),
+    <span class="kw">let</span> <span class="ident">item</span> <span class="op">=</span> <span class="macro">parse_macro_input</span><span class="macro">!</span>(<span class="ident">item</span> <span class="kw">as</span> <span class="ident">ItemFn</span>);
+    <span class="kw">let</span> <span class="ident">ident</span> <span class="op">=</span> <span class="ident">item</span>.<span class="ident">sig</span>.<span class="ident">ident</span>.<span class="ident">clone</span>();
+    <span class="kw">let</span> <span class="ident">outer_ident</span> <span class="op">=</span> <span class="ident">Ident</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;outer_{}&quot;</span>, <span class="ident">ident</span>), <span class="ident">Span</span>::<span class="ident">call_site</span>());
+    <span class="kw">let</span> <span class="ident">wrapper</span> <span class="op">=</span> <span class="macro">parse_quote</span><span class="macro">!</span> {
+        <span class="kw">fn</span> #<span class="ident">outer_ident</span>(<span class="ident">ctx</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> ::<span class="ident">redbpf_probes</span>::<span class="ident">bindings</span>::<span class="ident">xdp_md</span>) <span class="op">-</span><span class="op">&gt;</span> ::<span class="ident">redbpf_probes</span>::<span class="ident">xdp</span>::<span class="ident">XdpAction</span> {
+            <span class="kw">let</span> <span class="ident">ctx</span> <span class="op">=</span> ::<span class="ident">redbpf_probes</span>::<span class="ident">xdp</span>::<span class="ident">XdpContext</span> { <span class="ident">ctx</span> };
+            <span class="kw">return</span> <span class="kw">match</span> #<span class="ident">ident</span>(<span class="ident">ctx</span>) {
+                <span class="prelude-val">Ok</span>(<span class="ident">action</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">action</span>,
+                <span class="prelude-val">Err</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> ::<span class="ident">redbpf_probes</span>::<span class="ident">xdp</span>::<span class="ident">XdpAction</span>::<span class="ident">Pass</span>
+            };
+
+            #<span class="ident">item</span>
+        }
     };
-    <span class="kw">let</span> <span class="ident">ident</span> <span class="op">=</span> <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Pat</span>::<span class="ident">Ident</span>(<span class="ident">PatIdent</span> { <span class="ident">ident</span>, .. }) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw-2">*</span><span class="ident">pat</span> {
-        <span class="ident">ident</span>
-    } <span class="kw">else</span> {
-        <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;unexpected xdp probe signature&quot;</span>)
-    };
-    <span class="kw">let</span> <span class="ident">raw_ctx</span> <span class="op">=</span> <span class="ident">Ident</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;_raw_{}&quot;</span>, <span class="ident">ident</span>), <span class="ident">Span</span>::<span class="ident">call_site</span>());
-    <span class="kw">let</span> <span class="ident">arg</span>: <span class="ident">FnArg</span> <span class="op">=</span> <span class="macro">parse_quote</span><span class="macro">!</span> { #<span class="ident">raw_ctx</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">xdp_md</span> };
-    <span class="ident">item</span>.<span class="ident">sig</span>.<span class="ident">inputs</span>.<span class="ident">push</span>(<span class="ident">arg</span>);
-    <span class="kw">let</span> <span class="ident">ctx</span>: <span class="ident">Stmt</span> <span class="op">=</span> <span class="macro">parse_quote</span><span class="macro">!</span> { <span class="kw">let</span> #<span class="ident">ident</span> <span class="op">=</span> <span class="ident">XdpContext</span> { <span class="ident">ctx</span>: #<span class="ident">raw_ctx</span> }; };
-    <span class="ident">item</span>.<span class="ident">block</span>.<span class="ident">stmts</span>.<span class="ident">insert</span>(<span class="number">0</span>, <span class="ident">ctx</span>);
-    <span class="ident">probe_impl</span>(<span class="string">&quot;xdp&quot;</span>, <span class="ident">attrs</span>, <span class="ident">item</span>).<span class="ident">into</span>()
+    <span class="ident">probe_impl</span>(<span class="string">&quot;xdp&quot;</span>, <span class="ident">attrs</span>, <span class="ident">wrapper</span>).<span class="ident">into</span>()
 }
 
 <span class="attribute">#[<span class="ident">proc_macro_attribute</span>]</span>
