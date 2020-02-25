@@ -3,7 +3,6 @@ headless: true
 bookMenuLevels: 1
 ---
 
- - [**InGRAINd**]({{< relref "/" >}})
  - [Getting started]({{< relref "/docs/getting-started" >}})
  - [Configuration]({{< relref "/docs/configuration/syntax" >}})
    - [Container monitoring]({{< relref "/docs/configuration/containers" >}})
