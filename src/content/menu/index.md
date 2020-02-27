@@ -3,7 +3,6 @@ headless: true
 bookMenuLevels: 1
 ---
 
- - [Getting started]({{< relref "/docs/getting-started" >}})
  - [Configuration]({{< relref "/docs/configuration/syntax" >}})
    - [Container monitoring]({{< relref "/docs/configuration/containers" >}})
    - [Network monitoring]({{< relref "/docs/configuration/network" >}})
