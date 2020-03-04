@@ -256,6 +256,9 @@
 <span id="256">256</span>
 <span id="257">257</span>
 <span id="258">258</span>
+<span id="259">259</span>
+<span id="260">260</span>
+<span id="261">261</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright 2019 Authors of Red Sift</span>
 <span class="comment">//</span>
@@ -389,7 +392,10 @@
             <span class="string">&quot;-march=bpf&quot;</span>,
             <span class="string">&quot;-O3&quot;</span>,
             <span class="string">&quot;--loop-unroll&quot;</span>,
-            <span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;--unroll-threshold={}&quot;</span>, <span class="ident">std</span>::<span class="ident">u32</span>::<span class="ident">MAX</span>),
+            <span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;--unroll-threshold={}&quot;</span>, <span class="ident">std</span>::<span class="ident">u32</span>::<span class="ident">MAX</span>), <span class="comment">// unroll at any cost</span>
+            <span class="string">&quot;--unroll-max-upperbound=500&quot;</span>, <span class="comment">// the max loop iteration count to unroll</span>
+            <span class="comment">// enable upperbound unrolling when the exact trip count can&#39;t be computed</span>
+            <span class="string">&quot;--passes=always-inline,function(unroll&lt;upperbound&gt;)&quot;</span>,
             <span class="string">&quot;-o&quot;</span>,
             <span class="ident">opt_bc_file</span>.<span class="ident">to_str</span>().<span class="ident">unwrap</span>(),
         ])

@@ -56,7 +56,6 @@
 <span id="56">56</span>
 <span id="57">57</span>
 <span id="58">58</span>
-<span id="59">59</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright 2019 Authors of Red Sift</span>
 <span class="comment">//</span>
@@ -91,12 +90,11 @@ edition = &#39;2018&#39;
 
 [dependencies]
 cty = &quot;0.2&quot;
-redbpf-macros = &quot;0.9&quot;
-redbpf-probes = &quot;0.9&quot;
+redbpf-macros = {{ git = &quot;https://github.com/redsift/redbpf&quot; }}
+redbpf-probes = {{ git = &quot;https://github.com/redsift/redbpf&quot; }}
 
 [build-dependencies]
-bindgen = &quot;0.51&quot;
-redbpf = {{ version = &quot;^0.9.0&quot;, features = [&quot;build&quot;] }}
+cargo-bpf = {{ git = &quot;https://github.com/redsift/redbpf&quot; }}
 
 [features]
 default = []

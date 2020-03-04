@@ -224,8 +224,6 @@
 <span id="224">224</span>
 <span id="225">225</span>
 <span id="226">226</span>
-<span id="227">227</span>
-<span id="228">228</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright 2019 Authors of Red Sift</span>
 <span class="comment">//</span>
@@ -279,7 +277,7 @@
 <span class="attribute">#![<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">cast_lossless</span>)]</span>
 <span class="attribute">#![<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">cast_ptr_alignment</span>)]</span>
 
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">LoadError</span>, <span class="ident">Map</span>, <span class="prelude-ty">Result</span>, <span class="ident">VoidPtr</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">Error</span>, <span class="ident">Map</span>, <span class="ident">HashMap</span>, <span class="prelude-ty">Result</span>};
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">cell</span>::<span class="ident">RefCell</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">io</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">mem</span>;
@@ -314,7 +312,7 @@
         <span class="ident">flags</span> <span class="op">|</span> <span class="ident">PERF_FLAG_FD_CLOEXEC</span>,
     );
     <span class="kw">if</span> <span class="ident">pfd</span> <span class="op">&lt;</span> <span class="number">0</span> {
-        <span class="prelude-val">Err</span>(<span class="ident">LoadError</span>::<span class="ident">IO</span>(<span class="ident">io</span>::<span class="ident">Error</span>::<span class="ident">last_os_error</span>()))
+        <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">IO</span>(<span class="ident">io</span>::<span class="ident">Error</span>::<span class="ident">last_os_error</span>()))
     } <span class="kw">else</span> {
         <span class="prelude-val">Ok</span>(<span class="ident">pfd</span> <span class="kw">as</span> <span class="ident">RawFd</span>)
     }
@@ -352,13 +350,13 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bind</span>(
         <span class="ident">map</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Map</span>,
         <span class="ident">pid</span>: <span class="ident">i32</span>,
-        <span class="kw-2">mut</span> <span class="ident">cpu</span>: <span class="ident">i32</span>,
+        <span class="ident">cpu</span>: <span class="ident">i32</span>,
         <span class="ident">page_cnt</span>: <span class="ident">usize</span>,
         <span class="ident">group</span>: <span class="ident">RawFd</span>,
         <span class="ident">flags</span>: <span class="ident">u32</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">PerfMap</span><span class="op">&gt;</span> {
         <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">fd</span> <span class="op">=</span> <span class="ident">open_perf_buffer</span>(<span class="ident">pid</span>, <span class="ident">cpu</span>, <span class="ident">group</span>, <span class="ident">flags</span>)<span class="question-mark">?</span>;
+            <span class="kw">let</span> <span class="ident">fd</span> <span class="op">=</span> <span class="ident">open_perf_buffer</span>(<span class="ident">pid</span>, <span class="ident">cpu</span>, <span class="ident">group</span>, <span class="ident">flags</span>)<span class="question-mark">?</span>;
             <span class="kw">let</span> <span class="ident">page_size</span> <span class="op">=</span> <span class="ident">sysconf</span>(<span class="ident">_SC_PAGESIZE</span>) <span class="kw">as</span> <span class="ident">usize</span>;
             <span class="kw">let</span> <span class="ident">mmap_size</span> <span class="op">=</span> <span class="ident">page_size</span> <span class="op">*</span> (<span class="ident">page_cnt</span> <span class="op">+</span> <span class="number">1</span>);
             <span class="kw">let</span> <span class="ident">base_ptr</span> <span class="op">=</span> <span class="ident">mmap</span>(
@@ -371,17 +369,15 @@
             );
 
             <span class="kw">if</span> <span class="ident">base_ptr</span> <span class="op">=</span><span class="op">=</span> <span class="ident">MAP_FAILED</span> {
-                <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">LoadError</span>::<span class="ident">IO</span>(<span class="ident">io</span>::<span class="ident">Error</span>::<span class="ident">last_os_error</span>()));
+                <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">IO</span>(<span class="ident">io</span>::<span class="ident">Error</span>::<span class="ident">last_os_error</span>()));
             }
 
             <span class="kw">if</span> <span class="ident">ioctl</span>(<span class="ident">fd</span>, <span class="ident">PERF_EVENT_IOC_ENABLE</span>, <span class="number">0</span>) <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
-                <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">LoadError</span>::<span class="ident">IO</span>(<span class="ident">io</span>::<span class="ident">Error</span>::<span class="ident">last_os_error</span>()));
+                <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">IO</span>(<span class="ident">io</span>::<span class="ident">Error</span>::<span class="ident">last_os_error</span>()));
             }
 
-            <span class="ident">map</span>.<span class="ident">set</span>(
-                <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">cpu</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">i32</span> <span class="kw">as</span> <span class="ident">VoidPtr</span>,
-                <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fd</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">i32</span> <span class="kw">as</span> <span class="ident">VoidPtr</span>,
-            );
+            <span class="kw">let</span> <span class="ident">tm</span> <span class="op">=</span> <span class="ident">HashMap</span>::<span class="op">&lt;</span><span class="ident">i32</span>, <span class="ident">i32</span><span class="op">&gt;</span>::<span class="ident">new</span>(<span class="ident">map</span>).<span class="ident">unwrap</span>();
+            <span class="ident">tm</span>.<span class="ident">set</span>(<span class="ident">cpu</span>, <span class="ident">fd</span>);
 
             <span class="prelude-val">Ok</span>(<span class="ident">PerfMap</span> {
                 <span class="ident">base_ptr</span>: <span class="ident">AtomicPtr</span>::<span class="ident">new</span>(<span class="ident">base_ptr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">perf_event_mmap_page</span>),

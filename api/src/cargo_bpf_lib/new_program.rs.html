@@ -129,8 +129,6 @@
 <span id="129">129</span>
 <span id="130">130</span>
 <span id="131">131</span>
-<span id="132">132</span>
-<span id="133">133</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright 2019 Authors of Red Sift</span>
 <span class="comment">//</span>
@@ -216,7 +214,7 @@ use cty::*;
 // #[repr(C)]
 // #[derive(Debug)]
 // pub struct SomeEvent {
-//     pub pid: c_ulonglong,
+//     pub pid: u64,
 //     ...
 // }
 &quot;#</span>,
@@ -228,12 +226,12 @@ use cty::*;
         <span class="string">r#&quot;
 #![no_std]
 #![no_main]
-
 use cty::*;
 
-use redbpf_probes::bindings::*;
-use redbpf_probes::maps::*;
-use redbpf_macros::{{map, program, kprobe}};
+// use one of the preludes
+// use redbpf_probes::kprobes::prelude::*;
+// use redbpf_probes::xdp::prelude::*;
+// use redbpf_probes::socket_filter::prelude::*;
 
 // Use the types you&#39;re going to share with userspace, eg:
 // use {lib}::{name}::SomeEvent;
@@ -243,10 +241,10 @@ program!(0xFFFFFFFE, &quot;GPL&quot;);
 // The maps and probe functions go here, eg:
 //
 // #[map(&quot;syscall_events&quot;)]
-// static mut syscall_events: PerfMap&lt;SomeEvent&gt; = PerfMap::new();
+// static mut syscall_events: PerfMap&lt;SomeEvent&gt; = PerfMap::with_max_entries(1024);
 //
 // #[kprobe(&quot;syscall_enter&quot;)]
-// pub extern &quot;C&quot; fn syscall_enter(ctx: *mut c_void) -&gt; i32 {{
+// fn syscall_enter(regs: Registers) {{
 //   let pid_tgid = bpf_get_current_pid_tgid();
 //   ...
 //
@@ -254,9 +252,7 @@ program!(0xFFFFFFFE, &quot;GPL&quot;);
 //     id: pid_tgid &gt;&gt; 32,
 //     ...
 //   }};
-//   unsafe {{ syscall_events.insert(ctx, event) }};
-//
-//   return 0;
+//   unsafe {{ syscall_events.insert(ctx, &amp;event) }};
 // }}
 &quot;#</span>,
         <span class="ident">lib</span> <span class="op">=</span> <span class="ident">crate_name</span>,

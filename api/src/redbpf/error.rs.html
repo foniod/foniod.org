@@ -46,7 +46,7 @@
 <span class="comment">// copied, modified, or distributed except according to those terms.</span>
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">LoadError</span> {
+<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Error</span> {
     <span class="ident">StringConversion</span>,
     <span class="ident">BPF</span>,
     <span class="ident">Map</span>,
@@ -58,23 +58,23 @@
     <span class="ident">Reloc</span>,
 }
 
-<span class="kw">pub</span> <span class="kw">type</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="op">=</span> ::<span class="ident">std</span>::<span class="ident">result</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">LoadError</span><span class="op">&gt;</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="op">=</span> ::<span class="ident">std</span>::<span class="ident">result</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">Error</span><span class="op">&gt;</span>;
 
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span>::<span class="ident">goblin</span>::<span class="ident">error</span>::<span class="ident">Error</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">LoadError</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">e</span>: ::<span class="ident">goblin</span>::<span class="ident">error</span>::<span class="ident">Error</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">LoadError</span> {
-        <span class="ident">LoadError</span>::<span class="ident">Parse</span>(<span class="ident">e</span>)
+<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span>::<span class="ident">goblin</span>::<span class="ident">error</span>::<span class="ident">Error</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Error</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">e</span>: ::<span class="ident">goblin</span>::<span class="ident">error</span>::<span class="ident">Error</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Error</span> {
+        <span class="ident">Error</span>::<span class="ident">Parse</span>(<span class="ident">e</span>)
     }
 }
 
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span>::<span class="ident">std</span>::<span class="ident">ffi</span>::<span class="ident">NulError</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">LoadError</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">_e</span>: ::<span class="ident">std</span>::<span class="ident">ffi</span>::<span class="ident">NulError</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">LoadError</span> {
-        <span class="ident">LoadError</span>::<span class="ident">StringConversion</span>
+<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span>::<span class="ident">std</span>::<span class="ident">ffi</span>::<span class="ident">NulError</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Error</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">_e</span>: ::<span class="ident">std</span>::<span class="ident">ffi</span>::<span class="ident">NulError</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Error</span> {
+        <span class="ident">Error</span>::<span class="ident">StringConversion</span>
     }
 }
 
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span>::<span class="ident">std</span>::<span class="ident">io</span>::<span class="ident">Error</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">LoadError</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">e</span>: ::<span class="ident">std</span>::<span class="ident">io</span>::<span class="ident">Error</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">LoadError</span> {
-        <span class="ident">LoadError</span>::<span class="ident">IO</span>(<span class="ident">e</span>)
+<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span>::<span class="ident">std</span>::<span class="ident">io</span>::<span class="ident">Error</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Error</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">e</span>: ::<span class="ident">std</span>::<span class="ident">io</span>::<span class="ident">Error</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Error</span> {
+        <span class="ident">Error</span>::<span class="ident">IO</span>(<span class="ident">e</span>)
     }
 }
 </pre></div>

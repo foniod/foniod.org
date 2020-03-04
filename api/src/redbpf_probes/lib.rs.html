@@ -57,8 +57,6 @@
 <span id="57">57</span>
 <span id="58">58</span>
 <span id="59">59</span>
-<span id="60">60</span>
-<span id="61">61</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright 2019 Authors of Red Sift</span>
 <span class="comment">//</span>
@@ -78,12 +76,12 @@ compiled to eBPF bytecode and executed by the linux in-kernel eBPF virtual
 machine.
 
 This crate is expected to be used with the companion
-[`redbpf-macros`](https://redsift.github.io/rust/redbpf/doc/redbpf_macros/) crate - a
+[`redbpf-macros`](https://ingraind.org/api/redbpf_macros/) crate - a
 collection of procedural macros used to reduce the amount of boilerplate
 needed to produce eBPF programs.
 
 To streamline the process of working with eBPF programs even further,
-`redbpf` also provides [`cargo-bpf`](https://redsift.github.io/rust/redbpf/doc/cargo_bpf/) -
+`redbpf` also provides [`cargo-bpf`](https://ingraind.org/api/cargo_bpf/) -
 a cargo subcommand to simplify creating and building eBPF programs.
 
 # Example
@@ -93,21 +91,19 @@ This is what `redbpf_probes` and `redbpf_macros` look like in action:
 ```
 #![no_std]
 #![no_main]
-use redbpf_probes::bindings::*;
-use redbpf_probes::xdp::{XdpAction, XdpContext};
-use redbpf_macros::{program, xdp};
+use redbpf_probes::xdp::prelude::*;
 
 program!(0xFFFFFFFE, &quot;GPL&quot;);
 
 #[xdp]
-pub extern &quot;C&quot; fn block_port_80(ctx: XdpContext) -&gt; XdpAction {
-    if let Some(transport) = ctx.transport() {
+pub fn block_port_80(ctx: XdpContext) -&gt; XdpResult {
+    if let Ok(transport) = ctx.transport() {
         if transport.dest() == 80 {
-            return XdpAction::Drop;
+            return Ok(XdpAction::Drop);
         }
     }
 
-    XdpAction::Pass
+    Ok(XdpAction::Pass)
 }
 ```
 

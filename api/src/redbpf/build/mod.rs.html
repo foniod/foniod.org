@@ -215,6 +215,13 @@
 <span id="215">215</span>
 <span id="216">216</span>
 <span id="217">217</span>
+<span id="218">218</span>
+<span id="219">219</span>
+<span id="220">220</span>
+<span id="221">221</span>
+<span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright 2019 Authors of Red Sift</span>
 <span class="comment">//</span>
@@ -243,23 +250,30 @@
 <span class="doccomment">//!</span>
 <span class="doccomment">//! ```rust</span>
 <span class="doccomment">//! use redbpf::build::{build, generate_bindings, cache::BuildCache, headers::kernel_headers};</span>
+<span class="doccomment">//! use std::{env, error::Error, path::PathBuf};</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! fn main() -&gt; Result&lt;(), Error&gt; {</span>
+<span class="doccomment">//! fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {</span>
 <span class="doccomment">//!     let out_dir = PathBuf::from(env::var(&quot;OUT_DIR&quot;)?);</span>
 <span class="doccomment">//!     let kernel_headers = kernel_headers().expect(&quot;couldn&#39;t find kernel headers&quot;);</span>
 <span class="doccomment">//!     let mut bindgen_flags: Vec&lt;String&gt; = kernel_headers</span>
 <span class="doccomment">//!         .iter()</span>
 <span class="doccomment">//!         .map(|dir| format!(&quot;-I{}&quot;, dir))</span>
 <span class="doccomment">//!         .collect();</span>
-<span class="doccomment">//!     bindgen_flags.extend(redbpf::build::BUILD_FLAGS.iter().map(|f| f.to_string()));</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//!     bindgen_flags</span>
+<span class="doccomment">//!         .extend(redbpf::build::BUILD_FLAGS</span>
+<span class="doccomment">//!               .iter()</span>
+<span class="doccomment">//!               .map(|f| f.to_string()));</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//!     let mut cache = BuildCache::new(&amp;out_dir);</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//!     for file in source_files(&quot;./bpf&quot;, &quot;c&quot;)? {</span>
 <span class="doccomment">//!         if cache.file_changed(&amp;file) {</span>
-<span class="doccomment">//!             build(&amp;bindgen_flags[..], &amp;out_dir, &amp;file).expect(&quot;Failed building BPF plugin!&quot;);</span>
+<span class="doccomment">//!             build(&amp;bindgen_flags[..], &amp;out_dir, &amp;file)</span>
+<span class="doccomment">//!                 .expect(&quot;Failed building BPF plugin!&quot;);</span>
 <span class="doccomment">//!         }</span>
 <span class="doccomment">//!     }</span>
+<span class="doccomment">//!</span>
 <span class="doccomment">//!     for file in source_files(&quot;./bpf&quot;, &quot;h&quot;)? {</span>
 <span class="doccomment">//!         if cache.file_changed(&amp;file) {</span>
 <span class="doccomment">//!             generate_bindings(&amp;bindgen_flags[..], &amp;out_dir, &amp;file)</span>

@@ -123,7 +123,37 @@
 <span id="123">123</span>
 <span id="124">124</span>
 <span id="125">125</span>
+<span id="126">126</span>
+<span id="127">127</span>
+<span id="128">128</span>
+<span id="129">129</span>
+<span id="130">130</span>
+<span id="131">131</span>
+<span id="132">132</span>
+<span id="133">133</span>
+<span id="134">134</span>
+<span id="135">135</span>
+<span id="136">136</span>
+<span id="137">137</span>
+<span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
+<span id="141">141</span>
+<span id="142">142</span>
+<span id="143">143</span>
 </pre><div class="example-wrap"><pre class="rust ">
+<span class="comment">// Copyright 2019-2020 Authors of Red Sift</span>
+<span class="comment">//</span>
+<span class="comment">// Licensed under the Apache License, Version 2.0, &lt;LICENSE-APACHE or</span>
+<span class="comment">// http://apache.org/licenses/LICENSE-2.0&gt; or the MIT license &lt;LICENSE-MIT or</span>
+<span class="comment">// http://opensource.org/licenses/MIT&gt;, at your option. This file may not be</span>
+<span class="comment">// copied, modified, or distributed except according to those terms.</span>
+
+<span class="doccomment">/*!
+Wrappers for the helper functions provided by the BPF subsystem.
+
+See &lt;http://man7.org/linux/man-pages/man7/bpf-helpers.7.html&gt;.
+*/</span>
 <span class="kw">use</span> <span class="ident">core</span>::<span class="ident">mem</span>::{<span class="ident">size_of</span>, <span class="ident">MaybeUninit</span>};
 
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">bindings</span>::<span class="kw-2">*</span>;
@@ -131,12 +161,16 @@
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">ufmt</span>;
 <span class="kw">use</span> <span class="ident">ufmt</span>::<span class="ident">uWrite</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">gen</span> {
+<span class="doccomment">/*!
+Low-level, generated bindings for the helper functions provided by the BPF
+subsystem.
+*/</span>
     <span class="macro">include</span><span class="macro">!</span>(<span class="macro">concat</span><span class="macro">!</span>(<span class="macro">env</span><span class="macro">!</span>(<span class="string">&quot;OUT_DIR&quot;</span>), <span class="string">&quot;/gen_helpers.rs&quot;</span>));
 }
 
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TraceMessage</span> {
     <span class="ident">msg</span>: [<span class="ident">u8</span>; <span class="number">50</span>],
-    <span class="ident">write_i</span>: <span class="ident">usize</span>
+    <span class="ident">write_i</span>: <span class="ident">usize</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">TraceMessage</span> {
@@ -144,7 +178,7 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="ident">TraceMessage</span> {
             <span class="ident">msg</span>: <span class="kw">unsafe</span> { <span class="ident">core</span>::<span class="ident">mem</span>::<span class="ident">MaybeUninit</span>::<span class="ident">uninit</span>().<span class="ident">assume_init</span>() },
-            <span class="ident">write_i</span>: <span class="number">0</span>
+            <span class="ident">write_i</span>: <span class="number">0</span>,
         }
     }
 
@@ -172,19 +206,24 @@
     }
 }
 
-
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">gen</span>::<span class="kw-2">*</span>;
 
+<span class="doccomment">/// Returns the current tgid and pid, encoded as `current_task-&gt;tgid &lt;&lt; 32 |</span>
+<span class="doccomment">/// current_task-&gt;pid`.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bpf_get_current_pid_tgid</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u64</span> {
     <span class="kw">unsafe</span> { <span class="ident">gen</span>::<span class="ident">bpf_get_current_pid_tgid</span>() }
 }
 
+<span class="doccomment">/// Returns the current GID and UID, encoded as `current_gid &lt;&lt; 32 |</span>
+<span class="doccomment">/// current_uid`.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bpf_get_current_uid_gid</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u64</span> {
     <span class="kw">unsafe</span> { <span class="ident">gen</span>::<span class="ident">bpf_get_current_uid_gid</span>() }
 }
 
+<span class="doccomment">/// Returns the `comm` attribute of the current task. The comm attribute contains</span>
+<span class="doccomment">/// the name of the executable (excluding the path) for the current task.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bpf_get_current_comm</span>() <span class="op">-</span><span class="op">&gt;</span> [<span class="ident">c_char</span>; <span class="number">16</span>] {
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">comm</span>: [<span class="ident">c_char</span>; <span class="number">16usize</span>] <span class="op">=</span> [<span class="number">0</span>; <span class="number">16</span>];
@@ -192,23 +231,27 @@
     <span class="ident">comm</span>
 }
 
+<span class="doccomment">/// Returns the time elapsed since system boot, in nanoseconds.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bpf_ktime_get_ns</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u64</span> {
     <span class="kw">unsafe</span> { <span class="ident">gen</span>::<span class="ident">bpf_ktime_get_ns</span>() }
 }
 
+<span class="comment">// For tracing programs, safely attempt to read `mem::size_of::&lt;T&gt;()` bytes from</span>
+<span class="comment">// address src.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bpf_probe_read</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">src</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span> {
-    <span class="kw">unsafe</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span>: <span class="ident">MaybeUninit</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">MaybeUninit</span>::<span class="ident">uninit</span>();
-        <span class="ident">gen</span>::<span class="ident">bpf_probe_read</span>(
-            <span class="ident">v</span>.<span class="ident">as_mut_ptr</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>,
-            <span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>() <span class="kw">as</span> <span class="ident">u32</span>,
-            <span class="ident">src</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">c_void</span>,
-        );
-
-        <span class="ident">v</span>.<span class="ident">assume_init</span>()
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">bpf_probe_read</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">src</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">i32</span><span class="op">&gt;</span> {
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span>: <span class="ident">MaybeUninit</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">MaybeUninit</span>::<span class="ident">uninit</span>();
+    <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">gen</span>::<span class="ident">bpf_probe_read</span>(
+        <span class="ident">v</span>.<span class="ident">as_mut_ptr</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>,
+        <span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>() <span class="kw">as</span> <span class="ident">u32</span>,
+        <span class="ident">src</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">c_void</span>,
+    );
+    <span class="kw">if</span> <span class="ident">ret</span> <span class="op">&lt;</span> <span class="number">0</span> {
+        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ret</span>);
     }
+
+    <span class="prelude-val">Ok</span>(<span class="ident">v</span>.<span class="ident">assume_init</span>())
 }
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -241,13 +284,5 @@
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> <span class="op">=</span> ::<span class="ident">core</span>::<span class="ident">mem</span>::<span class="ident">transmute</span>(<span class="number">25usize</span>);
         <span class="ident">f</span>(<span class="ident">ctx</span>, <span class="ident">map</span>, <span class="ident">flags</span>, <span class="ident">data</span>, <span class="ident">size</span>)
     }
-}
-
-<span class="attribute">#[<span class="ident">macro_export</span>]</span>
-<span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">bpf_probe_read</span> {
-    ( <span class="macro-nonterminal">$</span><span class="macro-nonterminal">x</span>:<span class="ident">expr</span> ) <span class="op">=</span><span class="op">&gt;</span> {
-        <span class="ident">bpf_probe_read</span>(<span class="kw">unsafe</span> { <span class="macro-nonterminal">$</span><span class="macro-nonterminal">x</span> })
-    };
-}
-</pre></div>
+}</pre></div>
 </section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../";window.currentCrate = "redbpf_probes";</script><script src="../../aliases.js"></script><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>
