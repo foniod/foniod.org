@@ -1418,6 +1418,8 @@ nav.nav-holder ul {
 
 /* main content styles */
 .content {
+        height: 100vh;
+
 	@include media ('>=tablet') {
 		padding: 15px 15px 50px;
 		width: calc(100% - 320px);

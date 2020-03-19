@@ -15,7 +15,9 @@
 				<!-- page logo -->
 				<strong class="logo">
 					<a href="#">
-						<img src="images/logo.svg" width="135" alt="Ingraind">
+					  {{- with .Site.Params.BookLogo -}}
+					  <img src="{{ . | relURL }}" alt="ingraind" width="135"/>
+					  {{- end -}}
 					</a>
 				</strong>
 				<!-- main navigation opener -->
