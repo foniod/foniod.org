@@ -1607,6 +1607,13 @@ nav.nav-holder ul {
 			text-shadow: none;
 		}
 
+		a.active {
+			@include animate(color text-shadow);
+
+			color: $light-blue;
+			text-shadow: none;
+		}
+
 		li {
 			font-size: 16px;
 			font-weight: 600;
