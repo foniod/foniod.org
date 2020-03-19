@@ -17,6 +17,10 @@
 {{- $searchJSFile := printf "%s.search.js" .Language.Lang -}}
 {{- $searchJS := resources.Get "search.js" | resources.ExecuteAsTemplate $searchJSFile . | resources.Minify | resources.Fingerprint }}
 <script defer src="{{ $searchJS.RelPermalink }}" integrity="{{ $searchJS.Data.Integrity }}"></script>
+
+{{- $menuJSFile := printf "%s.menu-toggle.js" .Language.Lang -}}
+{{- $menuJS := resources.Get "menu-toggle.js" | resources.ExecuteAsTemplate $menuJSFile . | resources.Minify | resources.Fingerprint }}
+<script defer src="{{ $menuJS.RelPermalink }}" integrity="{{ $menuJS.Data.Integrity }}"></script>
 {{ end }}
 
 {{- template "_internal/google_analytics_async.html" . -}}

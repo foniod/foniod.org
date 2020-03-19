@@ -210,10 +210,12 @@ pre > code {
 
 .hide {
 	display: none;
-
 	@include media ('>=tablet') {
 		display: block;
 	}
+}
+.mobile-open .hide {
+	display: block;
 }
 
 .decor-line {
@@ -1418,7 +1420,8 @@ nav.nav-holder ul {
 
 /* main content styles */
 .content {
-        height: 100vh;
+	min-height: 100vh;
+	padding: 15px 0;
 
 	@include media ('>=tablet') {
 		padding: 15px 15px 50px;
@@ -1511,6 +1514,17 @@ nav.nav-holder ul {
 
 		@include media ('>=tablet') {
 			display: block;
+		}
+	}
+
+	&.mobile-open .nav-holder {
+		display: block;
+		padding: 15px;
+		margin-bottom: 15px;
+		box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 8px 0px, rgba(0, 0, 0, 0.02) 5px 5px 8px -4px;
+		.form-search {
+			padding-left: 0;
+			padding-right: 0;
 		}
 	}
 
