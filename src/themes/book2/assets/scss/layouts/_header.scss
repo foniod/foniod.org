@@ -1,0 +1,262 @@
+/* header styles */
+#header {
+	padding: 10px 0;
+	background: $dark-blue;
+	position: relative;
+
+	.container {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 0 15px;
+
+		@include media ('>=tablet') {
+			padding: 0 30px;
+		}
+	}
+}
+
+/* page logo styles */
+.logo {
+	display: block;
+	width: 114px;
+
+	@include media ('>=tablet') {
+		width: 135px;
+	}
+}
+
+/* main navigation opener styles */
+.nav-opener {
+	display: block;
+	width: 28px;
+	height: 28px;
+	text-indent: -9999px;
+	overflow: hidden;
+	position: relative;
+	z-index: 10;
+
+	@include media ('>=tablet') {
+		display: none;
+	}
+
+	&:before,
+	&:after,
+	span {
+		position: absolute;
+		top: 13px;
+		left: 2px;
+		right: 2px;
+		height: 3px;
+		border-radius: 3px;
+		background: $light-purple;
+		transition: all 0.2s linear;
+	}
+
+	&:before,
+	&:after {
+		content: "";
+		top: 4px;
+	}
+
+	&:after {
+		top: 22px;
+	}
+
+	/* active class on body to open main navigation */
+	.nav-active & {
+
+		&:after,
+		&:before {
+			top: 13px;
+			background: $white;
+			transform: rotate(45deg);
+		}
+
+		&:after{
+			transform: rotate(-45deg);
+		}
+
+		span {
+			opacity: 0;
+		}
+	}
+}
+
+.drop {
+	@include media ('<tablet') {
+		@include animate(opacity visibility);
+
+		position: absolute;
+		top: 100%;
+		left: 0;
+		right: 0;
+		text-align: center;
+		background: $dark-blue;
+		padding: 24px 15px;
+		opacity: 0;
+		visibility: hidden;
+		z-index: 2;
+	}
+
+	@include media ('>=tablet') {
+		display: flex;
+		align-items: center;
+		justify-content: flex-end;
+		width: calc(100% - 160px);
+		padding-top: 15px;
+	}
+
+	/* active class on body to open main navigation */
+	.nav-active & {
+		opacity: 1;
+		visibility: visible;
+	}
+}
+
+.menu,
+.social-networks {
+	@extend %listreset;
+}
+
+/* main navigation of the page styles */
+.menu {
+	font-size: 18px;
+	font-weight: 600;
+	letter-spacing: .69px;
+
+	@include media ('>=tablet') {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		font-size: 13px;
+		letter-spacing: .5px;
+		padding-right: 30px;
+	}
+
+	@include media ('>=widescreen') {
+		padding-right: 45px;
+	}
+
+	li {
+		padding-bottom: 15px;
+
+		@include media ('>=tablet') {
+			padding: 0 20px 15px;
+		}
+
+		@include media ('>=desktop') {
+			padding: 0 30px 15px;
+		}
+
+		@include media ('>=widescreen') {
+			padding: 0 38px 15px;
+		}
+
+		&.active {
+			a {
+				color: $light-blue;
+
+				&:before {
+					@include media ('>=tablet') {
+						opacity: 1;
+						visibility: visible;
+					}
+				}
+			}
+		}
+	}
+
+	a {
+		@include animate(color);
+
+		color: $light-purple;
+		position: relative;
+
+		&:hover {
+			color: $light-blue;
+
+			&:before {
+				@include media ('>=tablet') {
+					opacity: 1;
+					visibility: visible;
+				}
+			}
+		}
+
+		&:before {
+			@include media ('>=tablet') {
+				@include animate(opacity visibility);
+
+				content: "";
+				width: 8px;
+				height: 8px;
+				background: $light-blue;
+				border-radius: 50%;
+				overflow: hidden;
+				position: absolute;
+				bottom: -16px;
+				left: 50%;
+				transform: translateX(-50%);
+				opacity: 0;
+				visibility: hidden;
+			}
+		}
+	}
+}
+
+/* social networks styles */
+.social-networks {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	margin: 0 -15px;
+
+	@include media ('>=tablet') {
+		min-width: 125px;
+		justify-content: flex-end;
+	}
+
+	@include media ('>=widescreen') {
+		min-width: 140px;
+		margin: 0 -20px;
+	}
+
+	li {
+		padding: 0 15px 10px;
+
+		@include media ('>=widescreen') {
+			padding: 0 20px 10px;
+		}
+	}
+
+	a {
+		display: block;
+		font-size: 0;
+
+		&:hover {
+			.icon-github {
+				color: darken($white, 15%);
+			}
+			.icon-twitter {
+				color: darken(#1da1f2, 15%);
+			}
+		}
+
+		i {
+			@include animate(color);
+
+			display: block;
+			font-size: 24px;
+
+			&.icon-github {
+				color: $white;
+			}
+
+			&.icon-twitter {
+				color: #1da1f2;
+			}
+		}
+	}
+}

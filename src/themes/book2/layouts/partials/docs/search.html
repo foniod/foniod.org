@@ -1,0 +1,13 @@
+{{ if default true .Site.Params.BookSearch }}
+<form action="#" class="form-search">
+  <label class="hidden" for="search">Search</label>
+  <input id="book-search-input"
+	 type="search"
+	 placeholder="{{ i18n "Search" }}"
+	 aria-label="{{ i18n "Search" }}"
+	 maxlength="64" 
+	 data-hotkeys="s/">
+  <div class="book-search-spinner spinner hidden"></div>
+  <ul id="book-search-results" class="nav-list"></ul>
+</form>
+{{ end }}

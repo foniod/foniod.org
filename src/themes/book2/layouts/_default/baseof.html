@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="{{ .Site.Language.Lang }}">
+
+<head>
+  {{ partial "docs/html-head" . }}
+  {{ partial "docs/inject/head" . }}
+</head>
+
+<body class="fixed-position">
+	<div id="wrapper">
+		<a class="accessibility" href="#main">Skip to Content</a>
+		<!-- header of the page -->
+		<header id="header">
+			<div class="container">
+				<!-- page logo -->
+				<strong class="logo">
+					<a href="#">
+						<img src="images/logo.svg" width="135" alt="Ingraind">
+					</a>
+				</strong>
+				<!-- main navigation opener -->
+				<a class="nav-opener" href="#">nav-opener<span></span></a>
+				<div class="drop">
+					<!-- main navigation of the page -->
+					<nav class="nav">
+						<ul class="menu">
+							<li><a href="#">Why?</a></li>
+							<li class="active"><a href="#">Documentation</a></li>
+							<li><a href="/api/redbpf/">API</a></li>
+							<li><a href="https://blog.redsift.com/category/labs/">Blog</a></li>
+						</ul>
+					</nav>
+					<!-- social networks -->
+					<ul class="social-networks">
+						<li><a href="#"><i class="icon-github"></i>github</a></li>
+						<li><a href="#"><i class="icon-twitter"></i>twitter</a></li>
+					</ul>
+				</div>
+			</div>
+		</header>
+		<!-- contain main informative part of the site -->
+		<main id="main">
+			<div class="container inner-container">
+				<!-- sidebar -->
+				<aside class="sidebar">
+				  <div class="fixed-block">
+				    {{ template "menu" . }} <!-- Left menu Content -->
+				  </div>
+				</aside>
+				<!-- main content -->
+				<div class="content">
+				  {{ template "main" . }} <!-- Page Content -->
+				</div>
+				<!-- aside -->
+				{{ if default true (default .Site.Params.BookToC .Params.BookToC) }}
+				<aside class="aside hide">
+					<div class="fixed-block">
+					  <h3>Contents</h3>
+					  {{ template "toc" . }} <!-- Table of Contents -->
+					</div>
+				</aside>
+				{{ end }}
+			</div>
+		</main>
+		<!-- footer of the page -->
+		<footer id="footer">
+			<div class="container">
+				<!-- copyright -->
+				<span class="copy">&copy; 2020 <a href="#">Red Sift</a>. All rights reserved.</span>
+				<div class="social-block">
+					<!-- social networks -->
+					<ul class="social-networks">
+						<li><strong class="title">Follow</strong></li>
+						<li><a href="#"><i class="icon-github"></i>github</a></li>
+						<li><a href="#"><i class="icon-twitter"></i>twitter</a></li>
+					</ul>
+				</div>
+			</div>
+		</footer>
+		<a class="accessibility" href="#wrapper">Back to top</a>
+	</div>
+</body>
+</html>
+
+{{ define "menu" }}
+  {{ partial "docs/menu" . }}
+{{ end }}
+
+{{ define "header" }}
+  {{ partial "docs/header" . }}
+
+  {{ if default true (default .Site.Params.BookToC .Params.BookToC) }}
+    <input type="checkbox" class="hidden" id="toc-control" />
+    <aside class="hidden clearfix">
+      {{ template "toc" . }}
+    </aside>
+  {{ end }}
+{{ end }}
+
+{{ define "footer" }}
+  {{ partial "docs/footer" . }}
+{{ end }}
+
+{{ define "comments" }}
+  {{ if and .Content (default true (default .Site.Params.BookComments .Params.BookComments)) }}
+  <div class="book-comments">
+    {{- partial "docs/comments" . -}}
+  </div>
+  {{ end }}
+{{ end }}
+
+{{ define "main" }}
+  <article class="markdown">
+    {{- .Content -}}
+  </article>
+{{ end }}
+
+{{ define "toc" }}
+  {{ partial "docs/toc" . }}
+{{ end }}

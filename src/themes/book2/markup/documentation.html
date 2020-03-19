@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<!-- set the encoding of your site -->
+	<meta charset="utf-8">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+	<!-- set the viewport width and initial-scale on mobile devices -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Ingraind</title>
+	<!-- include the site fonts -->
+	<link href="https://fonts.googleapis.com/css?family=Raleway:400,500,600,700,900%7cSource+Code+Pro:400,500&display=swap" rel="stylesheet">
+	<!-- include the site stylesheet -->
+	<link media="all" rel="stylesheet" href="css/main.css">
+</head>
+<body class="fixed-position">
+	<div id="wrapper">
+		<a class="accessibility" href="#main">Skip to Content</a>
+		<!-- header of the page -->
+		<header id="header">
+			<div class="container">
+				<!-- page logo -->
+				<strong class="logo">
+					<a href="#">
+						<img src="images/logo.svg" width="135" alt="Ingraind">
+					</a>
+				</strong>
+				<!-- main navigation opener -->
+				<a class="nav-opener" href="#">nav-opener<span></span></a>
+				<div class="drop">
+					<!-- main navigation of the page -->
+					<nav class="nav">
+						<ul class="menu">
+							<li><a href="#">Why?</a></li>
+							<li class="active"><a href="#">Documentation</a></li>
+							<li><a href="#">API</a></li>
+							<li><a href="#">Blog</a></li>
+						</ul>
+					</nav>
+					<!-- social networks -->
+					<ul class="social-networks">
+						<li><a href="#"><i class="icon-github"></i>github</a></li>
+						<li><a href="#"><i class="icon-twitter"></i>twitter</a></li>
+					</ul>
+				</div>
+			</div>
+		</header>
+		<!-- contain main informative part of the site -->
+		<main id="main">
+			<div class="container inner-container">
+				<!-- sidebar -->
+				<aside class="sidebar">
+					<div class="fixed-block">
+						<strong class="logo hide">
+							<a href="#"><img src="images/logo.svg" alt="Ingraind" width="135"></a>
+							<span>v1.1</span>
+						</strong>
+						<form action="#" class="form-search">
+							<label class="hidden" for="search">Search</label>
+							<input id="search" type="search" placeholder="Search...">
+							<input class="hidden" type="submit" value="submit">
+						</form>
+						<nav class="nav-holder hide">
+							<ul class="nav-list">
+								<li>
+									<a href="#">What is InGRAINd?</a>
+								</li>
+								<li>
+									<a href="#">Getting started
+									</a>
+								</li>
+								<li class="active">
+									<a href="#">Configuration</a>
+									<ul>
+										<li><a href="#">Container Monitoring</a></li>
+										<li><a href="#">Network monitoring</a></li>
+										<li><a href="#">Auto-kill programs</a></li>
+										<li><a href="#">Backends</a></li>
+									</ul>
+								</li>
+								<li>
+									<a href="#">Deployment</a>
+									<ul>
+										<li><a href="#">Kubernets</a></li>
+										<li><a href="#">Terraform</a></li>
+										<li><a href="#">Ansible</a></li>
+									</ul>
+								</li>
+								<li><a href="#">Extending InGRAINd</a>
+									<ul>
+										<li><a href="#">Cargo bpf</a></li>
+										<li><a href="#">Writing an eBPF module</a></li>
+										<li><a href="#">Userspace events</a></li>
+										<li><a href="#">Advanced</a></li>
+									</ul>
+								</li>
+							</ul>
+						</nav>
+					</div>
+				</aside>
+				<!-- main content -->
+				<div class="content">
+					<h1 class="h2">Configuration syntax</h1>
+					<p>The configuration format used by  <code>ingraind</code>   is TOML.</p>
+					<p>The primary goal of the configuration system is to set up the grains and the processing pipelines used by <code>ingraind</code>.</p>
+					<p>The TOML file has two sections: the probes, and the pipelines.</p>
+					<h2 class="h3">Probes</h2>
+					<p>The <code>probe</code> array contains the configuration for the probes, and a single entry looks like this:</p>
+					<pre>
+						<code class="code-block">[[probe]]
+							pipelines = ["my_pipeline", "another_pipeline"]
+
+							[probe.config]
+							type = "Files"
+						monitor_dirs = ["/"]</code>
+					</pre>
+					<p>The <code> probe </code> has to specify a list of pipelines that will receive its data. The <code>probe.config</code> section configures the probe itself; the <code class="type">type</code> attribute is mandatory, anything else is probe dependent.</p>
+					<p>The different brackets in <code>[[probe]]</code> and <code>[probe.config]</code> are intentional: <code>[[probe]]</code>  means a new entry in the probe array, while <code>[probe.config]</code> means “the  <code>config</code>  attribute of the probe”.</p>
+					<h2 class="h3">Probes</h2>
+					<p>The <code>probe</code> array contains the configuration for the probes, and a single entry looks like this:</p>
+					<pre>
+						<code class="code-block">[[probe]]
+							pipelines = ["my_pipeline", "another_pipeline"]
+
+							[probe.config]
+							type = "Files"
+						monitor_dirs = ["/"]</code>
+					</pre>
+					<p>The <code> probe </code> has to specify a list of pipelines that will receive its data. The <code>probe.config</code> section configures the probe itself; the <code class="type">type</code> attribute is mandatory, anything else is probe dependent.</p>
+					<p>The different brackets in <code>[[probe]]</code> and <code>[probe.config]</code> are intentional: <code>[[probe]]</code>  means a new entry in the probe array, while <code>[probe.config]</code> means “the  <code>config</code>  attribute of the probe”.</p>
+					<h2 class="h3">Probes</h2>
+					<p>The <code>probe</code> array contains the configuration for the probes, and a single entry looks like this:</p>
+					<pre>
+						<code class="code-block">[[probe]]
+							pipelines = ["my_pipeline", "another_pipeline"]
+
+							[probe.config]
+							type = "Files"
+						monitor_dirs = ["/"]</code>
+					</pre>
+					<p>The <code> probe </code> has to specify a list of pipelines that will receive its data. The <code>probe.config</code> section configures the probe itself; the <code class="type">type</code> attribute is mandatory, anything else is probe dependent.</p>
+					<p>The different brackets in <code>[[probe]]</code> and <code>[probe.config]</code> are intentional: <code>[[probe]]</code>  means a new entry in the probe array, while <code>[probe.config]</code> means “the  <code>config</code>  attribute of the probe”.</p>
+				</div>
+				<!-- aside -->
+				<aside class="aside hide">
+					<div class="fixed-block">
+						<h3>Contents</h3>
+						<nav class="nav-holder">
+							<ul class="nav-list">
+								<li><a href="#">During development</a></li>
+								<li><a href="#">Docker</a></li>
+								<li><a href="#">Start</a></li>
+							</ul>
+						</nav>
+					</div>
+				</aside>
+			</div>
+		</main>
+		<!-- footer of the page -->
+		<footer id="footer">
+			<div class="container">
+				<!-- copyright -->
+				<span class="copy">&copy; 2020 <a href="#">Red Sift</a>. All rights reserved.</span>
+				<div class="social-block">
+					<!-- social networks -->
+					<ul class="social-networks">
+						<li><strong class="title">Follow</strong></li>
+						<li><a href="#"><i class="icon-github"></i>github</a></li>
+						<li><a href="#"><i class="icon-twitter"></i>twitter</a></li>
+					</ul>
+				</div>
+			</div>
+		</footer>
+		<a class="accessibility" href="#wrapper">Back to top</a>
+	</div>
+</body>
+</html>
