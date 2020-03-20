@@ -37,14 +37,17 @@ body {
 			}
 
 			.nav-holder > ul {
+				&.hide {
+					display: none;
+				}
 				@include media ('>=tablet') {
-					max-height: calc(100vh - 230px - 112px);
+					max-height: calc(100vh - 230px - 80px);
 					overflow-y: auto;
 					padding-right: 15px;
 				}
 
 				@include media ('>=widescreen') {
-					max-height: calc(100vh - 255px - 112px);
+					max-height: calc(100vh - 255px - 80px);
 				}
 			}
 		}
@@ -155,7 +158,7 @@ input[type='number'] {
 	height: 40px;
 	font-size: 14px;
 	font-weight: 500;
-	padding: 5px 27px;
+	padding: 5px 15px;
 	background: $white;
 	border: 2px solid #ebedf4;
 
@@ -270,6 +273,10 @@ nav#TableOfContents > ul {
 }
 nav.nav-holder ul {
 	@extend %listreset;
+	.no-results {
+		margin-top: 5px;
+		color: orangered;
+	}
 }
 
 /* intro section styles */
@@ -1516,7 +1523,7 @@ nav.nav-holder ul {
 
 	.nav-holder {
 		display: none;
-
+		// box-shadow: inset 0 -10px 10px -10px rgba(0, 0, 0, 0.15);
 		@include media ('>=tablet') {
 			display: block;
 		}

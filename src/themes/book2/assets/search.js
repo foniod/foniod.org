@@ -6,8 +6,10 @@
 (function() {
   const input = document.querySelector('#book-search-input');
   const results = document.querySelector('#book-search-results');
+  const mainMenu = document.querySelector('.sidebar .nav-holder > ul');
 
   input.addEventListener('focus', init);
+  input.addEventListener('blur', restore);
   input.addEventListener('keyup', search);
 
   document.addEventListener('keypress', focusSearchFieldOnKeyPress);
@@ -61,6 +63,27 @@
 
       results.appendChild(li);
     });
+    
+    if (searchHits.length && input.value.length) {
+      mainMenu.classList.add('hide');
+    } else {
+      const noResults = document.createElement('li');
+      noResults.textContent = 'No results found';
+      noResults.classList.add('no-results');
+      results.appendChild(noResults);
+    }
+  }
+
+  function restore() {
+    // if there are search no results, and nothing in the search bar,
+    // - we show the regular menu and remove no results message
+    const searchHits = window.bookSearchIndex.search(input.value, 10);
+    if (!searchHits.length && !input.value.length) {
+      mainMenu.classList.remove('hide');
+      while (results.firstChild) {
+        results.removeChild(results.firstChild);
+      }
+    }
   }
 
   function loadScript(src, callback) {
