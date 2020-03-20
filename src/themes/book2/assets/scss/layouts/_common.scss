@@ -36,14 +36,15 @@ body {
 				}
 			}
 
-			.nav-holder {
+			.nav-holder > ul {
 				@include media ('>=tablet') {
-					max-height: calc(100vh - 230px);
+					max-height: calc(100vh - 230px - 112px);
 					overflow-y: auto;
+					padding-right: 15px;
 				}
 
 				@include media ('>=widescreen') {
-					max-height: calc(100vh - 255px);
+					max-height: calc(100vh - 255px - 112px);
 				}
 			}
 		}
@@ -1487,6 +1488,10 @@ nav.nav-holder ul {
 		text-align: right;
 		position: relative;
 		margin: 0;
+		.logo,
+		.form-search {
+			margin-right: 15px;
+		}
 	}
 
 	@include media ('>=widescreen') {
@@ -1496,7 +1501,7 @@ nav.nav-holder ul {
 	.fixed-block {
 		@include media ('>=tablet') {
 			margin-top: -68px;
-			padding: 15px 15px 70px 0;
+			padding: 15px 0 70px 0;
 			position: relative;
 		}
 
@@ -1525,6 +1530,9 @@ nav.nav-holder ul {
 		.form-search {
 			padding-left: 0;
 			padding-right: 0;
+		}
+		.logo {
+			display: none;
 		}
 	}
 
