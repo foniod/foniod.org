@@ -1,36 +1,31 @@
+{{ define "header" }}
+  {{ partial "common/header" . }}
+  {{ if default true (default .Site.Params.BookToC .Params.BookToC) }}
+    <input type="checkbox" class="hidden" id="toc-control" />
+    <aside class="hidden clearfix">
+      {{ template "toc" . }}
+    </aside>
+  {{ end }}
+{{ end }}
+
+{{ define "footer" }}
+  {{ partial "common/footer" . }}
+{{ end }}
+
+{{ define "install" }}
+  {{ partial "landing/install-section" . }}
+{{ end }}
+
+{{ define "uses" }}
+  {{ partial "landing/uses-section" . }}
+{{ end }}
+
 <body class="home-page">
 	<!-- main container of all the page elements -->
 	<div id="wrapper">
-		<a class="accessibility" href="#main">Skip to Content</a>
-		<!-- header of the page -->
-		<header id="header">
-			<div class="container">
-				<!-- page logo -->
-				<strong class="logo">
-					<a href="#">
-						<img src="svg/logo.svg" width="135" alt="Ingraind">
-					</a>
-				</strong>
-				<!-- main navigation opener -->
-				<a class="nav-opener" href="#">nav-opener<span></span></a>
-				<div class="drop">
-					<!-- main navigation of the page -->
-					<nav class="nav">
-						<ul class="menu">
-							<li class="active"><a href="/">Intro</a></li>
-							<li><a href="#">Documentation</a></li>
-							<li><a href="/api/redbpf/">API</a></li>
-							<li><a href="https://blog.redsift.com/category/labs/">Blog</a></li>
-						</ul>
-					</nav>
-					<!-- social networks -->
-					<ul class="social-networks">
-						<li><a href="#"><i class="icon-github"></i>github</a></li>
-						<li><a href="#"><i class="icon-twitter"></i>twitter</a></li>
-					</ul>
-				</div>
-			</div>
-		</header>
+		{{ template "header" . }}
+		<!-- active class on li  -->
+		
 		<!-- contain main informative part of the site -->
 		<main id="main">
 			<!-- intro section -->
@@ -44,7 +39,7 @@
 								<p>ingraind is an security monitoring agent for cloud native environments. Designed for high performance, easy extensibility.</p>
 								<p>Built on eBPF and Rust for no compromises.</p>
 
-								<a href="/docs/getting-started" class="btn">GET STARTED</a>
+								<a href="/docs/getting-started" class="btn">Get started</a>
 							</div>
 							<!-- interaction block -->
 							<div class="interaction-block">
@@ -88,115 +83,8 @@
 					</ul>
 				</div>
 			</div>
-			<!-- direction section -->
-			<section class="direction-section">
-				<div class="container">
-					<h1>Super easy to install</h1>
-					<!-- carousel navigation -->
-					<div class="carousel-nav-holder">
-						<button class="prev-btn hide"><i class="icon-arrow-left"></i>arrow-left</button>
-						<ul class="carousel-nav">
-							<li class="active">
-								<button>Configure</button>
-							</li>
-							<li>
-								<button>Install</button>
-							</li>
-							<li>
-								<button>Monitor</button>
-							</li>
-						</ul>
-						<button class="next-btn hide"><i class="icon-arrow-right"></i>arrow-right</button>
-					</div>
-					<!-- carousel -->
-					<div class="carousel">
-						<!-- carousel slide element -->
-						<div class="carousel-slide">
-							<div class="screen-block">
-								<img src="images/img-screen-01.jpg" alt="image description">
-							</div>
-							<div class="text-holder">
-								<h2 class="h3">Easy copy</h2>
-								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla imperdiet tristique consequat.</p>
-							</div>
-						</div>
-					</div>
-					<a href="#" class="btn">GO TO DOCUMENTATION</a>
-				</div>
-				<img src="svg/bg-img-02.svg" alt="image description" class="decor-bg hide">
-			</section>
-			<!-- built section -->
-			<section class="built-section">
-				<div class="container">
-					<div class="row">
-						<div class="tabset-holder">
-							<h1>Built for</h1>
-							<!-- tabs switcher -->
-							<ul class="tabset hide">
-								<li><a class="active" href="#tab1">CISOs</a></li>
-								<li><a href="#tab2">IT Security</a></li>
-								<li><a href="#tab3">Data Analysts</a></li>
-								<li><a href="#tab4">DevOps and Cloud Ops</a></li>
-							</ul>
-						</div>
-						<!-- tab content and accordion -->
-						<div class="tab-content accordion">
-							<!-- tab element -->
-							<div class="active tab-info" id="tab1">
-								<!-- accordion element opener -->
-								<a class="opener" href="#">CISOs <i class="icon-arrow-right"></i></a>
-								<!-- accordion slide element -->
-								<div class="slide">
-									<ul class="info-list">
-										<li>
-											<i class="icon-check"></i>
-											<strong class="h3">Analyze and optimize</strong>
-											<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-										</li>
-										<li>
-											<i class="icon-check"></i>
-											<strong class="h3">Implement effective</strong>
-											<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-										</li>
-										<li>
-											<i class="icon-check"></i>
-											<strong class="h3">Improve security without slowing down</strong>
-											<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-										</li>
-									</ul>
-								</div>
-							</div>
-							<!-- tab element -->
-							<div class="tab-info" id="tab2">
-								<!-- accordion element opener -->
-								<a class="opener" href="#">IT Security <i class="icon-arrow-right"></i></a>
-								<!-- accordion slide element -->
-								<div class="slide">
-									<p>2 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Exercitationem quaerat nesciunt ipsam error cum, totam cumque accusamus, asperiores neque. Id soluta ex distinctio omnis veritatis obcaecati, amet officiis accusamus voluptas error temporibus optio sapiente velit qui voluptatibus voluptatem sed beatae eveniet rem asperiores ipsa architecto non suscipit, sequi numquam? Suscipit.</p>
-								</div>
-							</div>
-							<!-- tab element -->
-							<div class="tab-info" id="tab3">
-								<!-- accordion element opener -->
-								<a class="opener" href="#">Data Analysts <i class="icon-arrow-right"></i></a>
-								<!-- accordion slide element -->
-								<div class="slide">
-									<p>3 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Exercitationem quaerat nesciunt ipsam error cum, totam cumque accusamus, asperiores neque. Id soluta ex distinctio omnis veritatis obcaecati, amet officiis accusamus voluptas error temporibus optio sapiente velit qui voluptatibus voluptatem sed beatae eveniet rem asperiores ipsa architecto non suscipit, sequi numquam? Suscipit.</p>
-								</div>
-							</div>
-							<!-- tab element -->
-							<div class="tab-info" id="tab4">
-								<!-- accordion element opener -->
-								<a class="opener" href="#">DevOps and Cloud Ops <i class="icon-arrow-right"></i></a>
-								<!-- accordion slide element -->
-								<div class="slide">
-									<p>4 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Exercitationem quaerat nesciunt ipsam error cum, totam cumque accusamus, asperiores neque. Id soluta ex distinctio omnis veritatis obcaecati, amet officiis accusamus voluptas error temporibus optio sapiente velit qui voluptatibus voluptatem sed beatae eveniet rem asperiores ipsa architecto non suscipit, sequi numquam? Suscipit.</p>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</section>
+			{{ template "install" . }}
+			{{ template "uses" . }}
 			<!-- integration section -->
 			<section class="integration-section">
 				<img class="decor-bg" src="svg/bg-img-03.svg" alt="image description">
@@ -255,21 +143,6 @@
 				</div>
 			</section>
 		</main>
-		<!-- footer of the page -->
-		<footer id="footer">
-			<div class="container">
-				<!-- copyright -->
-				<span class="copy">&copy; 2020 <a href="#">Red Sift</a>. All rights reserved.</span>
-				<div class="social-block">
-					<!-- social networks -->
-					<ul class="social-networks">
-						<li><strong class="title">Follow</strong></li>
-						<li><a href="#"><i class="icon-github"></i>github</a></li>
-						<li><a href="#"><i class="icon-twitter"></i>twitter</a></li>
-					</ul>
-				</div>
-			</div>
-		</footer>
-		<a class="accessibility" href="#wrapper">Back to top</a>
+		{{ template "footer" . }}
 	</div>
 </body>

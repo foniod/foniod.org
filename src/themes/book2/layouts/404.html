@@ -2,20 +2,22 @@
 <html lang="{{ .Site.Language.Lang }}">
 
   <head>
-    {{ partial "docs/html-head" . }}
+    {{ partial "common/html-head" . }}
     {{ partial "docs/inject/head" . }}
   </head>
 
-  <body>
-    <main class="flex justify-center">
-      <div>
-        <h1>404 Not Found</h1>
-        <a href="{{ "/" | relURL }}">Go Home</a>
-      </div>
-    </main>
-
-    {{ partial "docs/inject/body" . }}
-    {{ template "_internal/google_analytics_async.html" . }}
+  <body class="fixed-position">
+    <div id="wrapper">
+      {{ template "header" . }}
+      <main id="main">
+        <div class="container inner-container">
+          <section class="intro-section">
+            <h1>404 Not Found</h1>
+            <a href="{{ "/" | relURL }}">Go Home</a>
+          </section>
+        </div>
+      </main>
+    </div>
+    
   </body>
-
 </html>

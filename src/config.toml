@@ -6,5 +6,6 @@ theme = "book2"
 publishDir = "../"
 
 [params]
-BookMenuBundle = "/menu"
+MainMenuBundle = "/main-menu"
+BookMenuBundle = "/docs/menu"
 BookLogo = "svg/logo.svg"
