@@ -16,7 +16,7 @@
 			display: flex;
 		}
 		@include media ('>=desktop') {
-			min-height: 650px;
+			height: 600px;
 		}
 	}
 

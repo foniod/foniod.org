@@ -773,7 +773,7 @@ nav.nav-holder ul {
 		img {
 
 			@include media ('>=tablet') {
-				max-width: 100%;
+				max-width: 80%;
 				width: auto;
 			}
 		}
