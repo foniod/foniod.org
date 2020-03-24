@@ -15,6 +15,9 @@
 		@include media ('>=tablet') {
 			display: flex;
 		}
+		@include media ('>=desktop') {
+			min-height: 650px;
+		}
 	}
 
 	h1 {
