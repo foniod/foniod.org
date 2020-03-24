@@ -144,6 +144,30 @@ a {
 		color: $white;
 		background: darken($light-blue, 15%);
 	}
+
+	&.cta {
+		color: $black;
+		background: $orange;
+		i {
+			margin-right: 8px;
+		}
+		&:hover {
+			color: $black;
+			background: darken($orange, 15%);
+		}
+		&:active,
+		&:focus {
+			border-color: $light-blue;
+		}
+	}
+}
+
+// https://github.com/ntkme/github-buttons
+.interaction-list span {
+	height: 30px;
+	display: inline-block;
+	border: 1px solid $light-purple;
+	border-radius: 3px;
 }
 
 input[type='text'],
@@ -753,103 +777,6 @@ nav.nav-holder ul {
 				width: auto;
 			}
 		}
-	}
-}
-
-/* join section styles */
-.join-section {
-	padding: 15px 0 25px;
-	position: relative;
-
-	@include media ('>=tablet') {
-		padding: 15px 0 50px;
-	}
-
-	@include media ('>=desktop') {
-		padding: 83px 0 101px;
-	}
-
-	.container {
-		text-align: center;
-
-		@include media ('>=tablet') {
-			max-width: 465px;
-		}
-	}
-
-	.text-holder {
-		max-width: 300px;
-		text-align: center;
-		margin: 0 auto;
-
-		.decor-left,
-		.decor-right {
-
-			@include media ('>=tablet') {
-				position: absolute;
-				left: -55px;
-				top: 43%;
-				transform: translateY(-50%);
-				width: 38%;
-			}
-
-			@include media ('>=desktop') {
-				top: 50%;
-				width: 40%;
-			}
-
-			@include media ('>=widescreen') {
-				width: 43%;
-			}
-
-			img {
-				width: 100%;
-			}
-		}
-
-		.decor-right {
-			@include media ('>=tablet') {
-				left: auto;
-				right: -46px;
-				top: 37%;
-			}
-
-			@include media ('>=desktop') {
-				top: 47%;
-			}
-		}
-	}
-
-	h1 {
-		margin-bottom: 10px;
-		position: relative;
-
-		@include media ('>=tablet') {
-			margin-bottom: 7px;
-		}
-	}
-
-	p {
-		margin-bottom: 31px;
-	}
-}
-
-/* sing up form styles */
-.sing-up-form {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: stretch;
-
-	input[type="email"] {
-		width: calc(100% - 98px);
-		border-right: none;
-	}
-
-	.btn {
-		min-width: 98px;
-		border-radius: 0 3px 3px 0;
-		height: 40px;
-		border: none;
 	}
 }
 
