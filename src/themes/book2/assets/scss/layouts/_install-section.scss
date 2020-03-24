@@ -10,7 +10,7 @@
 	}
 
 	@include media ('>=desktop') {
-		padding: 106px 0 48px;
+		padding: 5px 0 48px;
 	}
 
 	.container {
@@ -21,7 +21,7 @@
 		margin-bottom: 26px;
 
 		@include media ('>=desktop') {
-			margin-bottom: 40px;
+			margin-bottom: 85px;
 		}
 	}
 
