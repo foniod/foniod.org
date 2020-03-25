@@ -1726,7 +1726,7 @@ code.code-block {
 
 /* sing up form styles */
 
-.sing-up-form {
+.sign-up-form {
 	display: -webkit-box;
 	display: -ms-flexbox;
 	display: flex;
@@ -1737,12 +1737,12 @@ code.code-block {
 	align-items: stretch;
 }
 
-.sing-up-form input[type="email"] {
+.sign-up-form input[type="email"] {
 	width: calc(100% - 98px);
 	border-right: none;
 }
 
-.sing-up-form .btn {
+.sign-up-form .btn {
 	min-width: 98px;
 	border-radius: 0 3px 3px 0;
 	height: 40px;
@@ -2828,4 +2828,4 @@ code.code-block {
 		display: block;
 	}
 }
-
+

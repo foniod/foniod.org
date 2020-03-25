@@ -1,0 +1,276 @@
+// .built-section uses section (tabs)
+/* built section styles */
+.built-section {
+	padding: 20px 0;
+
+	@include media ('>=tablet') {
+		padding: 50px 0;
+	}
+
+	@include media ('>=desktop') {
+		padding: 118px 0;
+	}
+
+	.row {
+		@include media ('>=tablet') {
+			display: flex;
+		}
+		@include media ('>=desktop') {
+			height: 600px;
+		}
+	}
+
+	h1 {
+		margin-bottom: 27px;
+
+		@include media ('>=desktop') {
+			margin-bottom: 42px;
+		}
+	}
+
+	.tabset-holder,
+	.tab-content {
+		@include media ('>=tablet') {
+			width: 50%;
+		}
+	}
+
+	.tabset-holder {
+		@include media ('>=tablet') {
+			padding-right: 30px;
+		}
+
+		@include media ('>=desktop') {
+			width: 48%;
+		}
+
+		@include media ('>=widescreen') {
+			padding-right: 95px;
+		}
+	}
+
+	.tab-content {
+		@include media ('>=tablet') {
+			padding-top: 14px;
+		}
+
+		@include media ('>=desktop') {
+			width: 52%;
+		}
+	}
+}
+
+/* tabs switcher and accordion element opener */
+.tabset a,
+.accordion .opener {
+	@include animate(background margin-bottom);
+
+	display: block;
+	font-size: 18px;
+	font-weight: 700;
+	letter-spacing: .86px;
+	padding: 12px 50px 12px 80px;
+	margin-bottom: 10px;
+	color: $white;
+	background: #3d4853;
+	box-shadow: 0 5px 10px rgba(13, 13, 26, .5);
+	position: relative;
+
+	@include media ('>=tablet') {
+		background: transparent;
+		margin: 0;
+		box-shadow: none;
+		padding-right: 12px;
+	}
+
+	@include media ('>=desktop') {
+		font-size: 21px;
+		letter-spacing: 1px;
+		padding: 22px 22px 22px 80px;
+	}
+
+	&:hover {
+		color: $white;
+	}
+
+	&:hover,
+	&.active {
+		@include media ('>=tablet') {
+			background: #3d4853;
+			box-shadow: 0 5px 10px rgba(13, 13, 26, .5);
+		}
+
+		&:after {
+			@include media ('>=tablet') {
+				opacity: 1;
+				visibility: visible;
+			}
+		}
+	}
+
+	&:before,
+	&:after {
+		content: "";
+		position: absolute;
+	}
+
+	&:before {
+		width: 16px;
+		height: 16px;
+		background-color: $light-blue;
+		border-radius: 50%;
+		top: 50%;
+		left: 32px;
+		transform: translateY(-50%);
+	}
+
+	&:after {
+		@include animate(opacity visibility);
+
+		height: 4px;
+		background: $light-blue;
+		top: 0;
+		left: 0;
+		right: 0;
+		opacity: 0;
+		visibility: hidden;
+	}
+
+	i {
+		@include animate(transform);
+
+		font-size: 10px;
+		color: $light-purple;
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+		right: 27px;
+	}
+}
+
+.tabset {
+	@extend %listreset;
+}
+
+/* tab content and accordion styles */
+.tab-content.accordion {
+
+	.tab-info {
+		@include media ('>=tablet') {
+			display: none;
+		}
+
+		&.active {
+			@include media ('>=tablet') {
+				display: block;
+			}
+
+			.opener {
+				margin-bottom: 0;
+
+				&:after {
+					opacity: 1;
+					visibility: visible;
+				}
+
+				i {
+					transform: translateY(-50%) rotate(90deg);
+				}
+			}
+
+			.slide {
+				@include media ('<tablet') {
+					display: block;
+				}
+			}
+		}
+	}
+
+	.opener {
+		@include media ('>=tablet') {
+			display: none;
+		}
+	}
+
+	/* accordion slide element styles */
+	.slide {
+		display: none;
+		padding: 30px 10px 5px 32px;
+		background: #0d0d1a;
+
+		@include media ('>=tablet') {
+			display: block;
+			padding: 70px 0 0 32px;
+			background: transparent;
+			border-top: 2px solid $white;
+		}
+
+		@include media ('>=desktop') {
+			padding: 75px 56px 0 66px;
+		}
+	}
+
+	.info-list {
+		@extend %listreset;
+
+		font-size: 14px;
+		font-weight: 500;
+		line-height: 2;
+		letter-spacing: .5px;
+
+		@include media ('>=desktop') {
+			font-size: 16px;
+			line-height: 1.75;
+		}
+
+		li {
+			padding: 0 0 6px 50px;
+			position: relative;
+
+			@include media ('>=desktop') {
+				padding: 0 0 15px 55px;
+			}
+
+			&:nth-child(3n+1) {
+				i {
+					color: $orange;
+				}
+			}
+
+			&:nth-child(3n+2) {
+				i {
+					color: $white;
+				}
+			}
+
+			&:nth-child(3n+3) {
+				i {
+					color: $light-blue;
+				}
+			}
+		}
+
+		i {
+			font-size: 24px;
+			position: absolute;
+			top: -4px;
+			left: 0;
+
+			@include media ('>=desktop') {
+				top: 1px;
+			}
+		}
+
+		.h3 {
+			line-height: 1.16666;
+			letter-spacing: 1.55px;
+
+			@include media ('>=desktop') {
+				font-size: 21px;
+				line-height: 1.285714;
+				letter-spacing: 1.81px;
+				margin-bottom: 20px;
+			}
+		}
+	}
+}

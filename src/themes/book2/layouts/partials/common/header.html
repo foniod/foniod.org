@@ -1,0 +1,30 @@
+<a class="accessibility" href="#main">Skip to Content</a>
+<header id="header">
+  <div class="container">
+    <!-- page logo -->
+    <strong class="logo">
+      <a href="#">
+        {{- with .Site.Params.BookLogo -}}
+        <img src="{{ . | relURL }}" alt="Ingraind" width="135"/>
+        {{- end -}}
+      </a>
+    </strong>
+    <!-- main navigation opener -->
+    <a class="nav-opener" href="#">nav-opener<span></span></a>
+    <div class="drop">
+      <!-- main navigation of the page -->
+      <nav class="nav main-menu">
+        {{ partial "docs/inject/menu-before" . }}
+        {{ partial "docs/menu-hugo" .Site.Menus.before }}
+
+        {{ if .Site.Params.MainMenuBundle }}
+          {{ partial "common/main-menu-bundle" . }}
+        {{ end }}
+
+        {{ partial "docs/menu-hugo" .Site.Menus.after }}
+        {{ partial "docs/inject/menu-after" . }}
+      </nav>
+      {{ template "social" . }}
+    </div>
+  </div>
+</header>

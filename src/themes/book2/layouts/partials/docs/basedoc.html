@@ -1,0 +1,71 @@
+{{ define "header" }}
+  {{ partial "common/header" . }}
+  {{ if default true (default .Site.Params.BookToC .Params.BookToC) }}
+    <input type="checkbox" class="hidden" id="toc-control" />
+    <aside class="hidden clearfix">
+      {{ template "toc" . }}
+    </aside>
+  {{ end }}
+{{ end }}
+
+{{ define "menu" }}
+  {{ partial "docs/menu" . }}
+{{ end }}
+
+{{ define "social" }}
+  {{ partial "docs/social" . }}
+{{ end }}
+
+{{ define "footer" }}
+  {{ partial "common/footer" . }}
+{{ end }}
+
+{{ define "comments" }}
+  {{ if and .Content (default true (default .Site.Params.BookComments .Params.BookComments)) }}
+  <div class="book-comments">
+    {{- partial "docs/comments" . -}}
+  </div>
+  {{ end }}
+{{ end }}
+
+{{ define "main" }}
+  <article class="markdown">
+    {{- .Content -}}
+  </article>
+{{ end }}
+
+{{ define "toc" }}
+  {{ partial "docs/toc" . }}
+{{ end }}
+
+<body class="fixed-position">
+	<div id="wrapper">
+		{{ template "header" . }}
+
+		<!-- contain main informative part of the site -->
+		<main id="main">
+			<div class="container inner-container">
+				<!-- sidebar -->
+				<aside class="sidebar">
+				  <div class="fixed-block">
+				    {{ template "menu" . }} <!-- Left menu Content -->
+				  </div>
+				</aside>
+				<!-- main content -->
+				<div class="content">
+				  {{ template "main" . }} <!-- Page Content -->
+				</div>
+				<!-- aside -->
+				{{ if default true (default .Site.Params.BookToC .Params.BookToC) }}
+				<aside class="aside hide">
+					<div class="fixed-block">
+					  <h3>Contents</h3>
+					  {{ template "toc" . }} <!-- Table of Contents -->
+					</div>
+				</aside>
+				{{ end }}
+			</div>
+		</main>
+		{{ template "footer" . }}
+	</div>
+</body>
