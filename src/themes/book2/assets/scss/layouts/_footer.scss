@@ -8,13 +8,6 @@
 	color: $light-purple;
 	background: $dark-blue;
 
-	@include media ('>=tablet') {
-	    position: fixed;
-	    bottom: 0;
-	    left: 0;
-	    width: 100%;
-	}
-
 	.container {
 		@include media ('>=tablet') {
 			display: flex;

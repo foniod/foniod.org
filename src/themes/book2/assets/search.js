@@ -4,8 +4,8 @@
 {{ $searchData := resources.Get "search-data.js" | resources.ExecuteAsTemplate $searchDataFile . | resources.Minify | resources.Fingerprint }}
 
 (function() {
-  const input = document.querySelector('#book-search-input');
-  const results = document.querySelector('#book-search-results');
+  const input = document.querySelector('#search-input');
+  const results = document.querySelector('#search-results');
   const mainMenu = document.querySelector('.sidebar .nav-holder > ul');
 
   input.addEventListener('focus', init);

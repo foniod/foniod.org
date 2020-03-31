@@ -1,4 +1,12 @@
 body {
+
+	#main {
+		padding-top: 63px;
+		@include media ('>=tablet') {
+			padding-top: 72px;
+		}
+	}
+
 	/* home page common styles */
 	&.home-page {
 		color: $light-purple;
@@ -81,12 +89,8 @@ body {
 
 .container {
 	max-width: 1130px;
-	padding: 0 15px;
+	padding: 0 32px;
 	margin: 0 auto;
-
-	@include media ('>=phone') {
-		padding: 0 30px;
-	}
 
 	&.inner-container {
 		max-width: 1290px;
@@ -94,7 +98,6 @@ body {
 
 		@include media ('>=tablet') {
 			display: flex;
-			// flex-wrap: wrap;
 		}
 	}
 }
@@ -115,9 +118,8 @@ h1, .h1 {
 
 a {
 	@include animate(color);
-
+	font-weight: 600;
 	text-decoration: none;
-
 	&:hover {
 		color: darken($light-blue, 15%);
 	}
@@ -146,6 +148,16 @@ a {
 	}
 
 	&.cta {
+		i {
+			margin-right: 8px;
+		}
+		&:active,
+		&:focus {
+			border-color: $light-blue;
+		}
+	}
+
+	&.cta-orange {
 		color: $black;
 		background: $orange;
 		i {
@@ -157,7 +169,7 @@ a {
 		}
 		&:active,
 		&:focus {
-			border-color: $light-blue;
+			border-color: lighten($orange, 15%);;
 		}
 	}
 }
@@ -210,7 +222,7 @@ input[type='submit'],
 a,
 button {
 	&:focus {
-		outline: 2px solid $orange;
+		outline: none;
 	}
 }
 
@@ -220,8 +232,10 @@ code {
 	font-family: $base-font-monosnape;
 	font-weight: 500;
 	line-height: 1.75;
-	padding: 0 2px;
+	padding: 0 0.125rem;
+	margin: 0.125rem 0;
 	background: $light-gray;
+	border-radius: 0.25rem;
 
 	&.type {
 		font-weight: 600;
@@ -307,7 +321,7 @@ nav.nav-holder ul {
 .intro-section {
 	font-size: 18px;
 	font-weight: 500;
-	text-align: center;
+	text-align: left;
 	padding: 16px 0;
 	position: relative;
 
@@ -341,11 +355,11 @@ nav.nav-holder ul {
 	.text-holder {
 		@include media ('>=tablet') {
 			width: 50%;
-			padding: 20px 20px 20px 0;
+			padding: 20px 32px 20px 0;
 		}
 
 		@include media ('>=desktop') {
-			padding: 54px 20px 54px 0;
+			padding: 54px 64px 54px 0;
 		}
 
 		@include media ('>=widescreen') {
@@ -695,7 +709,7 @@ nav.nav-holder ul {
 			margin-bottom: 37px;
 		}
 
-		h1 {
+		h3.h1 {
 			margin: 0;
 
 			@include media ('>=tablet') {
@@ -909,14 +923,41 @@ nav.nav-holder ul {
 		@include media ('>=widescreen') {
 			margin-bottom: 32px;
 		}
+	}
+
+	
+
+	.search-bar {
+		position: relative;
+
+		label {
+			position: absolute;
+			top: 0.125rem;
+			left: 0.25rem;
+			font-size: 0.75rem;
+			font-weight: 600;
+			color: $light-blue;
+			user-select: none;
+		}
 
 		input[type="search"] {
 			width: 100%;
-			height: 48px;
+			height: 60px;
 			max-width: 100%;
-
+			margin-bottom: 0.5rem;
+			padding: 0.5rem 0.5rem 0.25rem;
+			font-size: 1rem;
+			line-height: 1.75rem;
+			background: transparent;
+			border: none;
+			border-bottom: 1px solid rgba(0, 0, 0, 0.42);
+			transition: all 0.2s ease-in-out;
 			@include media ('>=tablet') {
 				max-width: 216px;
+			}
+			&:focus {
+				background: darken($light-gray, 5%);
+				border-bottom: 2px solid $light-blue;
 			}
 		}
 	}
