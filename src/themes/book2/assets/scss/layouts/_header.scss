@@ -1,18 +1,21 @@
 /* header styles */
 #header {
-	padding: 10px 0;
+	padding: 16px 0;
 	background: $dark-blue;
 	position: relative;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	z-index: 3;
+	@include media ('>=tablet') {
+		padding: 10px 0;
+	}
 
 	.container {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		padding: 0 15px;
-
-		@include media ('>=tablet') {
-			padding: 0 30px;
-		}
 	}
 }
 
@@ -34,7 +37,6 @@
 	text-indent: -9999px;
 	overflow: hidden;
 	position: relative;
-	z-index: 10;
 
 	@include media ('>=tablet') {
 		display: none;
@@ -95,11 +97,10 @@
 		padding: 24px 15px;
 		opacity: 0;
 		visibility: hidden;
-		z-index: 2;
 		&.mobile-open {
 			opacity: 1;
 			visibility: visible;
-			box-shadow: rgba(255,255,255, .3) 0 12px 12px -9px, rgba(255,255,255, .1)5px 5px 8px -4px;
+			box-shadow: rgba($dark-blue, .6) 0 12px 12px -9px, rgba($dark-blue, .3)5px 5px 8px -4px;
 		}
 	}
 }

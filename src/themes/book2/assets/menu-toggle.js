@@ -1,8 +1,20 @@
 (function() {
+  const body = document.querySelector("body");
+  const mainMenu = document.querySelector(".main-menu");
   const menuButton = document.querySelector(".nav-opener");
+
+  if (window.location && window.location.pathname.includes("docs/configuration")) {
+    const menuItems = Array.from(mainMenu.querySelectorAll("a"));
+    const active = menuItems.find(i => i.pathname.includes("docs/configuration"));
+    if (!active.classList.contains("active")) {
+      active.classList.add("active");
+    }
+  }
+
   const toggleMenu = () => {
     const mainMenu = document.querySelector(".drop");
     mainMenu.classList.toggle("mobile-open");
+    body.classList.toggle("nav-active");
 
     const docsMenu = document.querySelector(".sidebar");
     if (docsMenu) {

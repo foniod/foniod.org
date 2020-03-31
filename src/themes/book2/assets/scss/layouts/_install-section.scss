@@ -17,7 +17,7 @@
 		max-width: 1150px;
 	}
 
-	h1 {
+	h3.h1 {
 		margin-bottom: 26px;
 
 		@include media ('>=desktop') {
@@ -249,7 +249,7 @@
 		text-align: right;
 	}
 
-	.h3 {
+	h3 {
 		letter-spacing: 1.55px;
 		margin-bottom: 20px;
 
