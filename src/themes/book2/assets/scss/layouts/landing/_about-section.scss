@@ -66,17 +66,19 @@
 			padding-top: 138px;
 		}
 		@include media ('>=desktop') {
-			padding-top: 95px;
+			padding-top: 50px;
+			padding-bottom: 50px;
 			padding-left: calc(25% + 90px);
-			p:not(:nth-child(3)) {
+			p {
 				font-size: 1.125rem;
 				line-height: 1.5;
 				letter-spacing: 2.11px;
 			}
 		}
-		em {
-			font-style: normal;
-			color: $light-purple;
-		}
+	}
+
+	.center-text {
+		text-align: center;
+		margin-top: 2rem;
 	}
 }
