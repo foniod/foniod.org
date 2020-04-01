@@ -37,6 +37,10 @@
 <span id="37">37</span>
 <span id="38">38</span>
 <span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright 2019 Authors of Red Sift</span>
 <span class="comment">//</span>
@@ -56,6 +60,10 @@
     <span class="ident">IO</span>(::<span class="ident">std</span>::<span class="ident">io</span>::<span class="ident">Error</span>),
     <span class="ident">Uname</span>,
     <span class="ident">Reloc</span>,
+    <span class="ident">LibraryNotFound</span>(<span class="ident">String</span>),
+    <span class="ident">SymbolNotFound</span>(<span class="ident">String</span>),
+    <span class="ident">ProgramAlreadyLoaded</span>,
+    <span class="ident">ProgramNotLoaded</span>
 }
 
 <span class="kw">pub</span> <span class="kw">type</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="op">=</span> ::<span class="ident">std</span>::<span class="ident">result</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">Error</span><span class="op">&gt;</span>;

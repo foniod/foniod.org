@@ -57,6 +57,7 @@
 <span id="57">57</span>
 <span id="58">58</span>
 <span id="59">59</span>
+<span id="60">60</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright 2019 Authors of Red Sift</span>
 <span class="comment">//</span>
@@ -88,7 +89,7 @@ a cargo subcommand to simplify creating and building eBPF programs.
 
 This is what `redbpf_probes` and `redbpf_macros` look like in action:
 
-```
+```no_run
 #![no_std]
 #![no_main]
 use redbpf_probes::xdp::prelude::*;
@@ -116,6 +117,7 @@ pub fn block_port_80(ctx: XdpContext) -&gt; XdpResult {
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">maps</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">net</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">socket_filter</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">uprobe</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">xdp</span>;
 </pre></div>
 </section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../";window.currentCrate = "redbpf_probes";</script><script src="../../aliases.js"></script><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>

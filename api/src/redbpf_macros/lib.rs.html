@@ -323,6 +323,46 @@
 <span id="323">323</span>
 <span id="324">324</span>
 <span id="325">325</span>
+<span id="326">326</span>
+<span id="327">327</span>
+<span id="328">328</span>
+<span id="329">329</span>
+<span id="330">330</span>
+<span id="331">331</span>
+<span id="332">332</span>
+<span id="333">333</span>
+<span id="334">334</span>
+<span id="335">335</span>
+<span id="336">336</span>
+<span id="337">337</span>
+<span id="338">338</span>
+<span id="339">339</span>
+<span id="340">340</span>
+<span id="341">341</span>
+<span id="342">342</span>
+<span id="343">343</span>
+<span id="344">344</span>
+<span id="345">345</span>
+<span id="346">346</span>
+<span id="347">347</span>
+<span id="348">348</span>
+<span id="349">349</span>
+<span id="350">350</span>
+<span id="351">351</span>
+<span id="352">352</span>
+<span id="353">353</span>
+<span id="354">354</span>
+<span id="355">355</span>
+<span id="356">356</span>
+<span id="357">357</span>
+<span id="358">358</span>
+<span id="359">359</span>
+<span id="360">360</span>
+<span id="361">361</span>
+<span id="362">362</span>
+<span id="363">363</span>
+<span id="364">364</span>
+<span id="365">365</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright 2019 Authors of Red Sift</span>
 <span class="comment">//</span>
@@ -349,7 +389,7 @@ to simplify creating and building eBPF programs.
 
 # Example
 
-```
+```no_run
 #![no_std]
 #![no_main]
 use redbpf_probes::xdp::prelude::*;
@@ -412,14 +452,14 @@ fn example_xdp_probe(ctx: XdpContext) -&gt; XdpResult {
 <span class="doccomment">/// and the license. The special version code `0xFFFFFFFE` can be used to signify</span>
 <span class="doccomment">/// any kernel version.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// #Example</span>
+<span class="doccomment">/// # Example</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">/// #![no_std]</span>
-<span class="doccomment">/// #![no_main]</span>
-<span class="doccomment">/// use redbpf_probes::xdp::prelude::*;</span>
-<span class="doccomment">///</span>
+<span class="doccomment">/// ```no_run</span>
+<span class="doccomment">/// # #![no_std]</span>
+<span class="doccomment">/// # #![no_main]</span>
+<span class="doccomment">/// # use redbpf_macros::program;</span>
 <span class="doccomment">/// program!(0xFFFFFFFE, &quot;GPL&quot;);</span>
+<span class="doccomment">/// # fn main() {}</span>
 <span class="doccomment">/// ```</span>
 <span class="doccomment">///</span>
 <span class="attribute">#[<span class="ident">proc_macro</span>]</span>
@@ -477,9 +517,14 @@ fn example_xdp_probe(ctx: XdpContext) -&gt; XdpResult {
 <span class="doccomment">/// maps](https://ingraind.org/api/redbpf_probes/maps/index.html).</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// # Example</span>
-<span class="doccomment">/// ```</span>
+<span class="doccomment">/// ```no_run</span>
+<span class="doccomment">/// # use redbpf_probes::kprobe::prelude::*;</span>
 <span class="doccomment">/// #[map(&quot;dns_queries&quot;)]</span>
-<span class="doccomment">/// static mut queries: PerfMap&lt;Query&gt; = PerfMap::new();</span>
+<span class="doccomment">/// static mut queries: PerfMap&lt;Query&gt; = PerfMap::with_max_entries(1024);</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// struct Query {</span>
+<span class="doccomment">/// // ...</span>
+<span class="doccomment">/// }</span>
 <span class="doccomment">/// ```</span>
 <span class="attribute">#[<span class="ident">proc_macro_attribute</span>]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">map</span>(<span class="ident">attrs</span>: <span class="ident">TokenStream</span>, <span class="ident">item</span>: <span class="ident">TokenStream</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenStream</span> {
@@ -539,13 +584,12 @@ fn example_xdp_probe(ctx: XdpContext) -&gt; XdpResult {
 <span class="doccomment">/// Attribute macro that must be used to define [`kprobes`](https://www.kernel.org/doc/Documentation/kprobes.txt).</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// # Example</span>
-<span class="doccomment">/// ```</span>
+<span class="doccomment">/// ```no_run</span>
 <span class="doccomment">/// use redbpf_probes::kprobe::prelude::*;</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// #[kprobe(&quot;__x64_sys_clone&quot;)]</span>
-<span class="doccomment">/// fn clone_enter(registers: Registers) {</span>
+<span class="doccomment">/// fn clone_enter(regs: Registers) {</span>
 <span class="doccomment">///     // this is executed when clone() is invoked</span>
-<span class="doccomment">///     ...</span>
 <span class="doccomment">/// }</span>
 <span class="doccomment">/// ```</span>
 <span class="attribute">#[<span class="ident">proc_macro_attribute</span>]</span>
@@ -559,7 +603,7 @@ fn example_xdp_probe(ctx: XdpContext) -&gt; XdpResult {
 <span class="doccomment">/// Attribute macro that must be used to define [`kretprobes`](https://www.kernel.org/doc/Documentation/kprobes.txt).</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// # Example</span>
-<span class="doccomment">/// ```</span>
+<span class="doccomment">/// ```no_run</span>
 <span class="doccomment">/// use redbpf_probes::kprobe::prelude::*;</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// #[kretprobe(&quot;__x64_sys_clone&quot;)]</span>
@@ -575,18 +619,55 @@ fn example_xdp_probe(ctx: XdpContext) -&gt; XdpResult {
     <span class="ident">probe_impl</span>(<span class="string">&quot;kretprobe&quot;</span>, <span class="ident">attrs</span>, <span class="ident">wrapper</span>, <span class="ident">name</span>).<span class="ident">into</span>()
 }
 
+<span class="doccomment">/// Attribute macro that must be used to define [`uprobes`](https://www.kernel.org/doc/Documentation/trace/uprobetracer.txt).</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Example</span>
+<span class="doccomment">/// ```no_run</span>
+<span class="doccomment">/// use redbpf_probes::uprobe::prelude::*;</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// #[uprobe]</span>
+<span class="doccomment">/// fn getaddrinfo(regs: Registers) {</span>
+<span class="doccomment">///     // this is executed when getaddrinfo() is invoked</span>
+<span class="doccomment">/// }</span>
+<span class="doccomment">/// ```</span>
+<span class="attribute">#[<span class="ident">proc_macro_attribute</span>]</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">uprobe</span>(<span class="ident">attrs</span>: <span class="ident">TokenStream</span>, <span class="ident">item</span>: <span class="ident">TokenStream</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenStream</span> {
+    <span class="kw">let</span> <span class="ident">item</span> <span class="op">=</span> <span class="macro">parse_macro_input</span><span class="macro">!</span>(<span class="ident">item</span> <span class="kw">as</span> <span class="ident">ItemFn</span>);
+    <span class="kw">let</span> <span class="ident">name</span> <span class="op">=</span> <span class="ident">item</span>.<span class="ident">sig</span>.<span class="ident">ident</span>.<span class="ident">to_string</span>();
+    <span class="kw">let</span> <span class="ident">wrapper</span> <span class="op">=</span> <span class="ident">wrap_kprobe</span>(<span class="ident">item</span>);
+    <span class="ident">probe_impl</span>(<span class="string">&quot;uprobe&quot;</span>, <span class="ident">attrs</span>, <span class="ident">wrapper</span>, <span class="ident">name</span>).<span class="ident">into</span>()
+}
+
+<span class="doccomment">/// Attribute macro that must be used to define [`uretprobes`](https://www.kernel.org/doc/Documentation/trace/uprobetracer.txt).</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Example</span>
+<span class="doccomment">/// ```no_run</span>
+<span class="doccomment">/// use redbpf_probes::uprobe::prelude::*;</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// #[uretprobe]</span>
+<span class="doccomment">/// fn getaddrinfo(regs: Registers) {</span>
+<span class="doccomment">///     // this is executed when getaddrinfo() returns</span>
+<span class="doccomment">/// }</span>
+<span class="doccomment">/// ```</span>
+<span class="attribute">#[<span class="ident">proc_macro_attribute</span>]</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">uretprobe</span>(<span class="ident">attrs</span>: <span class="ident">TokenStream</span>, <span class="ident">item</span>: <span class="ident">TokenStream</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenStream</span> {
+    <span class="kw">let</span> <span class="ident">item</span> <span class="op">=</span> <span class="macro">parse_macro_input</span><span class="macro">!</span>(<span class="ident">item</span> <span class="kw">as</span> <span class="ident">ItemFn</span>);
+    <span class="kw">let</span> <span class="ident">name</span> <span class="op">=</span> <span class="ident">item</span>.<span class="ident">sig</span>.<span class="ident">ident</span>.<span class="ident">to_string</span>();
+    <span class="kw">let</span> <span class="ident">wrapper</span> <span class="op">=</span> <span class="ident">wrap_kprobe</span>(<span class="ident">item</span>);
+    <span class="ident">probe_impl</span>(<span class="string">&quot;uretprobe&quot;</span>, <span class="ident">attrs</span>, <span class="ident">wrapper</span>, <span class="ident">name</span>).<span class="ident">into</span>()
+}
+
 <span class="doccomment">/// Attribute macro that must be used to define [`XDP` probes](https://www.iovisor.org/technology/xdp).</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// See also the [`XDP` API provided by</span>
 <span class="doccomment">/// `redbpf-probes`](https://ingraind.org/api/redbpf_probes/xdp/index.html).</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// # Example</span>
-<span class="doccomment">/// ```</span>
+<span class="doccomment">/// ```no_run</span>
 <span class="doccomment">/// use redbpf_probes::xdp::prelude::*;</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// #[xdp]</span>
-<span class="doccomment">/// fn example_xdp_probe(ctx: XdpContext) -&gt; XdpResult {</span>
-<span class="doccomment">///</span>
+<span class="doccomment">/// fn probe(ctx: XdpContext) -&gt; XdpResult {</span>
 <span class="doccomment">///     // do something with the packet</span>
 <span class="doccomment">///</span>
 <span class="doccomment">///     Ok(XdpAction::Pass)</span>
@@ -620,12 +701,11 @@ fn example_xdp_probe(ctx: XdpContext) -&gt; XdpResult {
 <span class="doccomment">/// `redbpf-probes`](https://ingraind.org/api/redbpf_probes/socket_filter/index.html).</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// # Example</span>
-<span class="doccomment">/// ```</span>
+<span class="doccomment">/// ```no_run</span>
 <span class="doccomment">/// use redbpf_probes::socket_filter::prelude::*;</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// #[socket_filter]</span>
-<span class="doccomment">/// fn example_socket_filter(skb: SkBuff) -&gt; SkBuffResult {</span>
-<span class="doccomment">///     ...</span>
+<span class="doccomment">/// fn probe(skb: SkBuff) -&gt; SkBuffResult {</span>
 <span class="doccomment">///     Ok(SkBuffAction::SendToUserspace)</span>
 <span class="doccomment">/// }</span>
 <span class="doccomment">/// ```</span>

@@ -2,12 +2,7 @@
 <p>Takes two arguments, the <code>LINUX_VERSION_CODE</code> the program is compatible with,
 and the license. The special version code <code>0xFFFFFFFE</code> can be used to signify
 any kernel version.</p>
-<p>#Example</p>
-
+<h1 id="example" class="section-header"><a href="#example">Example</a></h1>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="attribute">#![<span class="ident">no_std</span>]</span>
-<span class="attribute">#![<span class="ident">no_main</span>]</span>
-<span class="kw">use</span> <span class="ident">redbpf_probes</span>::<span class="ident">xdp</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
-
 <span class="macro">program</span><span class="macro">!</span>(<span class="number">0xFFFFFFFE</span>, <span class="string">&quot;GPL&quot;</span>);</pre></div>
 </div></section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../../";window.currentCrate = "redbpf_probes";</script><script src="../../../aliases.js"></script><script src="../../../main.js"></script><script defer src="../../../search-index.js"></script></body></html>

@@ -164,7 +164,6 @@
 <span id="164">164</span>
 <span id="165">165</span>
 <span id="166">166</span>
-<span id="167">167</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright 2019-2020 Authors of Red Sift</span>
 <span class="comment">//</span>
@@ -184,10 +183,9 @@ For an overview of XDP and how it works, see
 
 Block all traffic directed to port 80:
 
-```
+```no_run
 #![no_std]
 #![no_main]
-use redbpf_probes::bindings::*;
 use redbpf_probes::xdp::prelude::*;
 
 program!(0xFFFFFFFE, &quot;GPL&quot;);

@@ -131,8 +131,6 @@
 <span id="131">131</span>
 <span id="132">132</span>
 <span id="133">133</span>
-<span id="134">134</span>
-<span id="135">135</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright 2019-2020 Authors of Red Sift</span>
 <span class="comment">//</span>
@@ -157,7 +155,6 @@ In the following example, all TCP traffic is forwarded to userspace.
 use core::mem;
 use memoffset::offset_of;
 use redbpf_probes::socket_filter::prelude::*;
-use redbpf_probes::bindings::*;
 
 #[socket_filter]
 fn forward_tcp(skb: SkBuff) -&gt; SkBuffResult {
@@ -233,11 +230,10 @@ fn forward_tcp(skb: SkBuff) -&gt; SkBuffResult {
     <span class="doccomment">/// forward them to userspace or not.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Example</span>
-    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// ```no_run</span>
     <span class="doccomment">/// use core::mem;</span>
     <span class="doccomment">/// use memoffset::offset_of;</span>
     <span class="doccomment">/// use redbpf_probes::socket_filter::prelude::*;</span>
-    <span class="doccomment">/// use redbpf_probes::bindings::*;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// #[socket_filter]</span>
     <span class="doccomment">/// fn forward_tcp(skb: SkBuff) -&gt; SkBuffResult {</span>

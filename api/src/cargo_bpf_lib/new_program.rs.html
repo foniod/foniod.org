@@ -229,7 +229,7 @@ use cty::*;
 use cty::*;
 
 // use one of the preludes
-// use redbpf_probes::kprobes::prelude::*;
+// use redbpf_probes::kprobe::prelude::*;
 // use redbpf_probes::xdp::prelude::*;
 // use redbpf_probes::socket_filter::prelude::*;
 
@@ -243,16 +243,16 @@ program!(0xFFFFFFFE, &quot;GPL&quot;);
 // #[map(&quot;syscall_events&quot;)]
 // static mut syscall_events: PerfMap&lt;SomeEvent&gt; = PerfMap::with_max_entries(1024);
 //
-// #[kprobe(&quot;syscall_enter&quot;)]
+// #[kprobe(&quot;__x64_sys_open&quot;)]
 // fn syscall_enter(regs: Registers) {{
 //   let pid_tgid = bpf_get_current_pid_tgid();
 //   ...
 //
 //   let event = SomeEvent {{
-//     id: pid_tgid &gt;&gt; 32,
+//     pid: pid_tgid &gt;&gt; 32,
 //     ...
 //   }};
-//   unsafe {{ syscall_events.insert(ctx, &amp;event) }};
+//   unsafe {{ syscall_events.insert(regs.ctx, &amp;event) }};
 // }}
 &quot;#</span>,
         <span class="ident">lib</span> <span class="op">=</span> <span class="ident">crate_name</span>,

@@ -241,6 +241,19 @@
 <span id="241">241</span>
 <span id="242">242</span>
 <span id="243">243</span>
+<span id="244">244</span>
+<span id="245">245</span>
+<span id="246">246</span>
+<span id="247">247</span>
+<span id="248">248</span>
+<span id="249">249</span>
+<span id="250">250</span>
+<span id="251">251</span>
+<span id="252">252</span>
+<span id="253">253</span>
+<span id="254">254</span>
+<span id="255">255</span>
+<span id="256">256</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright 2019 Authors of Red Sift</span>
 <span class="comment">//</span>
@@ -332,25 +345,22 @@ crate. This new target will contain the eBPF program code.
 Say that you&#39;re building an XDP program to block all traffic directed to port 80, and have therefore modified
 `src/block_http/main.rs` to include the following code:
 
-```
+```no_run
 #![no_std]
 #![no_main]
-use redbpf_probes::bindings::*;
-use redbpf_probes::xdp::{XdpAction, XdpContext};
-use redbpf_probes::net::NetworkBuffer;
-use redbpf_macros::{program, xdp};
+use redbpf_probes::xdp::prelude::*;
 
 program!(0xFFFFFFFE, &quot;GPL&quot;);
 
 #[xdp]
-pub extern &quot;C&quot; fn block_port_80(ctx: XdpContext) -&gt; XdpAction {
-    if let Some(transport) = ctx.transport() {
+pub fn block_port_80(ctx: XdpContext) -&gt; XdpResult {
+    if let Ok(transport) = ctx.transport() {
         if transport.dest() == 80 {
-            return XdpAction::Drop;
+            return Ok(XdpAction::Drop);
         }
     }
 
-    XdpAction::Pass
+    Ok(XdpAction::Pass)
 }
 ```
 
@@ -429,6 +439,9 @@ $ sudo cargo bpf load -i eth0 target/release/bpf-programs/http_block.elf
                     .<span class="ident">subcommand</span>(
                         <span class="ident">SubCommand</span>::<span class="ident">with_name</span>(<span class="string">&quot;build&quot;</span>)
                             .<span class="ident">about</span>(<span class="string">&quot;Compiles the eBPF programs in the package&quot;</span>)
+                            .<span class="ident">arg</span>(<span class="ident">Arg</span>::<span class="ident">with_name</span>(<span class="string">&quot;TARGET_DIR&quot;</span>).<span class="ident">value_name</span>(<span class="string">&quot;DIRECTORY&quot;</span>).<span class="ident">long</span>(<span class="string">&quot;target-dir&quot;</span>).<span class="ident">help</span>(
+                                <span class="string">&quot;Directory for all generated artifacts&quot;</span>
+                            ))
                             .<span class="ident">arg</span>(<span class="ident">Arg</span>::<span class="ident">with_name</span>(<span class="string">&quot;NAME&quot;</span>).<span class="ident">required</span>(<span class="bool-val">false</span>).<span class="ident">multiple</span>(<span class="bool-val">true</span>).<span class="ident">help</span>(
                                 <span class="string">&quot;The names of the programs to compile. When no names are specified, all the programs are built&quot;</span>,
                             ))
@@ -438,6 +451,12 @@ $ sudo cargo bpf load -i eth0 target/release/bpf-programs/http_block.elf
                             .<span class="ident">about</span>(<span class="string">&quot;Loads the specifeid eBPF program&quot;</span>)
                             .<span class="ident">arg</span>(<span class="ident">Arg</span>::<span class="ident">with_name</span>(<span class="string">&quot;INTERFACE&quot;</span>).<span class="ident">value_name</span>(<span class="string">&quot;INTERFACE&quot;</span>).<span class="ident">short</span>(<span class="string">&quot;i&quot;</span>).<span class="ident">long</span>(<span class="string">&quot;interface&quot;</span>).<span class="ident">help</span>(
                                 <span class="string">&quot;Binds XDP programs to the given interface&quot;</span>
+                            ))
+                            .<span class="ident">arg</span>(<span class="ident">Arg</span>::<span class="ident">with_name</span>(<span class="string">&quot;UPROBE_PATH&quot;</span>).<span class="ident">value_name</span>(<span class="string">&quot;PATH&quot;</span>).<span class="ident">short</span>(<span class="string">&quot;u&quot;</span>).<span class="ident">long</span>(<span class="string">&quot;uprobe-path&quot;</span>).<span class="ident">help</span>(
+                                <span class="string">&quot;Attach uprobes to the given library/binary&quot;</span>
+                            ))
+                            .<span class="ident">arg</span>(<span class="ident">Arg</span>::<span class="ident">with_name</span>(<span class="string">&quot;PID&quot;</span>).<span class="ident">value_name</span>(<span class="string">&quot;PID&quot;</span>).<span class="ident">short</span>(<span class="string">&quot;p&quot;</span>).<span class="ident">long</span>(<span class="string">&quot;pid&quot;</span>).<span class="ident">help</span>(
+                                <span class="string">&quot;Attach uprobes to the given PID&quot;</span>
                             ))
                             .<span class="ident">arg</span>(<span class="ident">Arg</span>::<span class="ident">with_name</span>(<span class="string">&quot;PROGRAM&quot;</span>).<span class="ident">required</span>(<span class="bool-val">true</span>).<span class="ident">help</span>(
                                 <span class="string">&quot;Loads the specified eBPF program and outputs all the events generated&quot;</span>,
@@ -469,18 +488,25 @@ $ sudo cargo bpf load -i eth0 target/release/bpf-programs/http_block.elf
         }
     }
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">m</span>) <span class="op">=</span> <span class="ident">matches</span>.<span class="ident">subcommand_matches</span>(<span class="string">&quot;build&quot;</span>) {
+        <span class="kw">let</span> <span class="ident">current_dir</span> <span class="op">=</span> <span class="ident">std</span>::<span class="ident">env</span>::<span class="ident">current_dir</span>().<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">target_dir</span> <span class="op">=</span> <span class="ident">m</span>
+            .<span class="ident">value_of</span>(<span class="string">&quot;TARGET_DIR&quot;</span>)
+            .<span class="ident">map</span>(<span class="ident">PathBuf</span>::<span class="ident">from</span>)
+            .<span class="ident">unwrap_or</span>(<span class="ident">current_dir</span>.<span class="ident">join</span>(<span class="string">&quot;target&quot;</span>));
         <span class="kw">let</span> <span class="ident">programs</span> <span class="op">=</span> <span class="ident">m</span>
             .<span class="ident">values_of</span>(<span class="string">&quot;NAME&quot;</span>)
             .<span class="ident">map</span>(<span class="op">|</span><span class="ident">i</span><span class="op">|</span> <span class="ident">i</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">String</span>::<span class="ident">from</span>(<span class="ident">s</span>)).<span class="ident">collect</span>())
             .<span class="ident">unwrap_or_else</span>(<span class="ident">Vec</span>::<span class="ident">new</span>);
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span> <span class="ident">cargo_bpf</span>::<span class="ident">cmd_build</span>(<span class="ident">programs</span>) {
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span> <span class="ident">cargo_bpf</span>::<span class="ident">cmd_build</span>(<span class="ident">programs</span>, <span class="ident">target_dir</span>) {
             <span class="ident">clap</span>::<span class="ident">Error</span>::<span class="ident">with_description</span>(<span class="kw-2">&amp;</span><span class="ident">e</span>.<span class="number">0</span>, <span class="ident">clap</span>::<span class="ident">ErrorKind</span>::<span class="ident">InvalidValue</span>).<span class="ident">exit</span>()
         }
     }
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">m</span>) <span class="op">=</span> <span class="ident">matches</span>.<span class="ident">subcommand_matches</span>(<span class="string">&quot;load&quot;</span>) {
         <span class="kw">let</span> <span class="ident">program</span> <span class="op">=</span> <span class="ident">m</span>.<span class="ident">value_of</span>(<span class="string">&quot;PROGRAM&quot;</span>).<span class="ident">map</span>(<span class="ident">PathBuf</span>::<span class="ident">from</span>).<span class="ident">unwrap</span>();
         <span class="kw">let</span> <span class="ident">interface</span> <span class="op">=</span> <span class="ident">m</span>.<span class="ident">value_of</span>(<span class="string">&quot;INTERFACE&quot;</span>);
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span> <span class="ident">cargo_bpf</span>::<span class="ident">load</span>(<span class="kw-2">&amp;</span><span class="ident">program</span>, <span class="ident">interface</span>) {
+        <span class="kw">let</span> <span class="ident">uprobe_path</span> <span class="op">=</span> <span class="ident">m</span>.<span class="ident">value_of</span>(<span class="string">&quot;UPROBE_PATH&quot;</span>);
+        <span class="kw">let</span> <span class="ident">uprobe_pid</span> <span class="op">=</span> <span class="ident">m</span>.<span class="ident">value_of</span>(<span class="string">&quot;PID&quot;</span>).<span class="ident">map</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="ident">p</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>().<span class="ident">unwrap</span>());
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span> <span class="ident">cargo_bpf</span>::<span class="ident">load</span>(<span class="kw-2">&amp;</span><span class="ident">program</span>, <span class="ident">interface</span>, <span class="ident">uprobe_path</span>, <span class="ident">uprobe_pid</span>) {
             <span class="ident">clap</span>::<span class="ident">Error</span>::<span class="ident">with_description</span>(<span class="kw-2">&amp;</span><span class="ident">e</span>.<span class="number">0</span>, <span class="ident">clap</span>::<span class="ident">ErrorKind</span>::<span class="ident">InvalidValue</span>).<span class="ident">exit</span>()
         }
     }

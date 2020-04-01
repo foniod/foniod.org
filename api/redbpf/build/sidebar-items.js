@@ -1,1 +1,0 @@
-initSidebarItems({"constant":[["BUILD_FLAGS",""]],"enum":[["Error",""]],"fn":[["build",""],["generate_bindings",""]],"mod":[["cache",""],["headers",""]]});

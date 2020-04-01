@@ -117,41 +117,6 @@
 <span id="117">117</span>
 <span id="118">118</span>
 <span id="119">119</span>
-<span id="120">120</span>
-<span id="121">121</span>
-<span id="122">122</span>
-<span id="123">123</span>
-<span id="124">124</span>
-<span id="125">125</span>
-<span id="126">126</span>
-<span id="127">127</span>
-<span id="128">128</span>
-<span id="129">129</span>
-<span id="130">130</span>
-<span id="131">131</span>
-<span id="132">132</span>
-<span id="133">133</span>
-<span id="134">134</span>
-<span id="135">135</span>
-<span id="136">136</span>
-<span id="137">137</span>
-<span id="138">138</span>
-<span id="139">139</span>
-<span id="140">140</span>
-<span id="141">141</span>
-<span id="142">142</span>
-<span id="143">143</span>
-<span id="144">144</span>
-<span id="145">145</span>
-<span id="146">146</span>
-<span id="147">147</span>
-<span id="148">148</span>
-<span id="149">149</span>
-<span id="150">150</span>
-<span id="151">151</span>
-<span id="152">152</span>
-<span id="153">153</span>
-<span id="154">154</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright 2019 Authors of Red Sift</span>
 <span class="comment">//</span>
@@ -160,78 +125,40 @@
 <span class="comment">// http://opensource.org/licenses/MIT&gt;, at your option. This file may not be</span>
 <span class="comment">// copied, modified, or distributed except according to those terms.</span>
 
-<span class="kw">use</span> <span class="ident">bpf_sys</span>;
 <span class="kw">use</span> <span class="ident">futures</span>::<span class="ident">channel</span>::<span class="ident">mpsc</span>;
 <span class="kw">use</span> <span class="ident">futures</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ffi</span>::<span class="ident">CString</span>;
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">convert</span>::<span class="ident">AsRef</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">fs</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">io</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">PathBuf</span>;
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">Path</span>;
 
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">cpus</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ProgramKind</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">Error</span>, <span class="ident">Module</span>, <span class="ident">PerfMap</span>, <span class="ident">xdp</span>};
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">load</span>::<span class="ident">map_io</span>::<span class="ident">PerfMessageStream</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">Error</span>, <span class="ident">KProbe</span>, <span class="ident">Map</span>, <span class="ident">Module</span>, <span class="ident">PerfMap</span>, <span class="ident">SocketFilter</span>, <span class="ident">UProbe</span>, <span class="ident">XDP</span>};
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">LoaderError</span> {
     <span class="ident">FileError</span>(<span class="ident">io</span>::<span class="ident">Error</span>),
     <span class="ident">ParseError</span>(<span class="ident">Error</span>),
     <span class="ident">LoadError</span>(<span class="ident">String</span>, <span class="ident">Error</span>),
-    <span class="ident">XdpError</span>(<span class="ident">String</span>, <span class="ident">Error</span>),
-    <span class="ident">KprobeError</span>(<span class="ident">String</span>, <span class="ident">Error</span>),
 }
 
 <span class="doccomment">/// High level API to load bpf programs.</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Loader</span> {
-    <span class="ident">xdp</span>: <span class="ident">XdpConfig</span>
-}
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Loader</span> {}
 
 <span class="kw">impl</span> <span class="ident">Loader</span> {
-    <span class="doccomment">/// Creates a new loader.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">Loader</span> {
-            <span class="ident">xdp</span>: <span class="ident">XdpConfig</span>::<span class="ident">default</span>()
-        }
-    }
-
-    <span class="doccomment">/// Sets the network interface and flags for XDP programs.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">xdp</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">interface</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>, <span class="ident">flags</span>: <span class="ident">xdp</span>::<span class="ident">Flags</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">xdp</span> <span class="op">=</span> <span class="ident">XdpConfig</span> {
-            <span class="ident">interface</span>,
-            <span class="ident">flags</span>
-        };
-        <span class="self">self</span>
-    }
-
     <span class="doccomment">/// Loads the programs included in `data`.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This will parse `data` with `Module::parse()` and load all the programs</span>
     <span class="doccomment">/// present in the module.</span>
-    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">load</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">data</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Loaded</span>, <span class="ident">LoaderError</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">load</span>(<span class="ident">data</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Loaded</span>, <span class="ident">LoaderError</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">module</span> <span class="op">=</span> <span class="ident">Module</span>::<span class="ident">parse</span>(<span class="kw-2">&amp;</span><span class="ident">data</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">LoaderError</span>::<span class="ident">ParseError</span>(<span class="ident">e</span>))<span class="question-mark">?</span>;
-        <span class="kw">for</span> <span class="ident">prog</span> <span class="kw">in</span> <span class="ident">module</span>.<span class="ident">programs</span>.<span class="ident">iter_mut</span>() {
-            <span class="ident">prog</span>.<span class="ident">load</span>(<span class="ident">module</span>.<span class="ident">version</span>, <span class="ident">module</span>.<span class="ident">license</span>.<span class="ident">clone</span>())
-                .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">LoaderError</span>::<span class="ident">LoadError</span>(<span class="ident">prog</span>.<span class="ident">name</span>.<span class="ident">clone</span>(), <span class="ident">e</span>))<span class="question-mark">?</span>;
+        <span class="kw">for</span> <span class="ident">program</span> <span class="kw">in</span> <span class="ident">module</span>.<span class="ident">programs</span>.<span class="ident">iter_mut</span>() {
+            <span class="ident">program</span>
+                .<span class="ident">load</span>(<span class="ident">module</span>.<span class="ident">version</span>, <span class="ident">module</span>.<span class="ident">license</span>.<span class="ident">clone</span>())
+                .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">LoaderError</span>::<span class="ident">LoadError</span>(<span class="ident">program</span>.<span class="ident">name</span>().<span class="ident">to_string</span>(), <span class="ident">e</span>))<span class="question-mark">?</span>;
         }
 
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">interface</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">xdp</span>.<span class="ident">interface</span> {
-            <span class="kw">for</span> <span class="ident">prog</span> <span class="kw">in</span> <span class="ident">module</span>.<span class="ident">programs</span>.<span class="ident">iter_mut</span>().<span class="ident">filter</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="ident">p</span>.<span class="ident">kind</span> <span class="op">=</span><span class="op">=</span> <span class="ident">XDP</span>) {
-                <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;Loaded: {}, {:?}&quot;</span>, <span class="ident">prog</span>.<span class="ident">name</span>, <span class="ident">prog</span>.<span class="ident">kind</span>);
-                <span class="ident">prog</span>.<span class="ident">attach_xdp</span>(<span class="kw-2">&amp;</span><span class="ident">interface</span>, <span class="self">self</span>.<span class="ident">xdp</span>.<span class="ident">flags</span>)
-                    .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">LoaderError</span>::<span class="ident">XdpError</span>(<span class="ident">prog</span>.<span class="ident">name</span>.<span class="ident">clone</span>(), <span class="ident">e</span>))<span class="question-mark">?</span>;
-            }
-        }
-
-        <span class="kw">for</span> <span class="ident">prog</span> <span class="kw">in</span> <span class="ident">module</span>
-            .<span class="ident">programs</span>
-            .<span class="ident">iter_mut</span>()
-            .<span class="ident">filter</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="ident">p</span>.<span class="ident">kind</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Kprobe</span> <span class="op">|</span><span class="op">|</span> <span class="ident">p</span>.<span class="ident">kind</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Kretprobe</span>)
-        {
-            <span class="ident">prog</span>.<span class="ident">attach_probe</span>()
-                .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">LoaderError</span>::<span class="ident">KprobeError</span>(<span class="ident">prog</span>.<span class="ident">name</span>.<span class="ident">clone</span>(), <span class="ident">e</span>))<span class="question-mark">?</span>;
-            <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;Loaded: {}, {:?}&quot;</span>, <span class="ident">prog</span>.<span class="ident">name</span>, <span class="ident">prog</span>.<span class="ident">kind</span>);
-        }
         <span class="kw">let</span> <span class="ident">online_cpus</span> <span class="op">=</span> <span class="ident">cpus</span>::<span class="ident">get_online</span>().<span class="ident">unwrap</span>();
         <span class="kw">let</span> (<span class="ident">sender</span>, <span class="ident">receiver</span>) <span class="op">=</span> <span class="ident">mpsc</span>::<span class="ident">unbounded</span>();
         <span class="kw">for</span> <span class="ident">m</span> <span class="kw">in</span> <span class="ident">module</span>.<span class="ident">maps</span>.<span class="ident">iter_mut</span>().<span class="ident">filter</span>(<span class="op">|</span><span class="ident">m</span><span class="op">|</span> <span class="ident">m</span>.<span class="ident">kind</span> <span class="op">=</span><span class="op">=</span> <span class="number">4</span>) {
@@ -250,61 +177,64 @@
 
         <span class="prelude-val">Ok</span>(<span class="ident">Loaded</span> {
             <span class="ident">module</span>,
-            <span class="ident">xdp</span>: <span class="self">self</span>.<span class="ident">xdp</span>.<span class="ident">clone</span>(),
-            <span class="ident">events</span>: <span class="ident">receiver</span>
+            <span class="ident">events</span>: <span class="ident">receiver</span>,
         })
     }
 
     <span class="doccomment">/// Loads the BPF programs included in `file`.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// See `load()`.</span>
-    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">load_file</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">file</span>: <span class="kw-2">&amp;</span><span class="ident">PathBuf</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Loaded</span>, <span class="ident">LoaderError</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">load</span>(<span class="kw-2">&amp;</span><span class="ident">fs</span>::<span class="ident">read</span>(<span class="ident">file</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">LoaderError</span>::<span class="ident">FileError</span>(<span class="ident">e</span>))<span class="question-mark">?</span>)
-            .<span class="kw">await</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">load_file</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Path</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">file</span>: <span class="ident">P</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Loaded</span>, <span class="ident">LoaderError</span><span class="op">&gt;</span> {
+        <span class="ident">Loader</span>::<span class="ident">load</span>(<span class="kw-2">&amp;</span><span class="ident">fs</span>::<span class="ident">read</span>(<span class="ident">file</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">LoaderError</span>::<span class="ident">FileError</span>(<span class="ident">e</span>))<span class="question-mark">?</span>)
     }
 }
 
 <span class="doccomment">/// The `Loaded` object returned by `load()`.</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Loaded</span> {
     <span class="kw">pub</span> <span class="ident">module</span>: <span class="ident">Module</span>,
-    <span class="ident">xdp</span>: <span class="ident">XdpConfig</span>,
     <span class="doccomment">/// The stream of events emitted by the BPF programs.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Example</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// </span>
+    <span class="doccomment">/// ```no_run</span>
+    <span class="doccomment">/// use std::path::Path;</span>
+    <span class="doccomment">/// use futures::stream::StreamExt;</span>
+    <span class="doccomment">/// use redbpf::load::Loader;</span>
+    <span class="doccomment">/// # async {</span>
+    <span class="doccomment">/// let mut loader = Loader::load_file(&amp;Path::new(&quot;probe.elf&quot;)).unwrap();</span>
     <span class="doccomment">/// while let Some((map_name, events)) = loader.events.next().await {</span>
     <span class="doccomment">///     for event in events {</span>
-    <span class="doccomment">///         println!(&quot;-- Event: {} --&quot;, map_name);</span>
-    <span class="doccomment">///         hexdump(&amp;event);</span>
+    <span class="doccomment">///         // ...</span>
     <span class="doccomment">///     }</span>
     <span class="doccomment">/// }</span>
+    <span class="doccomment">/// # };</span>
     <span class="doccomment">/// ```</span>
     <span class="kw">pub</span> <span class="ident">events</span>: <span class="ident">mpsc</span>::<span class="ident">UnboundedReceiver</span><span class="op">&lt;</span>(<span class="ident">String</span>, <span class="op">&lt;</span><span class="ident">PerfMessageStream</span> <span class="kw">as</span> <span class="ident">Stream</span><span class="op">&gt;</span>::<span class="ident">Item</span>)<span class="op">&gt;</span>,
 }
 
-<span class="kw">impl</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">Loaded</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">interface</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">xdp</span>.<span class="ident">interface</span> {
-            <span class="kw">let</span> <span class="ident">ciface</span> <span class="op">=</span> <span class="ident">CString</span>::<span class="ident">new</span>(<span class="ident">interface</span>.<span class="ident">as_bytes</span>()).<span class="ident">unwrap</span>();
-            <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bpf_sys</span>::<span class="ident">bpf_attach_xdp</span>(<span class="ident">ciface</span>.<span class="ident">as_ptr</span>(), <span class="op">-</span><span class="number">1</span>, <span class="number">0</span>) };
-        }
+<span class="kw">impl</span> <span class="ident">Loaded</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">map</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Map</span><span class="op">&gt;</span> {
+        <span class="self">self</span>.<span class="ident">module</span>.<span class="ident">maps</span>.<span class="ident">iter</span>().<span class="ident">find</span>(<span class="op">|</span><span class="ident">m</span><span class="op">|</span> <span class="ident">m</span>.<span class="ident">name</span> <span class="op">=</span><span class="op">=</span> <span class="ident">name</span>)
     }
-}
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">XdpConfig</span> {
-    <span class="ident">interface</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
-    <span class="ident">flags</span>: <span class="ident">xdp</span>::<span class="ident">Flags</span>
-}
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">map_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Map</span><span class="op">&gt;</span> {
+        <span class="self">self</span>.<span class="ident">module</span>.<span class="ident">maps</span>.<span class="ident">iter_mut</span>().<span class="ident">find</span>(<span class="op">|</span><span class="ident">m</span><span class="op">|</span> <span class="ident">m</span>.<span class="ident">name</span> <span class="op">=</span><span class="op">=</span> <span class="ident">name</span>)
+    }
 
-<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">XdpConfig</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">XdpConfig</span> {
-        <span class="ident">XdpConfig</span> {
-            <span class="ident">interface</span>: <span class="prelude-val">None</span>,
-            <span class="ident">flags</span>: <span class="ident">xdp</span>::<span class="ident">Flags</span>::<span class="ident">default</span>()
-        }
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">kprobes_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">KProbe</span><span class="op">&gt;</span> {
+        <span class="self">self</span>.<span class="ident">module</span>.<span class="ident">kprobes_mut</span>()
+    }
+
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">uprobes_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">UProbe</span><span class="op">&gt;</span> {
+        <span class="self">self</span>.<span class="ident">module</span>.<span class="ident">uprobes_mut</span>()
+    }
+
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">xdps_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">XDP</span><span class="op">&gt;</span> {
+        <span class="self">self</span>.<span class="ident">module</span>.<span class="ident">xdps_mut</span>()
+    }
+
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">socket_filters_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">SocketFilter</span><span class="op">&gt;</span> {
+        <span class="self">self</span>.<span class="ident">module</span>.<span class="ident">socket_filters_mut</span>()
     }
 }
 </pre></div>
