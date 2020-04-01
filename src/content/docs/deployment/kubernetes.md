@@ -12,6 +12,7 @@ built from the InGRAINd releases for various platforms:
  * `latest-fedora31`: Fedora 31
  * `latest-elrepo8`: CentOS8/Epel
  * `latest-elrepo7`: CentOS7/Epel
+ * `latest-ubuntu-18.04`: Ubuntu 18.04
 
 For deploying InGRAINd on Google Kubernetes Engine, use the
 `latest-gke` flavor, targeting Container Optimized OS (COS).
@@ -30,7 +31,7 @@ and use the usual deployment ritual:
 	kubectl apply -f config.yaml
 	kubectl apply -f ingraind.yaml
 
-Refer to the pages on [configuration](LINK TODO) and the example
+Refer to the pages on [configuration](/docs/configuration/syntax/) and the example
 [`config.toml`](https://github.com/redsift/ingraind/blob/master/config.toml.example)
 for fine-tuning `config.yaml`.
 

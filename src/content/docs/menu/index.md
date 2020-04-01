@@ -16,11 +16,7 @@ bookMenuLevels: 1
    - [Kubernetes]({{< relref "/docs/deployment/kubernetes" >}})
    - [Ansible/SystemD]({{< relref "/docs/deployment/ansible" >}})
    
- - [Extending InGRAINd]({{< relref "/docs/grain/intro" >}})
-   - [cargo bpf]({{< relref "/docs/grain/cargo-bpf" >}})
-   - [Writing an eBPF module]({{< relref "/docs/grain/ebpf" >}})
-   - [Userspace events]({{< relref "/docs/grain/userspace" >}})
-   - Advanced
-     - [Profiling]({{< relref "/docs/devel/profiling" >}})
-     - [Performance]({{< relref "/docs/devel/performance" >}})
-     - [Internals]({{< relref "/docs/devel/internals" >}})
+ - Extending InGRAINd
+   - [Profiling]({{< relref "/docs/devel/profiling" >}})
+   - [Performance]({{< relref "/docs/devel/performance" >}})
+   - [Internals]({{< relref "/docs/devel/internals" >}})
