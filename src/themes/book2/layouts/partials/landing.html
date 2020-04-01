@@ -3,8 +3,15 @@
 <aside class="hidden clearfix">
   {{ template "toc" . }}
 </aside>
-{{ end }} {{ end }} {{ define "footer" }} {{ partial "common/footer" . }} {{ end }} {{ define "install" }} {{ partial "landing/install-section" . }} {{ end }}
-{{ define "uses" }} {{ partial "landing/uses-section" . }} {{ end }} {{ define "join" }} {{ partial "landing/join-section" . }} {{ end }}
+{{ end }} {{ end }}
+{{ define "intro" }} {{ partial "landing/intro-section" . }} {{ end }}
+{{ define "advantages" }} {{ partial "landing/advantages-block" . }} {{ end }}
+{{ define "install" }} {{ partial "landing/install-section" . }} {{ end }}
+{{ define "uses" }} {{ partial "landing/uses-section" . }} {{ end }}
+{{ define "integration" }} {{ partial "landing/integration-section" . }} {{ end }}
+{{ define "join" }} {{ partial "landing/join-section" . }} {{ end }}
+{{ define "about" }} {{ partial "landing/about-section" . }} {{ end }}
+{{ define "footer" }} {{ partial "common/footer" . }} {{ end }}
 
 <body class="home-page">
   <!-- main container of all the page elements -->
@@ -13,152 +20,19 @@
     <!-- contain main informative part of the site -->
     <main id="main">
       <!-- intro section -->
-      <section class="intro-section">
-        <img class="decor-bg hide" src="svg/bg-img-01.svg" alt="image description" />
-        <div class="container">
-          <div class="row">
-            <div class="text-holder">
-              <div class="text-block">
-                <h1>eBPF for Everyone</h1>
-                <p>ingraind is an security monitoring agent born for the cloud. </p>
-                <p>Spot misbehaving processes and containers to react immediately.</p>
-                <p>Built on eBPF and Rust for easy extensibility.</p>
-
-                <a href="/docs/getting-started" class="btn">Get started</a>
-              </div>
-              <!-- interaction block -->
-              <div class="interaction-block">
-                <div class="heading-holder"></div>
-                <span class="decor-line"></span>
-                <ul class="interaction-list">
-                  <li>
-										<a
-											class="github-button"
-											href="https://github.com/redsift/ingraind/subscription"
-											data-icon="octicon-eye"
-											data-color-scheme="no-preference: dark; light: dark; dark: dark;"
-											data-size="large"
-											data-show-count="true"
-											aria-label="Watch redsift/ingraind on GitHub"
-											>Watch</a
-                >
-                  </li>
-                  <li>
-                    <a
-											class="github-button"
-											href="https://github.com/redsift/ingraind"
-											data-icon="octicon-star"
-											data-color-scheme="no-preference: dark; light: dark; dark: dark;"
-											data-size="large"
-											data-show-count="true"
-											aria-label="Star redsift/ingraind on GitHub"
-											>Star</a
-										>
-                  </li>
-                  <li>
-                    <a
-											class="github-button"
-											href="https://github.com/redsift/ingraind/fork"
-											data-icon="octicon-repo-forked"
-											data-color-scheme="no-preference: dark; light: dark; dark: dark;"
-											data-size="large"
-											data-show-count="true"
-											aria-label="Fork redsift/ingraind on GitHub"
-											>Fork</a
-										>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class="img-holder hide">
-              <div class="screen-block">
-                <img src="screencast.gif" alt="image description" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      {{ template "intro" . }}
       <!-- advantages block -->
-      <div class="advantages-block">
-        <div class="container">
-          <ul class="advantages-list">
-            <li>
-              <img src="svg/secure.svg" alt="image description" />
-              <h2 class="h3">Secure &amp; Safe</h2>
-              <p>
-                Both eBPF and Rust are designed for safety and
-                security. Add ingraind to your systems without fear of
-                instability or compromise.
-              </p>
-            </li>
-            <li>
-              <img src="svg/customize.svg" alt="image description" />
-              <h2 class="h3">Customize as you Wish</h2>
-              <p>
-                ingraind provides
-                accessible <a href="/api">documentation</a> for most
-                eBPF functionality so you can extend and improve the
-                data you rely on.
-              </p>
-            </li>
-            <li>
-              <img src="svg/clock.svg" alt="image description" />
-              <h2 class="h3">Designed for Real Life</h2>
-              <p>
-                Time is your most expensive asset, so
-                we
-                made <a href="/docs/deployment/strategies/">deployment</a>
-                easy and frictionless.  Kubernetes, GCP, AWS, Arm64,
-                bring your own buzzword.
-              </p>
-            </li>
-          </ul>
-        </div>
-      </div>
-      {{ template "install" . }} {{ template "uses" . }}
+      {{ template "advantages" . }}
+      <!-- install section (carousel) -->
+      {{ template "install" . }}
+      <!-- uses section (accordion) -->
+      {{ template "uses" . }}
       <!-- integration section -->
-      <section class="integration-section">
-        <img class="decor-bg" src="svg/bg-img-03.svg" alt="image description" />
-        <div class="container">
-          <div class="heading-holder">
-            <h3 class="h1">Integrated with</h3>
-            <span class="decor-line"></span>
-          </div>
-          <ul class="integration-list">
-            <li>
-              <div class="logo-holder">
-                <img src="svg/logo-aws.svg" alt="aws" width="70" />
-              </div>
-            </li>
-            <li>
-              <div class="logo-holder">
-                <img src="svg/logo-open-shift.svg" alt="openshift" width="65" />
-              </div>
-            </li>
-            <li>
-              <div class="logo-holder">
-                <img src="svg/logo-terraform.svg" alt="kubernetes engine" width="60" />
-              </div>
-            </li>
-            <li>
-              <div class="logo-holder">
-                <img src="svg/logo-kubernetes.svg" alt="kubernetes" width="64" />
-              </div>
-            </li>
-            <li>
-              <div class="logo-holder">
-                <img src="svg/logo-statsD.svg" alt="StatsD" width="120" />
-              </div>
-            </li>
-            <li>
-              <div class="logo-holder">
-                <img src="svg/logo-ansible.svg" alt="ansible" width="62" />
-              </div>
-            </li>
-          </ul>
-        </div>
-      </section>
+      {{ template "integration" . }}
+      <!-- join section -->
       {{ template "join" . }}
+      <!-- about section -->
+      {{ template "about" . }}
     </main>
     {{ template "footer" . }}
   </div>

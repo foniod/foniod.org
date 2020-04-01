@@ -1,5 +1,5 @@
-/* direction section styles (carousel) */
-.direction-section {
+// 3 step carousel: how to install
+.install-section {
 	text-align: center;
 	color: $white;
 	padding-bottom: 20px;
@@ -41,7 +41,7 @@
 	}
 }
 
-/* carousel navigation styles */
+// nav
 .carousel-nav-holder {
 	margin-bottom: 25px;
 	position: relative;
@@ -220,7 +220,7 @@
 	}
 }
 
-/* carousel styles */
+// container
 .carousel {
 	margin-bottom: 32px;
 	position: relative;
@@ -230,7 +230,7 @@
 	}
 }
 
-/* carousel slide element styles */
+// slides
 .carousel-slide {
 	position: absolute;
 	top: 0;
@@ -246,7 +246,7 @@
 		display: flex;
 		align-items: center;
 		margin: 0;
-		text-align: right;
+		text-align: left;
 	}
 
 	h3 {
@@ -285,22 +285,10 @@
 	}
 
 	.text-holder {
-		letter-spacing: 1.61px;
-		padding: 115px 30px 15px;
-		margin: 0 -15px;
-		background: #0d0d1a;
-		box-shadow: 0 5px 20px rgba(13, 13, 26, .5);
-		border-top: 4px solid $light-blue;
-
-		@include media ('>=phone') {
-			padding-top: 138px;
-			margin: 0 -30px;
-		}
+		@extend %blue-top-card;
 
 		@include media ('>=tablet') {
 			width: 50%;
-			margin: 0;
-			padding: 50px 30px 30px;
 		}
 
 		@include media ('>=desktop') {
@@ -308,7 +296,6 @@
 			font-size: 21px;
 			line-height: 1.333333;
 			letter-spacing: 2.11px;
-			padding: 95px 70px 60px;
 		}
 	}
 }

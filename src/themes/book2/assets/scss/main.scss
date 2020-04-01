@@ -33,8 +33,15 @@ $media-expressions: (
 @import 'base/forms';
 
 @import 'layouts/header';
-@import 'layouts/common';
-@import 'layouts/install-section';
-@import 'layouts/uses-section';
-@import 'layouts/join-section';
 @import 'layouts/footer';
+@import 'layouts/common';
+// in order:
+@import 'layouts/landing/intro-section';
+@import 'layouts/landing/advantages-block';
+@import 'layouts/landing/install-section';
+@import 'layouts/landing/uses-section';
+@import 'layouts/landing/integration-section';
+@import 'layouts/landing/join-section';
+@import 'layouts/landing/about-section';
+// docs
+@import 'layouts/documentation';

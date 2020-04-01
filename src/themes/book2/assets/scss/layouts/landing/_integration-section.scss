@@ -1,0 +1,85 @@
+// integrated with
+.integration-section {
+	padding: 40px 0 15px;
+	position: relative;
+
+	@include media ('>=tablet') {
+		text-align: center;
+		padding: 40px 0;
+	}
+
+	@include media ('>=desktop') {
+		padding: 16px 0 100px;
+	}
+
+	.container {
+		max-width: 966px;
+	}
+
+	.decor-bg {
+		position: absolute;
+		top: 229px;
+
+		@include media ('>=tablet') {
+			min-width: 1280px;
+			top: -21px;
+		}
+	}
+
+	.heading-holder {
+		@extend %centered-heading;
+		.decor-line {
+			@extend %blue-line-left;
+		}
+	}
+}
+
+.integration-list {
+	@extend %listreset;
+
+	display: flex;
+	flex-wrap: wrap;
+	margin: 0 -7px;
+
+	@include media ('>=tablet') {
+		margin: 0 -15px;
+	}
+
+	li {
+		width: 50%;
+		padding: 0 7px 16px;
+
+		@include media ('>=tablet') {
+			width: 33.33%;
+			padding: 0 15px 15px;
+		}
+	}
+
+	.logo-holder {
+		@include v-align(100px);
+
+		height: 100%;
+		padding: 10px;
+		background: $dark-blue;
+		box-shadow: 0 5px 9px #0d0d1a;
+		border: 1px solid $dark-blue;
+
+		@include media ('>=tablet') {
+			padding: 15px 45px;
+		}
+
+		&:after {
+			@include media ('>=tablet') {
+				min-height: 163px;
+			}
+		}
+
+		img {
+
+			@include media ('>=tablet') {
+				max-width: 80%;
+				width: auto;
+			}
+		}
+	}
+}

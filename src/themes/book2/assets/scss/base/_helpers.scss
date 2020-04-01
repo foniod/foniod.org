@@ -44,6 +44,88 @@
 	}
 }
 
+// centered heading holder
+// - integration, about
+// - make more adaptable
+%centered-heading {
+	display: flex;
+	align-items: center;
+	margin-bottom: 52px;
+	position: relative;
+
+	@include media ('>=tablet') {
+		display: block;
+		margin-bottom: 37px;
+	}
+
+	h3.h1 {
+		margin: 0;
+
+		@include media ('>=tablet') {
+			display: inline-block;
+			vertical-align: middle;
+		}
+	}
+}
+
+// decor
+%blue-line-left {
+	width: 35%;
+
+	@include media ('>=tablet') {
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+	}
+
+	&:before,
+	&:after {
+		left: 34px;
+		right: auto;
+
+		@include media ('>=tablet') {
+			left: 49px;
+		}
+	}
+
+	&:before {
+		right: -9999px; 
+	}
+}
+
+// blue topped card
+%blue-top-card {
+	letter-spacing: 1.61px;
+	padding: 115px 30px 15px;
+	margin: 0 -15px;
+	background: #0d0d1a;
+	box-shadow: 0 5px 20px rgba(13, 13, 26, .5);
+	border-top: 4px solid $light-blue;
+	color: #fff;
+
+	@include media ('>=phone') {
+		padding-top: 138px;
+		margin: 0 -30px;
+	}
+
+	@include media ('>=tablet') {
+		margin: 0;
+		padding: 50px 30px 30px;
+	}
+
+	@include media ('>=desktop') {
+		padding: 95px 70px 60px;
+	}
+
+}
+
+%grey-border-block {
+	box-shadow: 0 5px 30px rgba(83, 197, 238, .3);
+	border: 4px solid $light-purple;
+	border-radius: 2px;
+	overflow: hidden;
+}
+
 
 
 /// * Helper class to truncate and add ellipsis to a string too long for it to fit

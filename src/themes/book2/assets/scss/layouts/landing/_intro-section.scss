@@ -1,0 +1,236 @@
+// intro section - hero
+.intro-section {
+	font-size: 18px;
+	font-weight: 500;
+	text-align: left;
+	padding: 16px 0;
+	position: relative;
+
+	@include media ('>=tablet') {
+		text-align: left;
+		padding: 37px 0;
+	}
+
+	@include media ('>=desktop') {
+		font-size: 21px;
+		padding: 37px 0 72px;
+	}
+
+	.row {
+		@include media ('>=tablet') {
+			display: flex;
+		}
+	}
+
+	h1 {
+		margin-bottom: 34px;
+	}
+
+	.decor-bg {
+		@include media ('>=tablet') {
+			min-width: 1600px;
+			width: 100%;
+		}
+	}
+
+	.text-holder {
+		@include media ('>=tablet') {
+			width: 50%;
+			padding: 20px 32px 20px 0;
+		}
+
+		@include media ('>=desktop') {
+			padding: 54px 64px 54px 0;
+		}
+
+		@include media ('>=widescreen') {
+			width: 48%;
+		}
+	}
+
+	.text-block {
+		line-height: 1.55555;
+		letter-spacing: .86px;
+		margin-bottom: 65px;
+
+		@include media ('>=desktop') {
+			line-height: 1.33333;
+			letter-spacing: 1px;
+			margin-bottom: 56px;
+		}
+
+		p {
+			margin-bottom: 36px;
+		}
+	}
+
+	.img-holder {
+		@include media ('>=tablet') {
+			width: 50%;
+		}
+
+		@include media ('>=widescreen') {
+			width: 52%;
+		}
+	}
+
+	.screen-block {
+		@include media ('>=tablet') {
+
+			display: block;
+			margin-left: auto;
+			margin-right: -12vw;
+			border-width: 12px;
+			border-top-width: 36px;
+			border-radius: 16px;
+			position: relative;
+			overflow: visible;
+		}
+
+		&:before,
+		&:after {
+			@include media ('>=tablet') {
+				content: "";
+				position: absolute;
+				width: 12px;
+				height: 12px;
+				top: -23px;
+				border-radius: 50%;
+				background: $white;
+			}
+
+			@include media ('>=desktop') {
+				width: 16px;
+				height: 16px;
+				top: -26px;
+			}
+		}
+
+		&:before {
+			@include media ('>=tablet') {
+				left: 16px;
+			}
+
+			@include media ('>=desktop') {
+				left: 12px;
+			}
+		}
+
+		&:after {
+			@include media ('>=tablet') {
+				left: 40px;
+			}
+
+			@include media ('>=desktop') {
+				left: 44px;
+			}
+		}
+
+		img {
+			@include media ('>=tablet') {
+				display: block;
+				max-width: 60vw;
+				width: 100%;
+				border-radius: 2px;
+				overflow: hidden;
+			}
+		}
+	}
+}
+
+// unused (above buttons), here for posterity
+.interaction-block {
+
+	.heading-holder {
+		display: inline-block;
+		vertical-align: middle;
+		margin-bottom: 8px;
+
+		@include media ('>=tablet') {
+			margin-bottom: 0;
+		}
+	}
+
+	.h2 {
+		display: inline-block;
+		vertical-align: middle;
+		font-weight: 400;
+		line-height: 1.23809;
+		letter-spacing: 2.11px;
+		margin-bottom: 4px;
+		padding: 0 20px;
+
+		@include media ('>=phone') {
+			padding: 0 54px;
+		}
+
+		@include media ('>=tablet') {
+			padding: 0 35px 0 0;
+		}
+
+		.number {
+			font-family: $base-font-monosnape;
+			font-weight: 700;
+			margin: 0 10px 0 0;
+		}
+	}
+}
+
+// github buttons
+.interaction-list {
+	@extend %listreset;
+
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+
+	@include media ('>=tablet') {
+		justify-content: flex-start;
+		margin: 0 -8px;
+	}
+
+	li {
+		padding: 0 8px 8px;
+	}
+
+	a {
+		@include animate(background);
+
+		display: inline-block;
+		vertical-align: middle;
+		min-width: 84px;
+		font-size: 12px;
+		line-height: 1.33333;
+		font-weight: 500;
+		letter-spacing: 0.5px;
+		padding: 8px 15px 7px 45px;
+		color: $white;
+		background: $dark-blue;
+		border: 1px solid $light-purple;
+		border-radius: 3px;
+		position: relative;
+
+		&:hover {
+			color: $white;
+			background: $light-purple;
+		}
+
+		i {
+			font-size: 16px;
+			position: absolute;
+			top: 50%;
+			transform: translateY(-50%);
+			left: 15px;
+		}
+	}
+}
+
+
+// https://github.com/ntkme/github-buttons
+.interaction-list span {
+	height: 30px;
+	display: inline-block;
+	border: 1px solid $light-purple;
+	border-radius: 3px;
+}

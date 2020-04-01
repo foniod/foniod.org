@@ -1,0 +1,73 @@
+// currently unused, in this design:
+// https://projects.invisionapp.com/share/HDW392SRPMG#/screens/406096310_InGRAINd_-_Why
+
+// clients block styles
+.clients-block {
+
+	@include media ('>=tablet') {
+		padding: 30px 0;
+	}
+
+	.container {
+		max-width: 1200px;
+	}
+
+	.heading-holder {
+		display: flex;
+		align-items: center;
+		margin-bottom: 20px;
+
+		@include media ('>=tablet') {
+			display: none;
+		}
+	}
+
+	.h4 {
+		letter-spacing: 1.38px;
+		margin: 0 32px 0 0;
+	}
+
+	.decor-line {
+		width: auto;
+
+		&:before,
+		&:after {
+			left: 0;
+		}
+
+		&:before {
+			right: -9999px;
+		}
+
+		&:after {
+			right: auto;
+		}
+	}
+}
+
+.clients-list {
+	@extend %listreset;
+
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	margin: 0 -15px;
+
+	@include media ('>=widescreen') {
+		margin: 0 -45px;
+	}
+
+	li {
+		width: 33.33%;
+		padding: 0 15px 30px;
+
+		@include media ('>=tablet') {
+			width: 20%;
+			text-align: center;
+		}
+
+		@include media ('>=widescreen') {
+			padding: 0 45px 30px;
+		}
+	}
+}

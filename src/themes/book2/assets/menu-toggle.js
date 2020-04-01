@@ -3,9 +3,9 @@
   const mainMenu = document.querySelector(".main-menu");
   const menuButton = document.querySelector(".nav-opener");
 
-  if (window.location && window.location.pathname.includes("docs/configuration")) {
+  if (window.location && window.location.pathname.includes("/docs/")) {
     const menuItems = Array.from(mainMenu.querySelectorAll("a"));
-    const active = menuItems.find(i => i.pathname.includes("docs/configuration"));
+    const active = menuItems.find(i => i.pathname.includes("/docs/"));
     if (!active.classList.contains("active")) {
       active.classList.add("active");
     }
