@@ -1,6 +1,5 @@
-// .built-section uses section (tabs)
-/* built section styles */
-.built-section {
+// uses section (accordion)
+.uses-section {
 	padding: 20px 0;
 
 	@include media ('>=tablet') {

@@ -1,0 +1,82 @@
+.about-section {
+	padding: 50px;
+	position: relative;
+
+	.container {
+		max-width: 1150px;
+	}
+
+	.heading-holder {
+		@extend %centered-heading;
+		justify-content: space-between;
+
+		h3.h1 {
+			@include media ('>=tablet') {
+				display: block;
+				text-align: center;
+			}
+		}
+		
+		.decor-line {
+			@extend %blue-line-left;
+			width: calc(35% / 2);
+			transform: rotate(180deg);
+			transform-origin: center right;
+			@include media ('>=tablet') {
+				transform: translateY(-50%) rotate(180deg);
+			}
+		}
+	}
+
+	.about-card {
+		position: relative;
+		margin-top: calc((188px / 2) + 27px);
+	}
+
+	.logo-holder {
+		@extend %grey-border-block;
+		background-color: $dark-purple;
+		z-index: 1;
+		position: absolute;
+		top: calc(-188px / 2);
+		left: calc(50% - (188px / 2));
+		padding: 30px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		@include media ('>=desktop') {
+			left: 30px;
+			top: -30px;
+			width: 25%;
+			height: 50%;
+			min-height: 280px;
+			img {
+				min-width: 75%;
+			}
+		}
+	}
+
+	.text-holder {
+		@extend %blue-top-card;
+		p:nth-child(2) {
+			margin-bottom: 2em;
+		}
+
+		@include media ('>=tablet') {
+			padding-top: 138px;
+		}
+		@include media ('>=desktop') {
+			padding-top: 95px;
+			padding-left: calc(25% + 90px);
+			p:not(:nth-child(3)) {
+				font-size: 1.125rem;
+				line-height: 1.5;
+				letter-spacing: 2.11px;
+			}
+		}
+		em {
+			font-style: normal;
+			color: $light-purple;
+		}
+	}
+}

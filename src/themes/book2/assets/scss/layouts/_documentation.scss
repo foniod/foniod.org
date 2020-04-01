@@ -1,0 +1,407 @@
+// documentation specific styles
+
+body.fixed-position {
+  .fixed-block {
+    @include media ('>=tablet') {
+      position: fixed;
+      max-height: 100vh;
+    }
+  }
+
+  .sidebar {
+    .fixed-block {
+      @include media ('>=tablet') {
+        width: 180px;
+        top: 0;
+        left: 30px;
+        margin: 0;
+      }
+
+      @include media ('>=widescreen') {
+        width: 262px;
+      }
+
+      @include media ('>=fullscreen') {
+        left: calc((100vw - 1230px)/2);
+      }
+    }
+
+    .nav-holder > ul {
+      &.hide {
+        display: none;
+      }
+      @include media ('>=tablet') {
+        max-height: calc(100vh - 230px - 80px);
+        overflow-y: auto;
+        padding-right: 15px;
+      }
+
+      @include media ('>=widescreen') {
+        max-height: calc(100vh - 255px - 80px);
+      }
+    }
+  }
+
+  .aside {
+    .fixed-block {
+      @include media ('>=tablet') {
+        width: 110px;
+        top: 77px;
+        right: 30px;
+        overflow-y: auto;
+      }
+
+      @include media ('>=widescreen') {
+        width: 160px;
+      }
+
+      @include media ('>=fullscreen') {
+        right: calc((100vw - 1230px)/2);
+      }
+    }
+  }
+}
+
+// left sidebar
+.sidebar {
+	background: $light-gray;
+	margin: 0 -15px;
+
+	@include media ('>=phone') {
+		margin: 0 -30px;
+	}
+
+	@include media ('>=tablet') {
+		width: 180px;
+		text-align: right;
+		position: relative;
+		margin: 0;
+		.logo,
+		.form-search {
+			margin-right: 15px;
+		}
+	}
+
+	@include media ('>=widescreen') {
+		width: 262px;
+	}
+
+	.fixed-block {
+		@include media ('>=tablet') {
+			margin-top: -68px;
+			padding: 15px 0 70px 0;
+			position: relative;
+		}
+
+		@include media ('>=widescreen') {
+			padding: 15px 33px 70px;
+		}
+
+		@include media ('>=fullscreen') {
+			padding: 15px 33px 70px 15px;
+		}
+	}
+
+	.nav-holder {
+		display: none;
+		// box-shadow: inset 0 -10px 10px -10px rgba(0, 0, 0, 0.15);
+		@include media ('>=tablet') {
+			display: block;
+		}
+	}
+
+	&.mobile-open .nav-holder {
+		display: block;
+		padding: 15px;
+		margin-bottom: 15px;
+		box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 8px 0px, rgba(0, 0, 0, 0.02) 5px 5px 8px -4px;
+		.form-search {
+			padding-left: 0;
+			padding-right: 0;
+		}
+		.logo {
+			display: none;
+		}
+	}
+
+	.form-search {
+		margin-bottom: 25px;
+		padding: 7px 15px;
+
+		@include media ('>=tablet') {
+			padding: 0;
+			margin-bottom: 15px;
+		}
+
+		@include media ('>=widescreen') {
+			margin-bottom: 32px;
+		}
+	}
+
+	
+
+	.search-bar {
+		position: relative;
+
+		label {
+			position: absolute;
+			top: 0.125rem;
+			left: 0.25rem;
+			font-size: 0.75rem;
+			font-weight: 600;
+			color: $light-blue;
+			user-select: none;
+		}
+
+		input[type="search"] {
+			width: 100%;
+			height: 60px;
+			max-width: 100%;
+			margin-bottom: 0.5rem;
+			padding: 0.5rem 0.5rem 0.25rem;
+			font-size: 1rem;
+			line-height: 1.75rem;
+			background: transparent;
+			border: none;
+			border-bottom: 1px solid rgba(0, 0, 0, 0.42);
+			transition: all 0.2s ease-in-out;
+			@include media ('>=tablet') {
+				max-width: 216px;
+			}
+			&:focus {
+				background: darken($light-gray, 5%);
+				border-bottom: 2px solid $light-blue;
+			}
+		}
+	}
+
+	&:before {
+		@include media ('>=tablet') {
+			content: "";
+			position: absolute;
+			left: -9999px;
+			top: -9999px;
+			right: 0;
+			bottom: 0;
+			background: $light-gray;
+		}
+	}
+
+	.logo {
+
+		@include media ('>=tablet') {
+			width: 147px;
+			margin-left: auto;
+			padding-right: 9px;
+			margin-bottom: 20px;
+		}
+
+		@include media ('>=widescreen') {
+			margin-bottom: 39px;
+		}
+
+		a {
+			display: block;
+			margin-bottom: 1px;
+		}
+
+		span {
+			font-family: $base-font-monosnape;
+			text-transform: uppercase;
+			letter-spacing: 1.61px;
+			color: $light-purple;
+			font-weight: 400;
+		}
+	}
+
+	h3 {
+		font-size: 16px;
+		font-weight: 600;
+		letter-spacing: 0.5px;
+	}
+
+	ul {
+		@extend %listreset;
+
+		a {
+			@include animate(color text-shadow);
+
+			color: $dark-blue;
+			text-shadow: none;
+		}
+
+		a.active {
+			@include animate(color text-shadow);
+
+			color: $light-blue;
+			text-shadow: none;
+		}
+
+		li {
+			font-size: 16px;
+			font-weight: 600;
+			letter-spacing: 0.5px;
+			padding-bottom: 15px;
+
+			@include media ('>=widescreen') {
+				padding-bottom: 22px;
+			}
+
+			&.active {
+				& > a {
+					color: $light-blue; 
+					text-shadow: 0 0 0 $light-blue;
+				}
+			}
+
+			&:last-child {
+				padding-bottom: 0;
+			}
+
+			a {
+				&:hover {
+					color: $light-blue;
+				}
+			}
+
+			& > ul {
+				@extend %listreset;
+
+				padding-top: 9px;
+
+				li {
+					font-size: 13px;
+					font-weight: 500;
+					letter-spacing: 0.5px;
+					padding-bottom: 5px;
+
+					@include media ('>=widescreen') {
+						padding-bottom: 11px;
+					}
+
+					&:last-child {
+						padding-bottom: 0;
+					}
+				}
+			}
+		}
+	}
+}
+
+// central content
+.content {
+	min-height: 100vh;
+	padding: 15px 0;
+
+	@include media ('>=tablet') {
+		padding: 15px 15px 50px;
+		width: calc(100% - 320px);
+	}
+
+	@include media ('>=desktop') {
+		padding: 40px 20px;
+	}
+
+	@include media ('>=widescreen') {
+		width: calc(100% - 422px);
+		padding: 40px 34px 50px 45px;
+	}
+
+	&:only-child {
+		width: 100%;
+	}
+
+	h1 {
+		font-weight: 700;
+		font-size: 18px;
+		letter-spacing: 0.86px;
+
+		@include media ('>=tablet') {
+			font-size: 21px;
+			letter-spacing: 1px;
+		}
+	}
+
+	h2 {
+		margin-bottom: 13px;
+	}
+
+	p {
+		margin-bottom: 29px;
+	}
+
+	pre {
+		white-space: pre-line;
+
+		@include media ('>=phone') {
+			margin: 0 -16px;
+		}
+
+		@include media ('>=tablet') {
+			margin: 0;
+		}
+	}
+}
+
+// right sidebar
+.aside {
+
+	@include media ('>=tablet') {
+		font-size: 13px;
+		width: 110px;
+	}
+
+	@include media ('>=widescreen') {
+		width: 160px;
+	}
+
+	h3 {
+		font-weight: 600;
+		margin-bottom: 10px;
+		letter-spacing: 0.62px;
+	}
+
+	.fixed-block {
+
+		@include media ('>=tablet') {
+			padding: 15px 0 70px 15px;
+			position: relative;
+		}
+
+		@include media ('>=widescreen') {
+			padding: 45px 0 70px 25px;
+		}
+
+		&:before {
+			@include media ('>=tablet') {
+				content: "";
+				position: absolute;
+				left: 0;
+				top: 10px;
+				bottom: 60px;
+				width: 1px;
+				background: #ccc;
+
+				@include media ('>=widescreen') {
+					top: 28px;
+					bottom: 54px;
+				}
+			}
+		}
+	}
+
+	.nav-list {
+
+		li {
+			margin-bottom: 5px;
+
+			@include media ('>=widescreen') {
+				margin-bottom: 10px;
+			}
+		}
+
+		a {
+			font-weight: 600;
+		}
+	}
+}

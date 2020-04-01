@@ -1,0 +1,16 @@
+<section class="about-section">
+  <div class="container">
+    <div class="heading-holder">
+      <span class="decor-line"></span>
+      <h3 class="h1">About Red Sift</h3>
+    </div>
+    <div class="about-card">
+      <div class="logo-holder">
+        <img src="svg/logo-redsift-white.svg" alt="Redsift Logo" width="120" />
+      </div>
+      <div class="text-holder">
+        {{ with .Site.GetPage "/landing/about.md" }}{{ .Content }}{{ end }}
+      </div>
+    </div>
+  </div>
+</section>
