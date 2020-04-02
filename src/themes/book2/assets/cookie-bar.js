@@ -68,7 +68,7 @@
 
   window.addEventListener('scroll', () => {
     hideHeading();
-    setDocsPadding();
+    setPadding();
   });
 
 })();
