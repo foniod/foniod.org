@@ -195,7 +195,7 @@
 	.slide {
 		display: none;
 		padding: 30px 10px 5px 32px;
-		background: #0d0d1a;
+		background: $blue-black;
 
 		@include media ('>=tablet') {
 			display: block;

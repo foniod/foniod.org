@@ -39,6 +39,10 @@
 {{ end }}
 
 <body class="fixed-position">
+	<!-- Google Tag Manager (noscript) -->
+	<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WRMND9W"
+		height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+		<!-- End Google Tag Manager (noscript) -->
 	<div id="wrapper">
 		{{ template "header" . }}
 
@@ -47,7 +51,7 @@
 			<div class="container inner-container">
 				<!-- sidebar -->
 				<aside class="sidebar">
-				  <div class="fixed-block">
+				  <div id="left-sidebar" class="fixed-block">
 				    {{ template "menu" . }} <!-- Left menu Content -->
 				  </div>
 				</aside>
@@ -55,10 +59,10 @@
 				<div class="content">
 				  {{ template "main" . }} <!-- Page Content -->
 				</div>
-				<!-- aside -->
+				<!-- right-sidebar -->
 				{{ if default true (default .Site.Params.BookToC .Params.BookToC) }}
 				<aside class="aside hide">
-					<div class="fixed-block">
+					<div id="right-sidebar" class="fixed-block">
 					  <h3>Contents</h3>
 					  {{ template "toc" . }} <!-- Table of Contents -->
 					</div>
