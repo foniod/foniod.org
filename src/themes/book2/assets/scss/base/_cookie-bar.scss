@@ -1,0 +1,59 @@
+.header-container {
+  position: fixed;
+  top: 0;
+	left: 0;
+	width: 100%;
+	z-index: 3;
+}
+
+.cookie-bar {
+  background-color: $blue-black;
+  &.hide {
+    display: none;
+  }
+
+  .container {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    h3 {
+      text-align: left;
+      font-size: 1.25rem;;
+      color: white;
+      margin-bottom: 0.5rem;
+      &.hide {
+        display: none;
+      }
+    }
+
+    p, a {
+      font-size: 14px;
+    }
+    p {
+      margin-top: 0;
+      color: $light-purple;
+    }
+    button {
+      border: none;
+      width: 100%;
+      @media only screen and (min-width: 480px) {
+        width: auto;
+      }
+    }
+  }
+}
+
+.cookie-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  @media only screen and (min-width: 1024px) {
+    justify-content: space-between;
+    &.scrolled {
+      flex-direction: row;
+      align-items: center;
+    }
+  }
+  .hide {
+    display: none;
+  }
+}

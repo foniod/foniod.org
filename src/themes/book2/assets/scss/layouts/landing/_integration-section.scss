@@ -61,7 +61,7 @@
 		height: 100%;
 		padding: 10px;
 		background: $dark-blue;
-		box-shadow: 0 5px 9px #0d0d1a;
+		box-shadow: 0 5px 9px $blue-black;
 		border: 1px solid $dark-blue;
 
 		@include media ('>=tablet') {

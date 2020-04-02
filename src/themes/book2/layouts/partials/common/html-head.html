@@ -9,9 +9,21 @@
 <title>{{ partial "docs/title" . }} | {{ .Site.Title -}}</title>
 <link rel="icon" href="{{ "favicon.png" | relURL }}" type="image/x-icon">
 
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-WRMND9W');</script>
+  <!-- End Google Tag Manager -->
+
 <!-- Theme stylesheet, you can customize scss by creating `assets/custom.scss` in your website -->
 {{- $styles := resources.Get "scss/main.scss" | resources.ExecuteAsTemplate "scss/main.scss" . | resources.ToCSS | resources.Minify | resources.Fingerprint }}
 <link rel="stylesheet" href="{{ $styles.RelPermalink }}" integrity="{{ $styles.Data.Integrity }}">
+
+{{- $cookieJSFile := printf "%s.cookie-bar.js" .Language.Lang -}}
+{{- $cookieJS := resources.Get "cookie-bar.js" | resources.ExecuteAsTemplate $cookieJSFile . | resources.Minify | resources.Fingerprint }}
+<script defer src="{{ $cookieJS.RelPermalink }}" integrity="{{ $cookieJS.Data.Integrity }}"></script>
 
 {{ if default true .Site.Params.BookSearch }}
 {{- $menuJSFile := printf "%s.menu-toggle.js" .Language.Lang -}}
