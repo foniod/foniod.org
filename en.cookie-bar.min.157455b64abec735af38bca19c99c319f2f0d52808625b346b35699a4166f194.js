@@ -3,4 +3,4 @@ const setPadding=()=>{if(!gaveConsent){let mainPaddingTop=72;if(window.innerWidt
 cookieBar.classList.remove("hide");main.style.paddingTop=`${cookieBar.clientHeight+mainPaddingTop}px`;setDocsPadding();}}
 const hideHeading=()=>{if(window.scrollY>=80){cookieHeading.classList.add("hide");}else{cookieHeading.classList.remove("hide");}}
 const hideBar=()=>{localStorage.setItem("redsift/gave-cookie-consent","yes");cookieBar.classList.add("hide");main.style.removeProperty('padding-top');if(body.classList.contains("fixed-position")&&window.innerWidth>=768){const left=document.querySelector("#left-sidebar");const right=document.querySelector("#right-sidebar");left.style.removeProperty('top');right.style.removeProperty('top');}}
-setPadding();setDocsPadding();cookieButton.onclick=hideBar;window.addEventListener('resize',()=>{setPadding();setDocsPadding();});window.addEventListener('scroll',()=>{hideHeading();setDocsPadding();});})();
+setPadding();setDocsPadding();cookieButton.onclick=hideBar;window.addEventListener('resize',()=>{setPadding();setDocsPadding();});window.addEventListener('scroll',()=>{hideHeading();setPadding();});})();
