@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["prelude","The Kprobe Prelude"]],"struct":[["Registers",""]]});
+initSidebarItems({"mod":[["prelude","The Kprobe Prelude"]]});

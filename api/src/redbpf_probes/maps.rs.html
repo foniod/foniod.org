@@ -1,4 +1,7 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `redbpf-probes/src/maps.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>maps.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css"><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="shortcut icon" href="../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../redbpf_probes/index.html'><div class='logo-container'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `redbpf-probes/src/maps.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>maps.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings"></script><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="alternate icon" type="image/png" href="../../favicon-16x16.png">
+<link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../redbpf_probes/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
+                <a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -209,6 +212,102 @@
 <span id="209">209</span>
 <span id="210">210</span>
 <span id="211">211</span>
+<span id="212">212</span>
+<span id="213">213</span>
+<span id="214">214</span>
+<span id="215">215</span>
+<span id="216">216</span>
+<span id="217">217</span>
+<span id="218">218</span>
+<span id="219">219</span>
+<span id="220">220</span>
+<span id="221">221</span>
+<span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
+<span id="225">225</span>
+<span id="226">226</span>
+<span id="227">227</span>
+<span id="228">228</span>
+<span id="229">229</span>
+<span id="230">230</span>
+<span id="231">231</span>
+<span id="232">232</span>
+<span id="233">233</span>
+<span id="234">234</span>
+<span id="235">235</span>
+<span id="236">236</span>
+<span id="237">237</span>
+<span id="238">238</span>
+<span id="239">239</span>
+<span id="240">240</span>
+<span id="241">241</span>
+<span id="242">242</span>
+<span id="243">243</span>
+<span id="244">244</span>
+<span id="245">245</span>
+<span id="246">246</span>
+<span id="247">247</span>
+<span id="248">248</span>
+<span id="249">249</span>
+<span id="250">250</span>
+<span id="251">251</span>
+<span id="252">252</span>
+<span id="253">253</span>
+<span id="254">254</span>
+<span id="255">255</span>
+<span id="256">256</span>
+<span id="257">257</span>
+<span id="258">258</span>
+<span id="259">259</span>
+<span id="260">260</span>
+<span id="261">261</span>
+<span id="262">262</span>
+<span id="263">263</span>
+<span id="264">264</span>
+<span id="265">265</span>
+<span id="266">266</span>
+<span id="267">267</span>
+<span id="268">268</span>
+<span id="269">269</span>
+<span id="270">270</span>
+<span id="271">271</span>
+<span id="272">272</span>
+<span id="273">273</span>
+<span id="274">274</span>
+<span id="275">275</span>
+<span id="276">276</span>
+<span id="277">277</span>
+<span id="278">278</span>
+<span id="279">279</span>
+<span id="280">280</span>
+<span id="281">281</span>
+<span id="282">282</span>
+<span id="283">283</span>
+<span id="284">284</span>
+<span id="285">285</span>
+<span id="286">286</span>
+<span id="287">287</span>
+<span id="288">288</span>
+<span id="289">289</span>
+<span id="290">290</span>
+<span id="291">291</span>
+<span id="292">292</span>
+<span id="293">293</span>
+<span id="294">294</span>
+<span id="295">295</span>
+<span id="296">296</span>
+<span id="297">297</span>
+<span id="298">298</span>
+<span id="299">299</span>
+<span id="300">300</span>
+<span id="301">301</span>
+<span id="302">302</span>
+<span id="303">303</span>
+<span id="304">304</span>
+<span id="305">305</span>
+<span id="306">306</span>
+<span id="307">307</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright 2019 Authors of Red Sift</span>
 <span class="comment">//</span>
@@ -224,6 +323,7 @@ Maps are a generic data structure for storage of different types of data.
 They allow sharing of data between eBPF kernel programs, and also between
 kernel and user-space code.
  */</span>
+<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">convert</span>::<span class="ident">TryInto</span>;
 <span class="kw">use</span> <span class="ident">core</span>::<span class="ident">default</span>::<span class="ident">Default</span>;
 <span class="kw">use</span> <span class="ident">core</span>::<span class="ident">marker</span>::<span class="ident">PhantomData</span>;
 <span class="kw">use</span> <span class="ident">core</span>::<span class="ident">mem</span>;
@@ -365,7 +465,8 @@ kernel and user-space code.
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">PerfMapFlags</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">u64</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">flags</span>: <span class="ident">PerfMapFlags</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u64</span> {
-        (<span class="ident">flags</span>.<span class="ident">xdp_size</span> <span class="kw">as</span> <span class="ident">u64</span>) <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">32</span> <span class="op">|</span> (<span class="ident">flags</span>.<span class="ident">index</span>.<span class="ident">unwrap_or</span>(<span class="ident">BPF_F_CURRENT_CPU</span>) <span class="kw">as</span> <span class="ident">u64</span>)
+        (<span class="ident">flags</span>.<span class="ident">xdp_size</span> <span class="kw">as</span> <span class="ident">u64</span>) <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">32</span>
+            <span class="op">|</span> (<span class="ident">flags</span>.<span class="ident">index</span>.<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">BPF_F_CURRENT_CPU</span>.<span class="ident">try_into</span>().<span class="ident">unwrap</span>()) <span class="kw">as</span> <span class="ident">u64</span>)
     }
 }
 
@@ -421,5 +522,99 @@ kernel and user-space code.
         );
     }
 }
+
+<span class="comment">// TODO Use PERF_MAX_STACK_DEPTH</span>
+<span class="kw">const</span> <span class="ident">BPF_MAX_STACK_DEPTH</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">127</span>;
+
+<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">transparent</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">StackTrace</span> {
+    <span class="ident">def</span>: <span class="ident">bpf_map_def</span>
+}
+
+<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
+<span class="kw">struct</span> <span class="ident">BpfStackFrames</span> {
+    <span class="ident">ip</span>: [<span class="ident">u64</span>; <span class="ident">BPF_MAX_STACK_DEPTH</span>]
+}
+
+<span class="kw">impl</span> <span class="ident">StackTrace</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">with_max_entries</span>(<span class="ident">cap</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="ident">StackTrace</span> {
+            <span class="ident">def</span>: <span class="ident">bpf_map_def</span> {
+                <span class="ident">type_</span>: <span class="ident">bpf_map_type_BPF_MAP_TYPE_STACK_TRACE</span>,
+                <span class="ident">key_size</span>: <span class="ident">mem</span>::<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>() <span class="kw">as</span> <span class="ident">u32</span>,
+                <span class="ident">value_size</span>: <span class="ident">mem</span>::<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">BpfStackFrames</span><span class="op">&gt;</span>() <span class="kw">as</span> <span class="ident">u32</span>,
+                <span class="ident">max_entries</span>: <span class="ident">cap</span>,
+                <span class="ident">map_flags</span>: <span class="number">0</span>
+            }
+        }
+    }
+
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">stack_id</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">ctx</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">pt_regs</span>, <span class="ident">flag</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">c_int</span>, <span class="ident">c_int</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">bpf_get_stackid</span>(<span class="ident">ctx</span> <span class="kw">as</span> <span class="kw">_</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">def</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw">_</span>, <span class="ident">flag</span>);
+        <span class="kw">if</span> <span class="ident">ret</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">0</span> {
+            <span class="prelude-val">Ok</span>(<span class="ident">ret</span>)
+        } <span class="kw">else</span> {
+            <span class="prelude-val">Err</span>(<span class="ident">ret</span>)
+        }
+    }
+}
+
+<span class="doccomment">/// Program array map.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// An array of eBPF programs that can be used as a jump table.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// To configure the map use</span>
+<span class="doccomment">/// [`redbpf::ProgramArray`](../../redbpf/struct.ProgramArray.html)</span>
+<span class="doccomment">/// from user-space.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// To jump to a program, see the `tail_call` method.</span>
+<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">transparent</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ProgramArray</span> {
+    <span class="ident">def</span>: <span class="ident">bpf_map_def</span>,
+}
+
+<span class="kw">impl</span> <span class="ident">ProgramArray</span> {
+    <span class="doccomment">/// Creates a program map with the specified maximum number of programs.</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">with_max_entries</span>(<span class="ident">max_entries</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="self">Self</span> {
+            <span class="ident">def</span>: <span class="ident">bpf_map_def</span> {
+                <span class="ident">type_</span>: <span class="ident">bpf_map_type_BPF_MAP_TYPE_PROG_ARRAY</span>,
+                <span class="ident">key_size</span>: <span class="ident">mem</span>::<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>() <span class="kw">as</span> <span class="ident">u32</span>,
+                <span class="ident">value_size</span>: <span class="ident">mem</span>::<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>() <span class="kw">as</span> <span class="ident">u32</span>,
+                <span class="ident">max_entries</span>,
+                <span class="ident">map_flags</span>: <span class="number">0</span>,
+            },
+        }
+    }
+
+    <span class="doccomment">/// Jump to the eBPF program referenced at `index`, passing `ctx` as context.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// This special method is used to trigger a &quot;tail call&quot;, or in other words,</span>
+    <span class="doccomment">/// to jump into another eBPF program.  The same stack frame is used (but</span>
+    <span class="doccomment">/// values on stack and in registers for the caller are not accessible to</span>
+    <span class="doccomment">/// the callee). This mechanism allows for program chaining, either for</span>
+    <span class="doccomment">/// raising the maximum number of available eBPF instructions, or to execute</span>
+    <span class="doccomment">/// given programs in conditional blocks. For security reasons, there is an</span>
+    <span class="doccomment">/// upper limit to the number of successive tail calls that can be</span>
+    <span class="doccomment">/// performed.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// If the call succeeds the kernel immediately runs the first instruction</span>
+    <span class="doccomment">/// of the new program. This is not a function call, and it never returns to</span>
+    <span class="doccomment">/// the previous program. If the call fails, then the helper has no effect,</span>
+    <span class="doccomment">/// and the caller continues to run its subsequent instructions.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// A call can fail if the destination program for the jump does not exist</span>
+    <span class="doccomment">/// (i.e. index is superior to the number of entries in the array), or</span>
+    <span class="doccomment">/// if the maximum number of tail calls has been reached for this chain of</span>
+    <span class="doccomment">/// programs.</span>
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">tail_call</span><span class="op">&lt;</span><span class="ident">C</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">ctx</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">C</span>, <span class="ident">index</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">i32</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">bpf_tail_call</span>(<span class="ident">ctx</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">def</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>, <span class="ident">index</span>);
+        <span class="kw">if</span> <span class="ident">ret</span> <span class="op">&lt;</span> <span class="number">0</span> {
+            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ret</span>);
+        }
+
+        <span class="prelude-val">Ok</span>(())
+    }
+}
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../";window.currentCrate = "redbpf_probes";</script><script src="../../aliases.js"></script><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>
+</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../";window.currentCrate = "redbpf_probes";</script><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>

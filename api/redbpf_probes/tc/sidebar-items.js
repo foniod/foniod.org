@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["TcAction","Possible actions in tc programs"]],"mod":[["prelude",""]],"type":[["TcActionResult","Result type for tc action programs."]]});

@@ -1,3 +1,4 @@
 (function() {var implementors = {};
-implementors["cargo_bpf_lib"] = [{"text":"impl <a class=\"trait\" href=\"https://doc.rust-lang.org/nightly/std/error/trait.Error.html\" title=\"trait std::error::Error\">Error</a> for <a class=\"enum\" href=\"cargo_bpf_lib/enum.Error.html\" title=\"enum cargo_bpf_lib::Error\">Error</a>","synthetic":false,"types":["cargo_bpf_lib::build::Error"]}];
+implementors["bpf_sys"] = [{"text":"impl Error for HeadersError","synthetic":false,"types":[]}];
+implementors["cargo_bpf_lib"] = [{"text":"impl Error for Error","synthetic":false,"types":[]}];
 if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

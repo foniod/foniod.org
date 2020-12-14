@@ -1,3 +1,3 @@
 (function() {var implementors = {};
-implementors["redbpf_probes"] = [{"text":"impl uWrite for <a class=\"struct\" href=\"redbpf_probes/helpers/struct.TraceMessage.html\" title=\"struct redbpf_probes::helpers::TraceMessage\">TraceMessage</a>","synthetic":false,"types":["redbpf_probes::helpers::TraceMessage"]}];
+implementors["redbpf_probes"] = [{"text":"impl uWrite for TraceMessage","synthetic":false,"types":[]}];
 if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

@@ -1,3 +1,3 @@
 (function() {var implementors = {};
-implementors["redbpf"] = [{"text":"impl <a class=\"trait\" href=\"https://doc.rust-lang.org/nightly/core/ops/drop/trait.Drop.html\" title=\"trait core::ops::drop::Drop\">Drop</a> for <a class=\"struct\" href=\"redbpf/struct.PerfMap.html\" title=\"struct redbpf::PerfMap\">PerfMap</a>","synthetic":false,"types":["redbpf::perf::PerfMap"]},{"text":"impl <a class=\"trait\" href=\"https://doc.rust-lang.org/nightly/core/ops/drop/trait.Drop.html\" title=\"trait core::ops::drop::Drop\">Drop</a> for <a class=\"struct\" href=\"redbpf/struct.XDP.html\" title=\"struct redbpf::XDP\">XDP</a>","synthetic":false,"types":["redbpf::XDP"]}];
+implementors["redbpf"] = [{"text":"impl Drop for PerfMap","synthetic":false,"types":[]},{"text":"impl Drop for XDP","synthetic":false,"types":[]}];
 if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

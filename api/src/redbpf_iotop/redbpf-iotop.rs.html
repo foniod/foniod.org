@@ -1,4 +1,7 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `redbpf-tools/src/bin/redbpf-iotop.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>redbpf-iotop.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css"><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="shortcut icon" href="../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../redbpf_iotop/index.html'><div class='logo-container'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `redbpf-tools/src/bin/redbpf-iotop.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>redbpf-iotop.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings"></script><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="alternate icon" type="image/png" href="../../favicon-16x16.png">
+<link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../redbpf_iotop/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
+                <a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -99,6 +102,12 @@
 <span id="99"> 99</span>
 <span id="100">100</span>
 <span id="101">101</span>
+<span id="102">102</span>
+<span id="103">103</span>
+<span id="104">104</span>
+<span id="105">105</span>
+<span id="106">106</span>
+<span id="107">107</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Copyright 2019-2020 Authors of Red Sift</span>
 <span class="comment">//</span>
@@ -112,6 +121,7 @@
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">fs</span>::<span class="ident">File</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">io</span>::{<span class="self">self</span>, <span class="ident">BufRead</span>, <span class="ident">BufReader</span>};
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">os</span>::<span class="ident">raw</span>::<span class="ident">c_char</span>;
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">process</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">time</span>::<span class="ident">Duration</span>;
 <span class="kw">use</span> <span class="ident">tokio</span>;
 <span class="kw">use</span> <span class="ident">tokio</span>::<span class="ident">runtime</span>::<span class="ident">Runtime</span>;
@@ -121,8 +131,13 @@
 <span class="kw">use</span> <span class="ident">probes</span>::<span class="ident">iotop</span>::{<span class="ident">Counter</span>, <span class="ident">CounterKey</span>};
 
 <span class="kw">fn</span> <span class="ident">main</span>() {
+    <span class="kw">if</span> <span class="kw">unsafe</span> { <span class="ident">libc</span>::<span class="ident">getuid</span>() } <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
+        <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;redbpf-iotop: You must be root to use eBPF!&quot;</span>);
+        <span class="ident">process</span>::<span class="ident">exit</span>(<span class="op">-</span><span class="number">1</span>);
+    }
+
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">runtime</span> <span class="op">=</span> <span class="ident">Runtime</span>::<span class="ident">new</span>().<span class="ident">unwrap</span>();
-    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">runtime</span>.<span class="ident">block_on</span>(<span class="kw">async</span> {
+    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">runtime</span>.<span class="ident">block_on</span>(<span class="ident">async</span> {
         <span class="comment">// load the BPF programs and maps</span>
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">loader</span> <span class="op">=</span> <span class="ident">Loader</span>::<span class="ident">load</span>(<span class="ident">probe_code</span>()).<span class="ident">expect</span>(<span class="string">&quot;error loading probe&quot;</span>);
 
@@ -133,13 +148,13 @@
                 .<span class="ident">expect</span>(<span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;error attaching program {}&quot;</span>, <span class="ident">kprobe</span>.<span class="ident">name</span>()));
         }
 
-        <span class="ident">tokio</span>::<span class="ident">spawn</span>(<span class="kw">async</span> <span class="kw">move</span> {
+        <span class="ident">tokio</span>::<span class="ident">spawn</span>(<span class="ident">async</span> <span class="kw">move</span> {
             <span class="kw">let</span> <span class="ident">counts</span> <span class="op">=</span>
                 <span class="ident">BPFHashMap</span>::<span class="op">&lt;</span><span class="ident">CounterKey</span>, <span class="ident">Counter</span><span class="op">&gt;</span>::<span class="ident">new</span>(<span class="ident">loader</span>.<span class="ident">map</span>(<span class="string">&quot;counts&quot;</span>).<span class="ident">unwrap</span>()).<span class="ident">unwrap</span>();
             <span class="kw">let</span> <span class="ident">disks</span> <span class="op">=</span> <span class="ident">parse_diskstats</span>().<span class="ident">unwrap</span>();
 
             <span class="kw">loop</span> {
-                <span class="ident">delay_for</span>(<span class="ident">Duration</span>::<span class="ident">from_millis</span>(<span class="number">1000</span>)).<span class="kw">await</span>;
+                <span class="ident">delay_for</span>(<span class="ident">Duration</span>::<span class="ident">from_millis</span>(<span class="number">1000</span>)).<span class="ident">await</span>;
 
                 <span class="macro">println</span><span class="macro">!</span>(
                     <span class="string">&quot;{:6} {:16} {:1} {:3} {:3} {:8} {:&gt;5} {:&gt;7} {:&gt;6}&quot;</span>,
@@ -176,7 +191,7 @@
             }
         });
 
-        <span class="ident">signal</span>::<span class="ident">ctrl_c</span>().<span class="kw">await</span>
+        <span class="ident">signal</span>::<span class="ident">ctrl_c</span>().<span class="ident">await</span>
     });
 }
 
@@ -202,4 +217,4 @@
     ))
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../";window.currentCrate = "redbpf_iotop";</script><script src="../../aliases.js"></script><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>
+</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../";window.currentCrate = "redbpf_iotop";</script><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>

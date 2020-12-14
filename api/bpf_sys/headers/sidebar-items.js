@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["prefix_kernel_headers",""]]});
+initSidebarItems({"enum":[["HeadersError",""]],"fn":[["build_kernel_version",""],["prefix_kernel_headers",""],["running_kernel_version",""]],"struct":[["KernelVersion",""]]});
