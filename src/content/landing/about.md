@@ -1,1 +1,5 @@
-Red Sift is a data-driven cybersecurity company on a mission to democratise the technology vital for organisations of any size or sectors to defend against security threats. With a platform based on machine learning technology, Red Sift offers users a dashboard of tools – from [network monitoring](https://ingraind.org) to email [analysis](https://oninbox.redsift.com) and [authentication](https://ondmarc.redsift.com) – designed to safeguard users and brand reputation.
+[`ingraind`](https://github.com/ingraind/ingraind) and [RedBPF](https://github.com/ingraind/redbpf) are being developed by a community of individuals and companies from across the globe. The project is used in industries like security, gaming, or blockchain. `ingraind` was originally developed by [Red Sift](https://redsift.com).
+
+To learn more about [contributing](https://github.com/ingraind/project/blob/main/CONTRIBUTING.md), please consult our documentation.
+
+

@@ -5,13 +5,15 @@
       <h3 class="h1">Meet the team</h3>
     </div>
     <div class="about-card">
-      <div class="logo-holder">
-        <img src="svg/logo-redsift-white.svg" alt="Redsift Logo" width="120" />
-      </div>
       <div class="text-holder">
         {{ with .Site.GetPage "/landing/about.md" }}{{ .Content }}{{ end }}
+
+
+	<div class="center-text">
+	<p><code>ingraind</code> is a proud member of the CNCF.</p>
+	<img alt="CNCF Sandbox logo" src="svg/cncf-sandbox-horizontal-white.svg" width="300pt"/>
+	</div>
       </div>
     </div>
-    <p class="center-text">Find out how Red Sift is delivering actionable cybersecurity insights to its global customers at <a href="https://redsift.com/" target="_blank" rel="nofollow noreferrer">www.redsift.com</a>.</p>
   </div>
 </section>

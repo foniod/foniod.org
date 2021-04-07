@@ -57,6 +57,10 @@
 	}
 
 	.text-holder {
+	        code {
+	        	background: none;
+	        }
+
 		@extend %blue-top-card;
 		p:nth-child(2) {
 			margin-bottom: 2em;
@@ -68,7 +72,7 @@
 		@include media ('>=desktop') {
 			padding-top: 50px;
 			padding-bottom: 50px;
-			padding-left: calc(25% + 90px);
+			padding-left: calc(90px);
 			p {
 				font-size: 1.125rem;
 				line-height: 1.5;
