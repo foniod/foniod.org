@@ -3,7 +3,7 @@ languageCode = "en-us"
 title = "Foniod"
 enableGitInfo = true
 theme = "book2"
-publishDir = "../dist"
+publishDir = "../docs"
 
 [params]
 MainMenuBundle = "/main-menu"
