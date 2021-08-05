@@ -1,39 +1,39 @@
 # Profiling
 
 ## During development
-The recommended way to profile `ingraind` binaries is using `perf`.
+The recommended way to profile `foniod` binaries is using `perf`.
 The default `--release` builds are not stripped, therefore it should be easy to analyse the results.
 
-    sudo perf record ./target/release/ingraind
+    sudo perf record ./target/release/foniod
     sudo perf report
 
 ## Docker
 
-If running in a container, the recommended way is to start `ingraind`, then attach `perf`, and look the results off the box.
+If running in a container, the recommended way is to start `foniod`, then attach `perf`, and look the results off the box.
 
-    sudo docker run -d --name ingraind -e OPTION=value [...] --pid=host --net=host --privileged ingraind
-    sudo perf record -a -p `pgrep ingraind`
+    sudo docker run -d --name foniod -e OPTION=value [...] --pid=host --net=host --privileged foniod
+    sudo perf record -a -p `pgrep foniod`
 
 Looking at the results in this scenario is a bit tricky, because we will need to tell `perf` where the binaries are located to resolve the symbols.
 
-This can be done by starting an `ingraind` container on the box that we're using for analysis (if different from the system where we collected the data), then using the merged overlay filesystem as a base for symbol resolution. Note, **you will need to use the same container version**, as the symbols **will** change between builds.
+This can be done by starting an `foniod` container on the box that we're using for analysis (if different from the system where we collected the data), then using the merged overlay filesystem as a base for symbol resolution. Note, **you will need to use the same container version**, as the symbols **will** change between builds.
 
 This can be easily done like so:
 
     export VERSION=sha256_of_profiled_container
-    docker run -d --rm --name ingraind -it ingraind:$VERSION /bin/sh
+    docker run -d --rm --name foniod -it foniod:$VERSION /bin/sh
 
-    export CONTAINER_HASH=$(docker inspect ingraind |grep MergedDir |sed 's;.*: "\(.*\)",;\1;')
+    export CONTAINER_HASH=$(docker inspect foniod |grep MergedDir |sed 's;.*: "\(.*\)",;\1;')
     sudo perf report -f -i perf.data_docker --symfs /var/lib/docker/overlay2/$CONTAINER_HASH/merged
 
 After you're done, you can shut down the container.
 
-    docker stop ingraind
+    docker stop foniod
 
 ## Stat
-To get detailed stats about the execution of `ingraind`, you can `perf stat` like so:
+To get detailed stats about the execution of `foniod`, you can `perf stat` like so:
 
-    $ perf stat -a -p `pgrep ingraind`
+    $ perf stat -a -p `pgrep foniod`
 
     Performance counter stats for process id '28037':
 

@@ -1,6 +1,6 @@
 # Getting Started
 
-To get started with ingraind, you will need a Linux-based
+To get started with foniod, you will need a Linux-based
 system. Generally, any recent release of a modern distribution will
 work fine.
 
@@ -63,22 +63,22 @@ A configuration file will look like the snippet below. Name it `config.toml`.
 	
 For an exhaustive list of grains and configuration options, look at
 the [example
-configuration](https://github.com/redsift/ingraind/blob/master/config.toml.example)
+configuration](https://github.com/redsift/foniod/blob/master/config.toml.example)
 in the repository.
 
 ## Docker
 
-To start an ingraind Docker container on Ubuntu 18.04, use the following command line:
+To start an foniod Docker container on Ubuntu 18.04, use the following command line:
 
-	docker run -v $(pwd)/config.toml:/config/ingraind.toml --privileged --rm quay.io/redsift/ingraind:latest-ubuntu-18.04
+	docker run -v $(pwd)/config.toml:/config/foniod.toml --privileged --rm quay.io/redsift/foniod:latest-ubuntu-18.04
 	
 For running on Fedora 31, you can use the following:
 
-	docker run -v $(pwd)/config.toml:/config/ingraind.toml --privileged --rm quay.io/redsift/ingraind:latest-fedora31
+	docker run -v $(pwd)/config.toml:/config/foniod.toml --privileged --rm quay.io/redsift/foniod:latest-fedora31
 
 ## Build from scratch
 
-To get `ingraind` working on your workstation, you will need to start by
+To get `foniod` working on your workstation, you will need to start by
 installing a few packages and the Rust toolchain.
 
 	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
@@ -105,13 +105,13 @@ On Fedora, install dependencies using the following command.
 
 ### Building
 
-After installing the dependencies, build `ingraind` with the usual build ritual.
+After installing the dependencies, build `foniod` with the usual build ritual.
 
 	cargo build --release
 	
 And run it as root.
 	
-	sudo ./target/release/ingraind ./config.toml
+	sudo ./target/release/foniod ./config.toml
 	
 If everything worked, you should start seeing output on the console from events happening on your system.
 

@@ -6,10 +6,10 @@
 <meta http-equiv="x-ua-compatible" content="ie=edge">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Getting Started To get started with ingraind, you will need a Linux-based system. Generally, any recent release of a modern distribution will work fine.
+<meta name="description" content="Getting Started To get started with foniod, you will need a Linux-based system. Generally, any recent release of a modern distribution will work fine.
 To deploy on Kubernetes and on various cloud platforms, you will want to take a peek at our Kubernetes tutorial If you&rsquo;re running Fedora 31, or Ubuntu 18.04, you will be able to get going using Docker and a configuration file.
 A configuration file will look like the snippet below."><meta property="og:title" content="" />
-<meta property="og:description" content="Getting Started To get started with ingraind, you will need a Linux-based system. Generally, any recent release of a modern distribution will work fine.
+<meta property="og:description" content="Getting Started To get started with foniod, you will need a Linux-based system. Generally, any recent release of a modern distribution will work fine.
 To deploy on Kubernetes and on various cloud platforms, you will want to take a peek at our Kubernetes tutorial If you&rsquo;re running Fedora 31, or Ubuntu 18.04, you will be able to get going using Docker and a configuration file.
 A configuration file will look like the snippet below." />
 <meta property="og:type" content="article" />
@@ -37,7 +37,7 @@ A configuration file will look like the snippet below." />
 
 
 
-<script defer src="/en.search.min.a82cf53884aadb65ce5f5d155ac6f7254c0959d1aea31c145157a1d09ed83288.js" integrity="sha256-qCz1OISq22XOX10VWsb3JUwJWdGuoxwUUVeh0J7YMog="></script>
+<script defer src="/en.search.min.2dd4fb950693d9413ccb6c7696e0ea845480560b464f51ac37cdeed537b9a976.js" integrity="sha256-LdT7lQaT2UE8y2x2luDqhFSAVgtGT1GsN83u1Te5qXY="></script>
 
 
 
@@ -103,7 +103,7 @@ https://github.com/alex-shpak/hugo-book
     <div class="container">
       
       <strong class="logo">
-        <a href="/"><img src="/svg/logo.svg" alt="ingraind" width="135"/></a>
+        <a href="/"><img src="/svg/logo.svg" alt="foniod" width="135"/></a>
       </strong>
       
       <a class="nav-opener" href="#">nav-opener<span></span></a>
@@ -145,7 +145,7 @@ https://github.com/alex-shpak/hugo-book
         </nav>
         
   <ul class="social-networks">
-  <li><a href="https://github.com/redsift/ingraind"><i class="icon-github"></i>github</a></li>
+  <li><a href="https://github.com/redsift/foniod"><i class="icon-github"></i>github</a></li>
   <li><a href="https://twitter.com/redsift"><i class="icon-twitter"></i>twitter</a></li>
 </ul>
 
@@ -183,7 +183,7 @@ https://github.com/alex-shpak/hugo-book
 				    
   <nav class="nav-holder hide">
 <strong class="logo hide">
-  <a href="/"><img src="/svg/logo.svg" alt="ingraind" width="135"/></a>
+  <a href="/"><img src="/svg/logo.svg" alt="foniod" width="135"/></a>
   <span>v1.0</span>
 </strong>
 
@@ -295,7 +295,7 @@ https://github.com/alex-shpak/hugo-book
 				<div class="content">
 				  
   <article class="markdown"><h1 id="getting-started">Getting Started</h1>
-<p>To get started with ingraind, you will need a Linux-based
+<p>To get started with foniod, you will need a Linux-based
 system. Generally, any recent release of a modern distribution will
 work fine.</p>
 <p>To deploy on Kubernetes and on various cloud platforms, you will want
@@ -357,19 +357,19 @@ backend = &quot;Console&quot;
 </code></pre>
 <p>For an exhaustive list of grains and configuration options, look at
 the 
-  <a href="https://github.com/redsift/ingraind/blob/master/config.toml.example">example
+  <a href="https://github.com/redsift/foniod/blob/master/config.toml.example">example
 configuration</a>
 
 in the repository.</p>
 <h2 id="docker">Docker</h2>
-<p>To start an ingraind Docker container on Ubuntu 18.04, use the following command line:</p>
-<pre><code>docker run -v $(pwd)/config.toml:/config/ingraind.toml --privileged --rm quay.io/redsift/ingraind:latest-ubuntu-18.04
+<p>To start an foniod Docker container on Ubuntu 18.04, use the following command line:</p>
+<pre><code>docker run -v $(pwd)/config.toml:/config/foniod.toml --privileged --rm quay.io/redsift/foniod:latest-ubuntu-18.04
 </code></pre>
 <p>For running on Fedora 31, you can use the following:</p>
-<pre><code>docker run -v $(pwd)/config.toml:/config/ingraind.toml --privileged --rm quay.io/redsift/ingraind:latest-fedora31
+<pre><code>docker run -v $(pwd)/config.toml:/config/foniod.toml --privileged --rm quay.io/redsift/foniod:latest-fedora31
 </code></pre>
 <h2 id="build-from-scratch">Build from scratch</h2>
-<p>To get <code>ingraind</code> working on your workstation, you will need to start by
+<p>To get <code>foniod</code> working on your workstation, you will need to start by
 installing a few packages and the Rust toolchain.</p>
 <pre><code>curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 </code></pre>
@@ -389,11 +389,11 @@ installing a few packages and the Rust toolchain.</p>
 <pre><code>yum install -y clang-9.0.0 llvm-9.0.0 llvm-libs-9.0.0 llvm-devel-9.0.0 llvm-static-9.0.0 capnproto kernel kernel-devel elfutils-libelf-devel ca-certificates
 </code></pre>
 <h3 id="building">Building</h3>
-<p>After installing the dependencies, build <code>ingraind</code> with the usual build ritual.</p>
+<p>After installing the dependencies, build <code>foniod</code> with the usual build ritual.</p>
 <pre><code>cargo build --release
 </code></pre>
 <p>And run it as root.</p>
-<pre><code>sudo ./target/release/ingraind ./config.toml
+<pre><code>sudo ./target/release/foniod ./config.toml
 </code></pre>
 <p>If everything worked, you should start seeing output on the console from events happening on your system.</p>
 <p>To get into more advanced topics, read the 
@@ -430,12 +430,12 @@ installing a few packages and the Rust toolchain.</p>
 		 <footer id="footer">
   <div class="container">
     
-    <div class="copy">&copy; 2021 <a href="#">ingraind & RedBPF Contributors</a>. Documentation distributed under <a href="https://creativecommons.org/licenses/by/4.0/">CC-BY-4.0</a></div>
+    <div class="copy">&copy; 2021 <a href="#">foniod & RedBPF Contributors</a>. Documentation distributed under <a href="https://creativecommons.org/licenses/by/4.0/">CC-BY-4.0</a></div>
     <div class="copy">The Linux Foundation® (TLF) has registered trademarks and uses trademarks. For a list of TLF trademarks, see <a href="https://www.linuxfoundation.org/trademark-usage/">Trademark Usage</a></div>
     <div class="social-block">
     
   <ul class="social-networks">
-  <li><a href="https://github.com/redsift/ingraind"><i class="icon-github"></i>github</a></li>
+  <li><a href="https://github.com/redsift/foniod"><i class="icon-github"></i>github</a></li>
   <li><a href="https://twitter.com/redsift"><i class="icon-twitter"></i>twitter</a></li>
 </ul>
 

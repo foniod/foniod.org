@@ -1,9 +1,9 @@
 # Configuration syntax
 
-The configuration format used by `ingraind` is TOML.
+The configuration format used by `foniod` is TOML.
 
 The primary goal of the configuration system is to set up the grains and the
-processing pipelines used by `ingraind`. 
+processing pipelines used by `foniod`. 
 
 The TOML file has two sections: the probes, and the pipelines.
 

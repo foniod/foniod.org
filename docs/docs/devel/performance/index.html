@@ -6,12 +6,12 @@
 <meta http-equiv="x-ua-compatible" content="ie=edge">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Performance The following measurements were done on an 8-core Intel(R) Core(TM) i5-8250U CPU @ 1.60GHz, Arch Linux, and ingraind @ 43281a7 .
+<meta name="description" content="Performance The following measurements were done on an 8-core Intel(R) Core(TM) i5-8250U CPU @ 1.60GHz, Arch Linux, and foniod @ 43281a7 .
 The following command will produce the raw output:
-cargo build --release &amp;&amp; \ sudo AWS_ACCESS_KEY_ID=x \ AWS_SECRET_ACCESS_KEY=x \ AWS_BUCKET=x \ AWS_INTERVAL=30 \ DNS_IF=wlp61s0 \ RUST_BACKTRACE=1 ./target/release/ingraind &amp; sleep 5 \ &amp;&amp; (top -b -d 2 |grep ingraind) &gt;top_log &amp; \ iperf3 -t 10 -b 10M -c localhost &gt; iperf_log \ &amp;&amp; sleep 1 &amp;&amp; iperf3 -t 10 -b 100M -c localhost &gt;&gt;iperf_log \ &amp;&amp; sleep 1 &amp;&amp; iperf3 -t 10 -b 1000M -c localhost &gt;&gt;iperf_log \ &amp;&amp; sleep 1 &amp;&amp; iperf3 -t 10 -b 10000M -c localhost &gt;&gt;iperf_log \ &amp;&amp; pkill top \ &amp;&amp; @ pkill ingraind  Looking through the logs, we can see that CPU use follows bandwidth:"><meta property="og:title" content="" />
-<meta property="og:description" content="Performance The following measurements were done on an 8-core Intel(R) Core(TM) i5-8250U CPU @ 1.60GHz, Arch Linux, and ingraind @ 43281a7 .
+cargo build --release &amp;&amp; \ sudo AWS_ACCESS_KEY_ID=x \ AWS_SECRET_ACCESS_KEY=x \ AWS_BUCKET=x \ AWS_INTERVAL=30 \ DNS_IF=wlp61s0 \ RUST_BACKTRACE=1 ./target/release/foniod &amp; sleep 5 \ &amp;&amp; (top -b -d 2 |grep foniod) &gt;top_log &amp; \ iperf3 -t 10 -b 10M -c localhost &gt; iperf_log \ &amp;&amp; sleep 1 &amp;&amp; iperf3 -t 10 -b 100M -c localhost &gt;&gt;iperf_log \ &amp;&amp; sleep 1 &amp;&amp; iperf3 -t 10 -b 1000M -c localhost &gt;&gt;iperf_log \ &amp;&amp; sleep 1 &amp;&amp; iperf3 -t 10 -b 10000M -c localhost &gt;&gt;iperf_log \ &amp;&amp; pkill top \ &amp;&amp; @ pkill foniod  Looking through the logs, we can see that CPU use follows bandwidth:"><meta property="og:title" content="" />
+<meta property="og:description" content="Performance The following measurements were done on an 8-core Intel(R) Core(TM) i5-8250U CPU @ 1.60GHz, Arch Linux, and foniod @ 43281a7 .
 The following command will produce the raw output:
-cargo build --release &amp;&amp; \ sudo AWS_ACCESS_KEY_ID=x \ AWS_SECRET_ACCESS_KEY=x \ AWS_BUCKET=x \ AWS_INTERVAL=30 \ DNS_IF=wlp61s0 \ RUST_BACKTRACE=1 ./target/release/ingraind &amp; sleep 5 \ &amp;&amp; (top -b -d 2 |grep ingraind) &gt;top_log &amp; \ iperf3 -t 10 -b 10M -c localhost &gt; iperf_log \ &amp;&amp; sleep 1 &amp;&amp; iperf3 -t 10 -b 100M -c localhost &gt;&gt;iperf_log \ &amp;&amp; sleep 1 &amp;&amp; iperf3 -t 10 -b 1000M -c localhost &gt;&gt;iperf_log \ &amp;&amp; sleep 1 &amp;&amp; iperf3 -t 10 -b 10000M -c localhost &gt;&gt;iperf_log \ &amp;&amp; pkill top \ &amp;&amp; @ pkill ingraind  Looking through the logs, we can see that CPU use follows bandwidth:" />
+cargo build --release &amp;&amp; \ sudo AWS_ACCESS_KEY_ID=x \ AWS_SECRET_ACCESS_KEY=x \ AWS_BUCKET=x \ AWS_INTERVAL=30 \ DNS_IF=wlp61s0 \ RUST_BACKTRACE=1 ./target/release/foniod &amp; sleep 5 \ &amp;&amp; (top -b -d 2 |grep foniod) &gt;top_log &amp; \ iperf3 -t 10 -b 10M -c localhost &gt; iperf_log \ &amp;&amp; sleep 1 &amp;&amp; iperf3 -t 10 -b 100M -c localhost &gt;&gt;iperf_log \ &amp;&amp; sleep 1 &amp;&amp; iperf3 -t 10 -b 1000M -c localhost &gt;&gt;iperf_log \ &amp;&amp; sleep 1 &amp;&amp; iperf3 -t 10 -b 10000M -c localhost &gt;&gt;iperf_log \ &amp;&amp; pkill top \ &amp;&amp; @ pkill foniod  Looking through the logs, we can see that CPU use follows bandwidth:" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="http://foniod.org/docs/devel/performance/" /><meta property="article:section" content="docs" />
 
@@ -37,7 +37,7 @@ cargo build --release &amp;&amp; \ sudo AWS_ACCESS_KEY_ID=x \ AWS_SECRET_ACCESS_
 
 
 
-<script defer src="/en.search.min.a82cf53884aadb65ce5f5d155ac6f7254c0959d1aea31c145157a1d09ed83288.js" integrity="sha256-qCz1OISq22XOX10VWsb3JUwJWdGuoxwUUVeh0J7YMog="></script>
+<script defer src="/en.search.min.2dd4fb950693d9413ccb6c7696e0ea845480560b464f51ac37cdeed537b9a976.js" integrity="sha256-LdT7lQaT2UE8y2x2luDqhFSAVgtGT1GsN83u1Te5qXY="></script>
 
 
 
@@ -103,7 +103,7 @@ https://github.com/alex-shpak/hugo-book
     <div class="container">
       
       <strong class="logo">
-        <a href="/"><img src="/svg/logo.svg" alt="ingraind" width="135"/></a>
+        <a href="/"><img src="/svg/logo.svg" alt="foniod" width="135"/></a>
       </strong>
       
       <a class="nav-opener" href="#">nav-opener<span></span></a>
@@ -145,7 +145,7 @@ https://github.com/alex-shpak/hugo-book
         </nav>
         
   <ul class="social-networks">
-  <li><a href="https://github.com/redsift/ingraind"><i class="icon-github"></i>github</a></li>
+  <li><a href="https://github.com/redsift/foniod"><i class="icon-github"></i>github</a></li>
   <li><a href="https://twitter.com/redsift"><i class="icon-twitter"></i>twitter</a></li>
 </ul>
 
@@ -172,7 +172,7 @@ https://github.com/alex-shpak/hugo-book
 				    
   <nav class="nav-holder hide">
 <strong class="logo hide">
-  <a href="/"><img src="/svg/logo.svg" alt="ingraind" width="135"/></a>
+  <a href="/"><img src="/svg/logo.svg" alt="foniod" width="135"/></a>
   <span>v1.0</span>
 </strong>
 
@@ -284,8 +284,8 @@ https://github.com/alex-shpak/hugo-book
 				<div class="content">
 				  
   <article class="markdown"><h1 id="performance">Performance</h1>
-<p>The following measurements were done on an 8-core <code>Intel(R) Core(TM) i5-8250U CPU @ 1.60GHz</code>, Arch Linux, and <code>ingraind</code> @ 
-  <a href="https://github.com/redsift/ingraind/commit/43281a70ca0d9cbf8cf2177dbf744c3bb1469d4d">43281a7</a>
+<p>The following measurements were done on an 8-core <code>Intel(R) Core(TM) i5-8250U CPU @ 1.60GHz</code>, Arch Linux, and <code>foniod</code> @ 
+  <a href="https://github.com/redsift/foniod/commit/43281a70ca0d9cbf8cf2177dbf744c3bb1469d4d">43281a7</a>
 .</p>
 <p>The following command will produce the raw output:</p>
 <pre><code>cargo build --release &amp;&amp; \
@@ -294,14 +294,14 @@ sudo AWS_ACCESS_KEY_ID=x \
      AWS_BUCKET=x \
      AWS_INTERVAL=30 \
      DNS_IF=wlp61s0 \
-     RUST_BACKTRACE=1 ./target/release/ingraind &amp; sleep 5 \
-&amp;&amp; (top -b -d 2 |grep ingraind) &gt;top_log &amp; \
+     RUST_BACKTRACE=1 ./target/release/foniod &amp; sleep 5 \
+&amp;&amp; (top -b -d 2 |grep foniod) &gt;top_log &amp; \
 iperf3 -t 10 -b 10M -c localhost &gt; iperf_log \
 &amp;&amp; sleep 1 &amp;&amp; iperf3 -t 10 -b 100M -c localhost &gt;&gt;iperf_log \
 &amp;&amp; sleep 1 &amp;&amp; iperf3 -t 10 -b 1000M -c localhost &gt;&gt;iperf_log \
 &amp;&amp; sleep 1 &amp;&amp; iperf3 -t 10 -b 10000M -c localhost &gt;&gt;iperf_log \
 &amp;&amp; pkill top \
-&amp;&amp; @ pkill ingraind
+&amp;&amp; @ pkill foniod
 </code></pre>
 <p>Looking through the logs, we can see that CPU use follows bandwidth:</p>
 <table>
@@ -354,12 +354,12 @@ iperf3 -t 10 -b 10M -c localhost &gt; iperf_log \
 		 <footer id="footer">
   <div class="container">
     
-    <div class="copy">&copy; 2021 <a href="#">ingraind & RedBPF Contributors</a>. Documentation distributed under <a href="https://creativecommons.org/licenses/by/4.0/">CC-BY-4.0</a></div>
+    <div class="copy">&copy; 2021 <a href="#">foniod & RedBPF Contributors</a>. Documentation distributed under <a href="https://creativecommons.org/licenses/by/4.0/">CC-BY-4.0</a></div>
     <div class="copy">The Linux Foundation® (TLF) has registered trademarks and uses trademarks. For a list of TLF trademarks, see <a href="https://www.linuxfoundation.org/trademark-usage/">Trademark Usage</a></div>
     <div class="social-block">
     
   <ul class="social-networks">
-  <li><a href="https://github.com/redsift/ingraind"><i class="icon-github"></i>github</a></li>
+  <li><a href="https://github.com/redsift/foniod"><i class="icon-github"></i>github</a></li>
   <li><a href="https://twitter.com/redsift"><i class="icon-twitter"></i>twitter</a></li>
 </ul>
 

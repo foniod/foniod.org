@@ -1,6 +1,6 @@
 # Performance
 
-The following measurements were done on an 8-core `Intel(R) Core(TM) i5-8250U CPU @ 1.60GHz`, Arch Linux, and `ingraind` @ [43281a7](https://github.com/redsift/ingraind/commit/43281a70ca0d9cbf8cf2177dbf744c3bb1469d4d).
+The following measurements were done on an 8-core `Intel(R) Core(TM) i5-8250U CPU @ 1.60GHz`, Arch Linux, and `foniod` @ [43281a7](https://github.com/redsift/foniod/commit/43281a70ca0d9cbf8cf2177dbf744c3bb1469d4d).
 
 The following command will produce the raw output:
 
@@ -10,14 +10,14 @@ The following command will produce the raw output:
          AWS_BUCKET=x \
          AWS_INTERVAL=30 \
          DNS_IF=wlp61s0 \
-         RUST_BACKTRACE=1 ./target/release/ingraind & sleep 5 \
-    && (top -b -d 2 |grep ingraind) >top_log & \
+         RUST_BACKTRACE=1 ./target/release/foniod & sleep 5 \
+    && (top -b -d 2 |grep foniod) >top_log & \
     iperf3 -t 10 -b 10M -c localhost > iperf_log \
     && sleep 1 && iperf3 -t 10 -b 100M -c localhost >>iperf_log \
     && sleep 1 && iperf3 -t 10 -b 1000M -c localhost >>iperf_log \
     && sleep 1 && iperf3 -t 10 -b 10000M -c localhost >>iperf_log \
     && pkill top \
-    && @ pkill ingraind
+    && @ pkill foniod
 
 Looking through the logs, we can see that CPU use follows bandwidth:
 

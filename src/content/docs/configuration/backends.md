@@ -105,7 +105,7 @@ to be stored in the config file in unencrypted form.
 In addition, the HTTP endpoint can encode its payload as Cap'n Proto in
 addition to JSON. The schema for the current version can be found [in
 the
-repository](https://github.com/redsift/ingraind/blob/master/schema/ingraind.capnp).
+repository](https://github.com/redsift/foniod/blob/master/schema/foniod.capnp).
 
 Using Cap'n Proto lets you shave off significant amount of time when
 receiving and parsing InGRAINd events, at the cost of additional

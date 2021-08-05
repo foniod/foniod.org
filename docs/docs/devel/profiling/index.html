@@ -6,12 +6,12 @@
 <meta http-equiv="x-ua-compatible" content="ie=edge">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Profiling During development The recommended way to profile ingraind binaries is using perf. The default --release builds are not stripped, therefore it should be easy to analyse the results.
-sudo perf record ./target/release/ingraind sudo perf report  Docker If running in a container, the recommended way is to start ingraind, then attach perf, and look the results off the box.
-sudo docker run -d --name ingraind -e OPTION=value [...] --pid=host --net=host --privileged ingraind sudo perf record -a -p `pgrep ingraind`  Looking at the results in this scenario is a bit tricky, because we will need to tell perf where the binaries are located to resolve the symbols."><meta property="og:title" content="" />
-<meta property="og:description" content="Profiling During development The recommended way to profile ingraind binaries is using perf. The default --release builds are not stripped, therefore it should be easy to analyse the results.
-sudo perf record ./target/release/ingraind sudo perf report  Docker If running in a container, the recommended way is to start ingraind, then attach perf, and look the results off the box.
-sudo docker run -d --name ingraind -e OPTION=value [...] --pid=host --net=host --privileged ingraind sudo perf record -a -p `pgrep ingraind`  Looking at the results in this scenario is a bit tricky, because we will need to tell perf where the binaries are located to resolve the symbols." />
+<meta name="description" content="Profiling During development The recommended way to profile foniod binaries is using perf. The default --release builds are not stripped, therefore it should be easy to analyse the results.
+sudo perf record ./target/release/foniod sudo perf report  Docker If running in a container, the recommended way is to start foniod, then attach perf, and look the results off the box.
+sudo docker run -d --name foniod -e OPTION=value [...] --pid=host --net=host --privileged foniod sudo perf record -a -p `pgrep foniod`  Looking at the results in this scenario is a bit tricky, because we will need to tell perf where the binaries are located to resolve the symbols."><meta property="og:title" content="" />
+<meta property="og:description" content="Profiling During development The recommended way to profile foniod binaries is using perf. The default --release builds are not stripped, therefore it should be easy to analyse the results.
+sudo perf record ./target/release/foniod sudo perf report  Docker If running in a container, the recommended way is to start foniod, then attach perf, and look the results off the box.
+sudo docker run -d --name foniod -e OPTION=value [...] --pid=host --net=host --privileged foniod sudo perf record -a -p `pgrep foniod`  Looking at the results in this scenario is a bit tricky, because we will need to tell perf where the binaries are located to resolve the symbols." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="http://foniod.org/docs/devel/profiling/" /><meta property="article:section" content="docs" />
 
@@ -37,7 +37,7 @@ sudo docker run -d --name ingraind -e OPTION=value [...] --pid=host --net=host -
 
 
 
-<script defer src="/en.search.min.a82cf53884aadb65ce5f5d155ac6f7254c0959d1aea31c145157a1d09ed83288.js" integrity="sha256-qCz1OISq22XOX10VWsb3JUwJWdGuoxwUUVeh0J7YMog="></script>
+<script defer src="/en.search.min.2dd4fb950693d9413ccb6c7696e0ea845480560b464f51ac37cdeed537b9a976.js" integrity="sha256-LdT7lQaT2UE8y2x2luDqhFSAVgtGT1GsN83u1Te5qXY="></script>
 
 
 
@@ -103,7 +103,7 @@ https://github.com/alex-shpak/hugo-book
     <div class="container">
       
       <strong class="logo">
-        <a href="/"><img src="/svg/logo.svg" alt="ingraind" width="135"/></a>
+        <a href="/"><img src="/svg/logo.svg" alt="foniod" width="135"/></a>
       </strong>
       
       <a class="nav-opener" href="#">nav-opener<span></span></a>
@@ -145,7 +145,7 @@ https://github.com/alex-shpak/hugo-book
         </nav>
         
   <ul class="social-networks">
-  <li><a href="https://github.com/redsift/ingraind"><i class="icon-github"></i>github</a></li>
+  <li><a href="https://github.com/redsift/foniod"><i class="icon-github"></i>github</a></li>
   <li><a href="https://twitter.com/redsift"><i class="icon-twitter"></i>twitter</a></li>
 </ul>
 
@@ -178,7 +178,7 @@ https://github.com/alex-shpak/hugo-book
 				    
   <nav class="nav-holder hide">
 <strong class="logo hide">
-  <a href="/"><img src="/svg/logo.svg" alt="ingraind" width="135"/></a>
+  <a href="/"><img src="/svg/logo.svg" alt="foniod" width="135"/></a>
   <span>v1.0</span>
 </strong>
 
@@ -291,31 +291,31 @@ https://github.com/alex-shpak/hugo-book
 				  
   <article class="markdown"><h1 id="profiling">Profiling</h1>
 <h2 id="during-development">During development</h2>
-<p>The recommended way to profile <code>ingraind</code> binaries is using <code>perf</code>.
+<p>The recommended way to profile <code>foniod</code> binaries is using <code>perf</code>.
 The default <code>--release</code> builds are not stripped, therefore it should be easy to analyse the results.</p>
-<pre><code>sudo perf record ./target/release/ingraind
+<pre><code>sudo perf record ./target/release/foniod
 sudo perf report
 </code></pre>
 <h2 id="docker">Docker</h2>
-<p>If running in a container, the recommended way is to start <code>ingraind</code>, then attach <code>perf</code>, and look the results off the box.</p>
-<pre><code>sudo docker run -d --name ingraind -e OPTION=value [...] --pid=host --net=host --privileged ingraind
-sudo perf record -a -p `pgrep ingraind`
+<p>If running in a container, the recommended way is to start <code>foniod</code>, then attach <code>perf</code>, and look the results off the box.</p>
+<pre><code>sudo docker run -d --name foniod -e OPTION=value [...] --pid=host --net=host --privileged foniod
+sudo perf record -a -p `pgrep foniod`
 </code></pre>
 <p>Looking at the results in this scenario is a bit tricky, because we will need to tell <code>perf</code> where the binaries are located to resolve the symbols.</p>
-<p>This can be done by starting an <code>ingraind</code> container on the box that we&rsquo;re using for analysis (if different from the system where we collected the data), then using the merged overlay filesystem as a base for symbol resolution. Note, <strong>you will need to use the same container version</strong>, as the symbols <strong>will</strong> change between builds.</p>
+<p>This can be done by starting an <code>foniod</code> container on the box that we&rsquo;re using for analysis (if different from the system where we collected the data), then using the merged overlay filesystem as a base for symbol resolution. Note, <strong>you will need to use the same container version</strong>, as the symbols <strong>will</strong> change between builds.</p>
 <p>This can be easily done like so:</p>
 <pre><code>export VERSION=sha256_of_profiled_container
-docker run -d --rm --name ingraind -it ingraind:$VERSION /bin/sh
+docker run -d --rm --name foniod -it foniod:$VERSION /bin/sh
 
-export CONTAINER_HASH=$(docker inspect ingraind |grep MergedDir |sed 's;.*: &quot;\(.*\)&quot;,;\1;')
+export CONTAINER_HASH=$(docker inspect foniod |grep MergedDir |sed 's;.*: &quot;\(.*\)&quot;,;\1;')
 sudo perf report -f -i perf.data_docker --symfs /var/lib/docker/overlay2/$CONTAINER_HASH/merged
 </code></pre>
 <p>After you&rsquo;re done, you can shut down the container.</p>
-<pre><code>docker stop ingraind
+<pre><code>docker stop foniod
 </code></pre>
 <h2 id="stat">Stat</h2>
-<p>To get detailed stats about the execution of <code>ingraind</code>, you can <code>perf stat</code> like so:</p>
-<pre><code>$ perf stat -a -p `pgrep ingraind`
+<p>To get detailed stats about the execution of <code>foniod</code>, you can <code>perf stat</code> like so:</p>
+<pre><code>$ perf stat -a -p `pgrep foniod`
 
 Performance counter stats for process id '28037':
 
@@ -356,12 +356,12 @@ Performance counter stats for process id '28037':
 		 <footer id="footer">
   <div class="container">
     
-    <div class="copy">&copy; 2021 <a href="#">ingraind & RedBPF Contributors</a>. Documentation distributed under <a href="https://creativecommons.org/licenses/by/4.0/">CC-BY-4.0</a></div>
+    <div class="copy">&copy; 2021 <a href="#">foniod & RedBPF Contributors</a>. Documentation distributed under <a href="https://creativecommons.org/licenses/by/4.0/">CC-BY-4.0</a></div>
     <div class="copy">The Linux Foundation® (TLF) has registered trademarks and uses trademarks. For a list of TLF trademarks, see <a href="https://www.linuxfoundation.org/trademark-usage/">Trademark Usage</a></div>
     <div class="social-block">
     
   <ul class="social-networks">
-  <li><a href="https://github.com/redsift/ingraind"><i class="icon-github"></i>github</a></li>
+  <li><a href="https://github.com/redsift/foniod"><i class="icon-github"></i>github</a></li>
   <li><a href="https://twitter.com/redsift"><i class="icon-twitter"></i>twitter</a></li>
 </ul>
 
