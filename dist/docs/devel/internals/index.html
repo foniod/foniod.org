@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="How it all works  Build Build starts with build.rs going through all modules in the bpf/ directory, and:
+ Compile all .c files with clang into BPF bytecode. Run bindgen for all structs, the names of which start with _data_ (e.g. _data_tcp_connect).  bpf_helpers.h is in the include directory, so bindgen can be run freely on all .h files under bpf/. This is quirky, but works.
+The produced BPF bytecode ELF packages are embedded in the final binary using include_bytes!"><meta property="og:title" content="" />
+<meta property="og:description" content="How it all works  Build Build starts with build.rs going through all modules in the bpf/ directory, and:
+ Compile all .c files with clang into BPF bytecode. Run bindgen for all structs, the names of which start with _data_ (e.g. _data_tcp_connect).  bpf_helpers.h is in the include directory, so bindgen can be run freely on all .h files under bpf/. This is quirky, but works.
+The produced BPF bytecode ELF packages are embedded in the final binary using include_bytes!" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://foniod.org/docs/devel/internals/" /><meta property="article:section" content="docs" />
+
+<meta property="article:modified_time" content="2020-02-21T16:59:47+00:00" />
+
+<title>Internals | Foniod</title>
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+
+
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-WRMND9W');</script>
+  
+
+
+<link rel="stylesheet" href="/scss/main.min.61d889c346f67ea57ff397ef6521229e2eccf8d9f9a4d173cf76468b5cff7229.css" integrity="sha256-YdiJw0b2fqV/85fvZSEini7M&#43;Nn5pNFzz3ZGi1z/cik=">
+<script defer src="/en.cookie-bar.min.fe0931a5d689896d547d5e3c771d78f03a011aac1f7ccee5e86db136671dc837.js" integrity="sha256-/gkxpdaJiW1UfV48dx148DoBGqwffM7l6G2xNmcdyDc="></script>
+
+
+<script defer src="/en.menu-toggle.min.b899591d5f0aadc386251f4410c51d9273c350e502610406e19979b3e7699438.js" integrity="sha256-uJlZHV8KrcOGJR9EEMUdknPDUOUCYQQG4Zl5s&#43;dplDg="></script>
+
+
+
+<script defer src="/en.search.min.a82cf53884aadb65ce5f5d155ac6f7254c0959d1aea31c145157a1d09ed83288.js" integrity="sha256-qCz1OISq22XOX10VWsb3JUwJWdGuoxwUUVeh0J7YMog="></script>
+
+
+
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+
+
+
+<link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png">
+<link rel="manifest" href="/favicons/site.webmanifest">
+<link rel="mask-icon" href="/favicons/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+
+<link href="https://fonts.googleapis.com/css?family=Raleway:400,500,600,700,900%7cSource+Code+Pro:400,500&display=swap" rel="stylesheet">
+<!--
+Theme based on Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<body class="fixed-position">
+	
+	<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WRMND9W"
+		height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+		
+	<div id="wrapper">
+		 
+<div class="header-container">
+   <div id="cookie-bar" class="cookie-bar hide">
+  <div class="container">
+    <h3 id="cookie-heading">This site uses cookies</h3>
+    <div class="cookie-content">
+      <p>
+        <span class="short">We’re using cookies to give you the best experience across our websites and products.
+        For more information, </span>
+        
+        visit our <a href="https://redsift.com/cookies" target="_blank" rel="noopener noreferrer">Cookies policy</a></p>
+      <button id="cookie-button" type="button" class="btn">Accept and continue</button>
+    </div>
+  </div>
+</div> 
+  <a class="accessibility" href="#main">Skip to Content</a>
+  <header id="header">
+    <div class="container">
+      
+      <strong class="logo">
+        <a href="/"><img src="/svg/logo.svg" alt="ingraind" width="135"/></a>
+      </strong>
+      
+      <a class="nav-opener" href="#">nav-opener<span></span></a>
+      <div class="drop">
+        
+        <nav class="nav main-menu">
+          
+          
+
+
+
+
+
+          
+            <ul>
+<li>
+  <a href="/">Intro</a>
+</li>
+<li>
+  <a href="/docs/getting-started/">Documentation</a>
+</li>
+<li>
+  <a href="/api/redbpf/">API</a>
+</li>
+<li>
+  <a href="https://blog.redsift.com/category/labs/">Blog</a>
+</li>
+</ul>
+
+
+          
+
+          
+
+
+
+
+          
+        </nav>
+        
+  <ul class="social-networks">
+  <li><a href="https://github.com/redsift/ingraind"><i class="icon-github"></i>github</a></li>
+  <li><a href="https://twitter.com/redsift"><i class="icon-twitter"></i>twitter</a></li>
+</ul>
+
+      </div>
+    </div>
+  </header>
+</div>
+ 
+<input type="checkbox" class="hidden" id="toc-control" />
+<aside class="hidden clearfix">
+  
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#build">Build</a></li>
+    <li><a href="#runtime">Runtime</a></li>
+    <li><a href="#perf-events">Perf Events</a></li>
+    <li><a href="#elf-parsing">ELF parsing</a></li>
+  </ul>
+</nav>
+
+
+</aside>
+ 
+
+		
+		<main id="main">
+			<div class="container inner-container">
+				
+				<aside class="sidebar">
+				  <div id="left-sidebar" class="fixed-block">
+				    
+  <nav class="nav-holder hide">
+<strong class="logo hide">
+  <a href="/"><img src="/svg/logo.svg" alt="ingraind" width="135"/></a>
+  <span>v1.0</span>
+</strong>
+
+
+<form action="#" class="form-search">
+	<div class="search-bar">
+		<label for="search-input">Search</label>
+		<input id="search-input"
+			type="search"
+			aria-label="Search"
+			maxlength="64" 
+			data-hotkeys="s/">
+	</div>
+  <div class="book-search-spinner spinner hidden"></div>
+  <ul id="search-results" class="nav-list"></ul>
+</form>
+
+
+
+
+
+
+
+
+
+
+
+  <ul>
+<li>
+<p>
+  <a href="/docs/getting-started/">Getting started</a>
+</p>
+</li>
+<li>
+<p>
+  <a href="/docs/configuration/syntax/">Configuration</a>
+</p>
+<ul>
+<li>
+  <a href="/docs/configuration/containers/">Container monitoring</a>
+</li>
+<li>
+  <a href="/docs/configuration/network/">Network monitoring</a>
+</li>
+<li>
+  <a href="/docs/configuration/auto-kill/">Auto-kill programs</a>
+</li>
+<li>
+  <a href="/docs/configuration/backends/">Backends</a>
+</li>
+<li>
+  <a href="/docs/configuration/statsd/">StatsD server</a>
+</li>
+<li>
+  <a href="/docs/configuration/osquery/">OsQuery</a>
+</li>
+</ul>
+</li>
+<li>
+<p>
+  <a href="/docs/deployment/strategies/">Deployment</a>
+</p>
+<ul>
+<li>
+  <a href="/docs/deployment/kubernetes/">Kubernetes</a>
+</li>
+<li>
+  <a href="/docs/deployment/ansible/">Ansible/SystemD</a>
+</li>
+</ul>
+</li>
+<li>
+<p>Extending InGRAINd</p>
+<ul>
+<li>
+  <a href="/docs/devel/profiling/">Profiling</a>
+</li>
+<li>
+  <a href="/docs/devel/performance/">Performance</a>
+</li>
+<li>
+  <a href="/docs/devel/internals/"class=active>Internals</a>
+</li>
+</ul>
+</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var a=document.querySelector("aside.sidebar nav");addEventListener("beforeunload",function(b){localStorage.setItem("menu.scrollTop",a.scrollTop)}),a.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+				  </div>
+				</aside>
+				
+				<div class="content">
+				  
+  <article class="markdown"><h1 id="how-it-all-works">How it all works</h1>
+<p>
+  <img src="./architecture.png" alt="" />
+</p>
+<h2 id="build">Build</h2>
+<p>Build starts with <code>build.rs</code> going through all modules in the <code>bpf/</code> directory, and:</p>
+<ol>
+<li>Compile all <code>.c</code> files with <code>clang</code> into BPF bytecode.</li>
+<li>Run <code>bindgen</code> for all structs, the names of which start with <code>_data_</code> (e.g.
+<code>_data_tcp_connect</code>).</li>
+</ol>
+<p><code>bpf_helpers.h</code> is in the <code>include</code> directory, so <code>bindgen</code> can be run freely on
+all <code>.h</code> files under <code>bpf/</code>. This is quirky, but works.</p>
+<p>The produced BPF bytecode ELF packages are embedded in the final binary
+using <code>include_bytes!</code> statements.
+The produced bindings are embedded using <code>include!</code> statements.</p>
+<h2 id="runtime">Runtime</h2>
+<p><strong>Grains</strong> are self-contained monitors and reporters. Each grain can gather their
+own type of statistics about a particular aspect of the system&rsquo;s operation.
+Grains need to manage any BPF modules they might be using. Every grain is
+coupled with a dedicated cloud-based analytics backend.</p>
+<p><strong>BPF</strong> probes are using the kernel&rsquo;s eBPF virtual machine to execute a safe
+bytecode directly in kernel-space. These modules can only interact with the
+outside world using well-defined interfaces, and cannot execute arbitrary system
+calls.</p>
+<p>The BPF modules will send data to userland using <strong>perf_event</strong> ring-buffers.
+These ring-buffers are fixed size buffers with a size multiples of the platform
+native VMM page size (4k on x86/x64).</p>
+<p>Important to note 2 things:</p>
+<ul>
+<li>The license of BPF modules needs to be GPL is we want to extract data from
+the kernel into userland through the <code>perf_event</code> interface.</li>
+<li>If the module&rsquo;s version does not match the running kernel&rsquo;s version number,
+the kernel will refuse to load the module. The workaround here is using
+<code>0xFFFFFFFE</code> in the binary to stay compatible with gobpf. This version will
+be replaced runtime by redbpf.</li>
+</ul>
+<p>After the BPF probes are parsed from the ELF files, the following syscalls are
+made, in order:</p>
+<ol>
+<li><code>bpf_create_map</code>: All global data is stored in maps. These structures are
+allocated during parsing.</li>
+<li><code>bpf_prog_load</code>: Load a program into the BPF VM, and initialise it</li>
+<li><code>bpf_attach_kprobe</code>: Attach BPF probes to a syscall. Entry probes and return
+probes are possible, they will be called when entering or exiting a syscall,
+respectively.</li>
+<li><code>bpf_update_elem</code>: the <code>perf_event</code> ringbuffers are initialised. This
+includes allocating a <code>perf_reader</code> object, which are used for userspace
+consumption of the <code>bpf_perf_event_output</code> calls in the probes.</li>
+</ol>
+<h2 id="perf-events">Perf Events</h2>
+<p>Ingraind uses the 
+  <a href="http://man7.org/linux/man-pages/man2/perf_event_open.2.html">perf_event_open
+(2)</a>
+ interface to
+communicate with the kernel&rsquo;s BPF VM.</p>
+<p>The BPF modules will access the <code>perf_event</code> ring buffers through a <code>BPF_MAP</code>
+structure of type <code>BPF_MAP_PERF_EVENT_ARRAY</code>. The maps contain an <code>fd</code> that is
+keyed by the CPU id. Technically, multiple strategies are allowed for keying
+this map, but the most popular looks like setting up a separate ring buffer for
+every online single CPU.</p>
+<p>Events are consumed using an <code>epoll_wait</code> loop, and read until exhaustion. The
+benefit of a single <code>epoll_wait</code> loop is that all the complex logic behind
+initialisation of different grains ultimately ends up allowing notifications
+through a single <code>fd</code>, including all network, and even <code>perf_event</code> buffers.</p>
+<h2 id="elf-parsing">ELF parsing</h2>
+<p>A thing to note here before I get into this, is how state is managed in the BPF
+VM. There&rsquo;s no global state allowed, so anything that needs to be persisted
+between calls into the probe needs to go through <code>BPF_MAP_.*</code> structures through
+VM opcodes (<code>#define</code>&rsquo;d as function calls, eg. update, delete, etc.).</p>
+<p>A corollary to this is that global state used in the 
+  <a href="https://elixir.bootlin.com/linux/v4.17.1/source/tools/lib/bpf/libbpf.h#L209">C source
+code</a>
+
+is stored in the ELF binary in named <code>PROGBITS</code>
+
+  <a href="https://docs.rs/goblin/0.0.15/goblin/elf/section_header/struct.SectionHeader.html">sections</a>
+,
+then loaded and initialised to be <code>BPF_MAP</code>s by the loader <em>as data</em>. We load
+this into memory, treating it as configuration, then instruct the kernel to set
+up global state storage to get an <code>fd</code> in return. This <code>fd</code> can also be used to
+send data back and forth between kernel- and userspace in certain cases.</p>
+<p>It gets interesting when these are referenced in code (functions). The compiler
+generates a <code>REL</code>
+
+  <a href="https://docs.rs/goblin/0.0.15/goblin/elf/reloc/struct.Reloc.html">section</a>
+ that
+<code>link</code>s to the symbol table, and has an <code>info</code> field that is a link to the
+amended section of code. The <code>offset</code> field specifies the offset in bytes from
+the start of the section that needs to be modified. A relocation, strictly in
+the BPF context, is a rewrite instruction for a specific instruction, in a
+specific section, referencing a specific symbol.</p>
+<p>Because data access is always through VM opcodes, the instruction at the
+<code>offset</code> location is&hellip; something. We don&rsquo;t actually care. Relocations tell us
+to&hellip; do something with it.</p>
+<p>We need to rewrite the instruction&rsquo;s source register (<code>src_reg</code>) with
+<code>BPF_PSEUDO_MAP_FD</code>, and the immediate constant parameter (<code>imm</code>) with the <code>fd</code>
+of the map that&rsquo;s referenced by the symbol.</p>
+<p>So to recap, this is the workflow to deal with loading ELF files:</p>
+<ol>
+<li>Load the strings table</li>
+<li>Load the symbol table</li>
+<li>Parse <em>all</em> the sections</li>
+<li>Create <code>BPF_MAP</code>s from the <code>maps/</code> sections to acquire <code>fd</code>s</li>
+<li>Go through all code sections, and apply relocations such that:
+<ol>
+<li>Resolve all <code>REL</code> symbols into <code>fd</code>s (through the symbol table and back again).</li>
+<li>Rewrite the instruction at specified offset</li>
+</ol>
+</li>
+</ol>
+</article>
+ 
+				</div>
+				
+				
+				<aside class="aside hide">
+					<div id="right-sidebar" class="fixed-block">
+					  <h3>Contents</h3>
+					  
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#build">Build</a></li>
+    <li><a href="#runtime">Runtime</a></li>
+    <li><a href="#perf-events">Perf Events</a></li>
+    <li><a href="#elf-parsing">ELF parsing</a></li>
+  </ul>
+</nav>
+
+ 
+					</div>
+				</aside>
+				
+			</div>
+		</main>
+		 <footer id="footer">
+  <div class="container">
+    
+    <div class="copy">&copy; 2021 <a href="#">ingraind & RedBPF Contributors</a>. Documentation distributed under <a href="https://creativecommons.org/licenses/by/4.0/">CC-BY-4.0</a></div>
+    <div class="copy">The Linux Foundation® (TLF) has registered trademarks and uses trademarks. For a list of TLF trademarks, see <a href="https://www.linuxfoundation.org/trademark-usage/">Trademark Usage</a></div>
+    <div class="social-block">
+    
+  <ul class="social-networks">
+  <li><a href="https://github.com/redsift/ingraind"><i class="icon-github"></i>github</a></li>
+  <li><a href="https://twitter.com/redsift"><i class="icon-twitter"></i>twitter</a></li>
+</ul>
+
+    </div>
+  </div>
+</footer>
+<a class="accessibility" href="#wrapper">Back to top</a>
+ 
+	</div>
+</body>
+ 
+
+</html>
+

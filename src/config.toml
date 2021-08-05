@@ -1,9 +1,9 @@
-baseURL = "http://ingrain.redsift.io/"
+baseURL = "http://foniod.org/"
 languageCode = "en-us"
-title = "InGRAINd"
+title = "Foniod"
 enableGitInfo = true
 theme = "book2"
-publishDir = "../"
+publishDir = "../dist"
 
 [params]
 MainMenuBundle = "/main-menu"
